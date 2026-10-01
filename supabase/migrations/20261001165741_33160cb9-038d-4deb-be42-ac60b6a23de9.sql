@@ -1,0 +1,1 @@
+CREATE POLICY "Contact enquiries are not publicly readable" ON public.contact_enquiries FOR SELECT TO authenticated USING (false);
