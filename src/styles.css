@@ -31,7 +31,7 @@
 .site-header { position: sticky; top: 0; z-index: 60; background: var(--hero); color: var(--primary-foreground); border-bottom: 1px solid oklch(1 0 0 / 13%); }
 .site-header-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
-.brand-logo { width: 174px; height: auto; filter: brightness(0) invert(1); object-fit: contain; }
+.brand-logo { width: 174px; height: auto; object-fit: contain; }
 .brand-rule { width: 1px; height: 32px; background: oklch(1 0 0 / 32%); }
 .brand-parent { color: oklch(1 0 0 / 68%); font-size: 9px; font-weight: 700; line-height: 1.45; letter-spacing: 0; text-transform: uppercase; max-width: 105px; }
 .nav-links { display: flex; align-items: center; gap: 29px; }
