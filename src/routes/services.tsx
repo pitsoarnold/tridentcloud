@@ -1,0 +1,5 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { PageIntro, FinalCTA } from "@/components/SiteChrome";
+import { ServicesSection } from "./index";
+export const Route = createFileRoute("/services")({ head: () => ({ meta: [{title:"Managed Cloud Services | Trident Cloud Services"},{name:"description",content:"Deploy, operate, protect and scale your business systems with Trident Cloud Services in South Africa."},{property:"og:title",content:"Managed Services | Trident Cloud Services"},{property:"og:description",content:"One partner for deployment, operations, security and scale."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}] }), component: Services });
+function Services() { return <main><PageIntro eyebrow="OUR SERVICES" title="Infrastructure handled. Business moving." description="We take care of the critical work behind your digital systems: deploying, operating, protecting and scaling them."/><ServicesSection/><FinalCTA/></main> }

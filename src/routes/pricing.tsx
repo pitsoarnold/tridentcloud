@@ -1,0 +1,5 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { PageIntro, FinalCTA } from "@/components/SiteChrome";
+import { Pricing, FAQ } from "@/components/Pricing";
+export const Route = createFileRoute("/pricing")({ head: () => ({ meta: [{title:"Managed Hosting Pricing in Rand | Trident Cloud Services"},{name:"description",content:"Compare Trident Cloud Services' four managed hosting and operations plans. Transparent monthly and annual ZAR pricing for South African businesses."},{property:"og:title",content:"Managed Cloud Pricing | Trident Cloud Services"},{property:"og:description",content:"Four levels of responsibility, from managed hosting to enterprise operations."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}] }), component: PricingPage });
+function PricingPage() { return <main><PageIntro eyebrow="PRICING" title="The right level of care for your systems." description="From one essential website to complex digital operations, choose a starting point. We'll confirm the scope together before any work begins."/><Pricing compact/><FAQ/><FinalCTA/></main> }

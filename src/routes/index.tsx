@@ -1,24 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Play, ShieldCheck, LockKeyhole, Cloud, Server, Activity, AlertTriangle, Rocket, Settings2, TrendingUp, MapPin, Users, Layers3, CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Pricing, FAQ } from "@/components/Pricing";
+import { FinalCTA } from "@/components/SiteChrome";
+import capeTown from "@/assets/cape-town-dusk.jpg";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
+export const Route = createFileRoute("/")({ head: () => ({ meta: [{ title: "Trident Cloud Services | Managed Infrastructure in South Africa" }, { name: "description", content: "Trident Cloud Services operates the infrastructure behind your websites, applications and business systems. Managed hosting, security and operations in South Africa." }, { property: "og:title", content: "Trident Cloud Services | Your systems. Our responsibility." }, { property: "og:description", content: "Managed hosting, infrastructure and operations for South African businesses." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }), component: Home });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+const pillars = [
+ {number:"01",icon:Rocket,title:"Deploy",text:"We get your systems online and configured for success.",items:["Server setup","Domain & DNS","SSL certificates","Initial hardening","Deployment automation"]},
+ {number:"02",icon:Settings2,title:"Operate",text:"We keep everything running, updated and optimised.",items:["24/7 monitoring","Daily backups","Performance tuning","Software updates","Incident response"]},
+ {number:"03",icon:ShieldCheck,title:"Protect",text:"We secure your data, monitor for threats and keep you backed up.",items:["Security hardening","Intrusion detection","Firewall management","Disaster recovery","POPIA support"]},
+ {number:"04",icon:TrendingUp,title:"Scale",text:"We grow with your business, so you never outgrow your infrastructure.",items:["Capacity planning","Multi-region options","Load balancing","Resource optimisation","Architecture reviews"]},
+];
+export function ServicesSection() { return <section className="section section-muted"><div className="site-container"><div className="section-heading"><span className="eyebrow">WHAT WE DO</span><h2>From first deployment to what comes next.</h2><p>Four connected disciplines. One team responsible for keeping your digital operation running.</p></div><div className="pillars">{pillars.map((pillar)=><article className="pillar" key={pillar.title}><div className="pillar-top"><pillar.icon aria-hidden="true"/><span className="pillar-number">{pillar.number} / 04</span></div><h3>{pillar.title}</h3><p>{pillar.text}</p><ul>{pillar.items.map((item)=><li key={item}>{item}</li>)}</ul></article>)}</div></div></section> }
+export function WhySection() { return <section className="section section-white"><div className="site-container"><div className="section-heading"><span className="eyebrow">WHY TRIDENT</span><h2>Accountability isn't an add-on.</h2><p>We work alongside your business, not behind a ticket number.</p></div><div className="why-grid"><article className="why-item"><MapPin/><h3>Grounded in South Africa</h3><p>Local business context, ZAR pricing and infrastructure decisions made with South African requirements, including POPIA, in mind.</p></article><article className="why-item"><Users/><h3>Real humans. Clear ownership.</h3><p>A direct line to people who know your systems. No vendor shuffle when something needs attention.</p></article><article className="why-item"><Layers3/><h3>Built for what comes next</h3><p>From a single website to a connected digital operation, we plan with your growth in mind.</p></article></div></div></section> }
+function Home() { return <main><section className="hero"><img src={capeTown} className="hero-image" alt="Cape Town and Table Mountain at dusk" width={1920} height={1050} fetchPriority="high"/><div className="site-container hero-inner"><div className="hero-content"><span className="eyebrow">A TRIDENT DEVELOPMENT GROUP COMPANY · SOUTH AFRICA</span><h1>We run the technology <em>your business</em> depends on.</h1><p>Trident Cloud Services operates the infrastructure behind your websites, applications and business systems — so your team can focus on running the business, not the servers.</p><div className="hero-ctas"><Button asChild className="btn btn-primary"><Link to="/contact" search={{}}>Get in touch <ArrowRight/></Link></Button><Button asChild className="btn btn-outline-light"><Link to="/services">See how we work <Play/></Link></Button></div></div><div className="hero-badges"><div className="hero-badge"><ShieldCheck/> <span>24/7 monitoring<br/>(business-hours response)</span></div><div className="hero-badge"><LockKeyhole/> <span>Advanced security<br/>and backups</span></div><div className="hero-badge"><Cloud/> <span>Scalable infrastructure<br/>for growth</span></div></div></div></section><div className="trust-strip"><div className="site-container trust-inner"><span className="trust-title">Built around what matters most</span><div className="trust-items"><span><ShieldCheck/> Security by design</span><span><Activity/> Proactive monitoring</span><span><Server/> Hands-on operations</span><span><CheckCircle2/> One accountable partner</span></div></div></div><section className="section section-white"><div className="site-container"><div className="problem-copy section-heading center"><span className="eyebrow">THE PROBLEM</span><h2>You're not in the hosting business. But you're running servers anyway.</h2><p>When infrastructure becomes an afterthought, small issues turn into lost time. Backups get missed. Updates pile up. And when something breaks, too many vendors point at each other. We take responsibility for the systems beneath your business.</p></div><div className="problem-points"><div className="problem-point"><AlertTriangle/><div><strong>Downtime disrupts business</strong><p>Monitor early, respond clearly and keep critical systems available.</p></div></div><div className="problem-point"><LockKeyhole/><div><strong>Security needs constant care</strong><p>Keep patches, backups and access under active management.</p></div></div><div className="problem-point"><Users/><div><strong>Your team has better things to do</strong><p>Put infrastructure in capable hands and focus on your work.</p></div></div></div></div></section><ServicesSection/><Pricing/><WhySection/><FAQ/><FinalCTA/></main> }

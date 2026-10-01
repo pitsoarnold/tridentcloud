@@ -1,0 +1,3 @@
+- [ ] Build Trident site pages and shared navigation/footer
+- [ ] Make four-tier pricing and contact enquiry functional
+- [ ] Verify desktop/mobile and enquiry flow
