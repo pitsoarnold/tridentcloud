@@ -438,6 +438,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1.2px;
+  color: var(--primary-foreground);
 }
 
 .sla-row {
