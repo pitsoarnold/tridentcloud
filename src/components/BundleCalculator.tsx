@@ -107,13 +107,13 @@ export function BundleCalculator() {
   const [tierName, setTierName] = useState<string>("Business");
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
 
-  const currentService = services.find((s) => s.id === serviceId) ?? services[0];
+  const currentService = services.find((s) => s.id === serviceId) ?? services[0]!;
 
   // If the user changes services and the selected tier doesn't exist, snap to featured
   const currentTier = useMemo(() => {
     const match = currentService.tiers.find((t) => t.name === tierName);
     if (match) return match;
-    return currentService.tiers.find((t) => t.featured) ?? currentService.tiers[0];
+    return currentService.tiers.find((t) => t.featured) ?? currentService.tiers[0]!;
   }, [currentService, tierName]);
 
   // Keep tierName in sync when service changes
@@ -133,7 +133,7 @@ export function BundleCalculator() {
     const nextService = services.find((s) => s.id === newId);
     if (nextService) {
       // Snap to featured tier on service change
-      const featured = nextService.tiers.find((t) => t.featured) ?? nextService.tiers[0];
+      const featured = nextService.tiers.find((t) => t.featured) ?? nextService.tiers[0]!;
       setTierName(featured.name);
     }
   };
