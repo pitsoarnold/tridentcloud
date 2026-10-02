@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BuildRouteImport } from './routes/build'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as EnterpriseRouteImport } from './routes/enterprise'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PulseRouteImport } from './routes/pulse'
@@ -38,6 +39,11 @@ const BuildRoute = BuildRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnterpriseRoute = EnterpriseRouteImport.update({
+  id: '/enterprise',
+  path: '/enterprise',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
   '/contact': typeof ContactRoute
+  '/enterprise': typeof EnterpriseRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
   '/contact': typeof ContactRoute
+  '/enterprise': typeof EnterpriseRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
   '/contact': typeof ContactRoute
+  '/enterprise': typeof EnterpriseRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/build'
     | '/contact'
+    | '/enterprise'
     | '/pricing'
     | '/privacy'
     | '/pulse'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/build'
     | '/contact'
+    | '/enterprise'
     | '/pricing'
     | '/privacy'
     | '/pulse'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/build'
     | '/contact'
+    | '/enterprise'
     | '/pricing'
     | '/privacy'
     | '/pulse'
@@ -152,6 +164,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BuildRoute: typeof BuildRoute
   ContactRoute: typeof ContactRoute
+  EnterpriseRoute: typeof EnterpriseRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   PulseRoute: typeof PulseRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/enterprise': {
+      id: '/enterprise'
+      path: '/enterprise'
+      fullPath: '/enterprise'
+      preLoaderRoute: typeof EnterpriseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -240,6 +260,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BuildRoute: BuildRoute,
   ContactRoute: ContactRoute,
+  EnterpriseRoute: EnterpriseRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   PulseRoute: PulseRoute,
