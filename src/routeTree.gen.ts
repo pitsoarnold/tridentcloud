@@ -15,6 +15,7 @@ import { Route as BuildRouteImport } from './routes/build'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PulseRouteImport } from './routes/pulse'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WhyTridentRouteImport } from './routes/why-trident'
@@ -49,6 +50,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PulseRoute = PulseRouteImport.update({
+  id: '/pulse',
+  path: '/pulse',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/pulse': typeof PulseRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/why-trident': typeof WhyTridentRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/pulse': typeof PulseRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/why-trident': typeof WhyTridentRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/pulse': typeof PulseRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/why-trident': typeof WhyTridentRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/pricing'
     | '/privacy'
+    | '/pulse'
     | '/services'
     | '/terms'
     | '/why-trident'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/pricing'
     | '/privacy'
+    | '/pulse'
     | '/services'
     | '/terms'
     | '/why-trident'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/pricing'
     | '/privacy'
+    | '/pulse'
     | '/services'
     | '/terms'
     | '/why-trident'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  PulseRoute: typeof PulseRoute
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
   WhyTridentRoute: typeof WhyTridentRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pulse': {
+      id: '/pulse'
+      path: '/pulse'
+      fullPath: '/pulse'
+      preLoaderRoute: typeof PulseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  PulseRoute: PulseRoute,
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
   WhyTridentRoute: WhyTridentRoute,

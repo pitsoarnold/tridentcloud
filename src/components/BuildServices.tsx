@@ -165,9 +165,56 @@ const services: Service[] = [
 
 const paymentPlans = [
   { name: "Standard", detail: "50% upfront, 50% on delivery", recommended: true },
-  { name: "Milestone", detail: "3 × 33% (kickoff, mid, delivery)" },
-  { name: "Subscription", detail: "Monthly × 24 months (small premium)" },
+  { name: "Milestone", detail: "3 equal payments (kickoff, mid, delivery)" },
+  { name: "Subscription", detail: "Monthly × 24 months (15% premium)" },
 ];
+
+/**
+ * Parses a price string like "R8,500", "R18,000", "R38,000+", "R1.5M+"
+ * Returns the numeric value in Rands, or null if it's a "Custom" pricing.
+ */
+function parsePrice(priceStr: string): number | null {
+  if (!priceStr || priceStr.toLowerCase().includes("custom")) return null;
+  // Handle "R1.5M+"
+  if (priceStr.includes("M")) {
+    const num = parseFloat(priceStr.replace(/[^0-9.]/g, ""));
+    return isNaN(num) ? null : num * 1_000_000;
+  }
+  // Handle "R8,500" or "R18,000"
+  const num = parseFloat(priceStr.replace(/[^0-9.]/g, ""));
+  return isNaN(num) ? null : num;
+}
+
+function formatR(n: number): string {
+  return "R" + Math.round(n).toLocaleString("en-ZA");
+}
+
+/**
+ * Returns per-plan breakdown for a given tier price.
+ */
+function getPlanBreakdown(priceStr: string) {
+  const price = parsePrice(priceStr);
+  if (price === null) return null;
+
+  return {
+    standard: {
+      upfront: formatR(price * 0.5),
+      delivery: formatR(price * 0.5),
+      total: formatR(price),
+    },
+    milestone: {
+      first: formatR(price / 3),
+      second: formatR(price / 3),
+      third: formatR(price / 3),
+      total: formatR(price),
+    },
+    subscription: {
+      monthly: formatR((price * 1.15) / 24),
+      months: 24,
+      total: formatR(price * 1.15),
+    },
+  };
+}
 
 export function BuildServices() {
   const [openService, setOpenService] = useState<Service | null>(null);
@@ -245,20 +292,69 @@ export function BuildServices() {
               </div>
 
               <div className="payment-plans">
-                <h4>Payment options</h4>
-                <div className="plan-row">
-                  {paymentPlans.map((p) => (
-                    <button
-                      key={p.name}
-                      className={`plan-btn ${plan === p.name ? "active" : ""}`}
-                      onClick={() => setPlan(p.name)}
-                    >
-                      <strong>{p.name}</strong>
-                      <span>{p.detail}</span>
-                    </button>
-                  ))}
-                </div>
+  <h4>Payment options</h4>
+  <div className="plan-row">
+    {paymentPlans.map((p) => (
+      <button
+        key={p.name}
+        className={`plan-btn ${plan === p.name ? "active" : ""}`}
+        onClick={() => setPlan(p.name)}
+      >
+        <strong>{p.name}</strong>
+        <span>{p.detail}</span>
+      </button>
+    ))}
+  </div>
+
+  {/* Dynamic breakdown per tier */}
+  <div className="plan-breakdown">
+    {openService.tiers.map((t) => {
+      const bd = getPlanBreakdown(t.price);
+      if (!bd) return null;
+
+      let rows: { label: string; value: string; note?: string }[] = [];
+      if (plan === "Standard") {
+        rows = [
+          { label: "Due at kickoff", value: bd.standard.upfront },
+          { label: "Due on delivery", value: bd.standard.delivery },
+          { label: "Total project cost", value: bd.standard.total, note: "No additional fees" },
+        ];
+      } else if (plan === "Milestone") {
+        rows = [
+          { label: "Kickoff", value: bd.milestone.first },
+          { label: "Mid-project", value: bd.milestone.second },
+          { label: "On delivery", value: bd.milestone.third },
+          { label: "Total project cost", value: bd.milestone.total, note: "No additional fees" },
+        ];
+      } else {
+        rows = [
+          { label: "Monthly payment", value: bd.subscription.monthly, note: `× ${bd.subscription.months} months` },
+          { label: "Total project cost", value: bd.subscription.total, note: "Includes ~15% financing premium" },
+        ];
+      }
+
+      return (
+        <div key={t.name} className={`plan-breakdown-tier ${t.featured ? "featured" : ""}`}>
+          <div className="plan-breakdown-header">
+            <span className="plan-breakdown-name">{t.name}</span>
+            <span className="plan-breakdown-price">{t.price}</span>
+          </div>
+          <div className="plan-breakdown-rows">
+            {rows.map((r) => (
+              <div key={r.label} className="plan-breakdown-row">
+                <span className="plan-breakdown-label">
+                  {r.label}
+                  {r.note && <em>{r.note}</em>}
+                </span>
+                <span className="plan-breakdown-value">{r.value}</span>
               </div>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
 
               <div className="build-modal-cta">
                 <Button asChild className="btn btn-primary"><Link to="/contact" search={{ plan: openService.title }}>Start this project <ArrowRight /></Link></Button>
@@ -277,7 +373,7 @@ export function BuildServices() {
             <p>A monthly subscription for SMMEs who want a professional online presence — hosted, secured, and managed by us. From R499/month.</p>
           </div>
           <div className="build-cta-row">
-            <Button asChild className="btn btn-primary"><Link to="/pricing">See Pulse pricing <ArrowRight /></Link></Button>
+            <Button asChild className="btn btn-primary"><Link to="/pulse">See Pulse pricing <ArrowRight /></Link></Button>
           </div>
         </div>
       </section>
