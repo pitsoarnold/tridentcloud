@@ -252,23 +252,29 @@ export function BuildServices() {
           </div>
 
           <div className="build-cta-row">
-            <Button asChild className="btn btn-primary"><Link to="/contact" search={{}}>Start a project <ArrowRight /></Link></Button>
-            <Button asChild className="btn btn-outline-dark"><Link to="/contact" search={{}}>Book a discovery call</Link></Button>
+            <Button asChild className="btn btn-primary">
+              <Link to="/contact" search={{ plan: undefined }}>Start this project <ArrowRight /></Link>
+            </Button>
+            <Button asChild className="btn btn-outline-dark">
+              <Link to="/contact" search={{ plan: undefined }}>Book a discovery call</Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      {openService && (
-        <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && setOpenService(null)}>
-          <div className="modal build-modal">
-            <div className="modal-header">
-              <div className="build-modal-head">
-                <div className="build-icon build-icon-lg"><openService.icon aria-hidden="true" /></div>
-                <div>
-                  <span className="eyebrow">{openService.tagline}</span>
-                  <h2>{openService.title}</h2>
+      {openService && (() => {
+        const ServiceIcon = openService.icon;
+        return (
+          <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && setOpenService(null)}>
+            <div className="modal build-modal">
+              <div className="modal-header">
+                <div className="build-modal-head">
+                  <div className="build-icon build-icon-lg"><ServiceIcon aria-hidden="true" /></div>
+                  <div>
+                    <span className="eyebrow">{openService.tagline}</span>
+                    <h2>{openService.title}</h2>
+                  </div>
                 </div>
-              </div>
               <button className="modal-close" onClick={() => setOpenService(null)} aria-label="Close"><X /></button>
             </div>
 
@@ -356,14 +362,19 @@ export function BuildServices() {
   </div>
 </div>
 
-              <div className="build-modal-cta">
-                <Button asChild className="btn btn-primary"><Link to="/contact" search={{ plan: openService.title }}>Start this project <ArrowRight /></Link></Button>
-                <Button asChild className="btn btn-outline-dark"><a href="https://wa.me/26662068252" target="_blank" rel="noreferrer">WhatsApp us</a></Button>
+                <div className="build-modal-cta">
+                  <Button asChild className="btn btn-primary">
+                    <Link to="/contact" search={{ plan: openService?.title ?? undefined }}>
+                      Start this project <ArrowRight />
+                    </Link>
+                  </Button>
+                  <Button asChild className="btn btn-outline-dark"><a href="https://wa.me/26662068252" target="_blank" rel="noreferrer">WhatsApp us</a></Button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       <section className="section section-muted">
         <div className="site-container">
