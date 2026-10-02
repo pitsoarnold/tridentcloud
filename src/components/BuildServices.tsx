@@ -252,14 +252,10 @@ export function BuildServices() {
           </div>
 
           <div className="build-cta-row">
-            <Button asChild className="btn btn-primary">
-              <Link to="/contact" search={{ plan: undefined }}>Start this project <ArrowRight /></Link>
-            </Button>
-            <Button asChild className="btn btn-outline-dark">
-              <Link to="/contact" search={{ plan: undefined }}>Book a discovery call</Link>
-            </Button>
-          </div>
-        </div>
+  <Button asChild className="btn btn-primary"><Link to="/calculator">Use the calculator <ArrowRight /></Link></Button>
+  <Button asChild className="btn btn-outline-dark"><Link to="/contact" search={{ plan: undefined }}>Book a discovery call</Link></Button>
+</div>
+      </div>
       </section>
 
       {openService && (() => {

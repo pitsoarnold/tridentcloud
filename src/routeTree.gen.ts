@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BuildRouteImport } from './routes/build'
+import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -34,6 +35,11 @@ const AboutRoute = AboutRouteImport.update({
 const BuildRoute = BuildRouteImport.update({
   id: '/build',
   path: '/build',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
+  '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
   '/pricing': typeof PricingRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
+  '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
   '/pricing': typeof PricingRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
+  '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
   '/pricing': typeof PricingRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/build'
+    | '/calculator'
     | '/contact'
     | '/enterprise'
     | '/pricing'
@@ -136,6 +146,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/build'
+    | '/calculator'
     | '/contact'
     | '/enterprise'
     | '/pricing'
@@ -149,6 +160,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/build'
+    | '/calculator'
     | '/contact'
     | '/enterprise'
     | '/pricing'
@@ -163,6 +175,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BuildRoute: typeof BuildRoute
+  CalculatorRoute: typeof CalculatorRoute
   ContactRoute: typeof ContactRoute
   EnterpriseRoute: typeof EnterpriseRoute
   PricingRoute: typeof PricingRoute
@@ -194,6 +207,13 @@ declare module '@tanstack/react-router' {
       path: '/build'
       fullPath: '/build'
       preLoaderRoute: typeof BuildRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -259,6 +279,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BuildRoute: BuildRoute,
+  CalculatorRoute: CalculatorRoute,
   ContactRoute: ContactRoute,
   EnterpriseRoute: EnterpriseRoute,
   PricingRoute: PricingRoute,

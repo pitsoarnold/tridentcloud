@@ -81,6 +81,14 @@ function PulsePage() {
       <strong>Loyalty discount:</strong> Stay on Pulse for 36 months and the site transfers to you for free. No buy-out fee, no strings attached.
     </div>
 
+    <div style={{ textAlign: "center", margin: "16px 0 8px" }}>
+  <Button asChild className="btn btn-outline-dark">
+    <Link to="/calculator">
+      Compare subscription vs once-off pricing <ArrowRight />
+    </Link>
+  </Button>
+</div>
+
     <PulsePricing />
   </div>
 </section>
