@@ -4,7 +4,7 @@ import { ArrowRight, Menu, X, MessageCircle, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import lockup from "@/assets/trident-lockup-dark.png";
 
-const links = [{ label: "Build", to: "/build" as const }, { label: "Manage", to: "/services" as const }, { label: "Pricing", to: "/pricing" as const }, { label: "About", to: "/about" as const }, { label: "Contact", to: "/contact" as const }];
+const links = [{ label: "Build", to: "/build" as const }, { label: "Manage", to: "/services" as const }, { label: "Pricing", to: "/pricing" as const }, { label: "Enterprise", to: "/enterprise" as const }, { label: "About", to: "/about" as const }, { label: "Contact", to: "/contact" as const }];
 export const whatsappUrl = "https://wa.me/26662068252?text=Hi%20Trident%20Cloud%20Services%2C%20I%27d%20like%20to%20discuss%20my%20systems.";
 export function Header() {
  const [open, setOpen] = useState(false);
