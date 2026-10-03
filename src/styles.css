@@ -70,7 +70,85 @@
 .pricing-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; align-items:stretch; } .price-card { position:relative; border:1px solid var(--border); border-radius:7px; background:var(--card); overflow:hidden; display:flex; flex-direction:column; transition:transform .2s, box-shadow .2s; } .price-card:hover { transform:translateY(-4px); box-shadow:0 18px 35px oklch(0.2 0.05 255 / 10%); } .price-card.popular { border-color:var(--azure); } .price-band { height:91px; display:flex; align-items:center; gap:12px; padding:17px 17px; background:var(--secondary); } .price-card.infrastructure .price-band { background:oklch(0.56 0.18 245); color:var(--primary-foreground); } .price-card.operations .price-band { background:var(--navy); color:var(--primary-foreground); } .price-card.enterprise .price-band { background:var(--violet); color:var(--primary-foreground); } .price-band svg { width:32px; height:32px; flex:none; stroke-width:1.8; } .price-band h3 { font-size:14px; line-height:1.25; font-weight:700; } .price-band small { display:block; font-size:10px; font-weight:500; margin-top:4px; opacity:.85; } .popular-badge { position:absolute; top:0; right:0; background:var(--azure); color:var(--primary-foreground); padding:3px 8px; font-size:8px; font-weight:800; }
 .price-body { padding:19px 17px 17px; display:flex; flex-direction:column; flex:1; } .price-desc { font-size:11px; line-height:1.55; min-height:102px; color:var(--foreground); } .price-value { margin:10px 0 2px; font-size:31px; font-weight:800; line-height:1; } .price-value span { font-size:12px; font-weight:500; } .price-note { color:var(--muted-foreground); font-size:10px; min-height:15px; } .setup { margin:15px 0 16px; padding:8px; background:var(--muted); font-size:10px; font-weight:600; border-radius:3px; } .feature-label { font-size:9px; font-weight:800; text-transform:uppercase; margin-bottom:9px; } .feature-list { list-style:none; margin:0 0 22px; padding:0; display:grid; gap:10px; } .feature-list li { display:flex; align-items:flex-start; gap:8px; font-size:10px; line-height:1.4; } .feature-list svg { width:13px; height:13px; flex:none; color:var(--azure); stroke-width:3; margin-top:1px; } .enterprise .feature-list svg { color:var(--violet); } .price-body .btn { margin-top:auto; width:100%; } .pricing-footnote { color:var(--muted-foreground); font-size:11px; margin-top:18px; line-height:1.6; }
 .why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:35px; } .why-item { border-top:2px solid var(--navy); padding-top:23px; } .why-item svg { width:26px; height:26px; color:var(--azure); } .why-item h3 { font-size:18px; margin:21px 0 10px; } .why-item p { font-size:13px; line-height:1.7; color:var(--muted-foreground); }
-.faq-list { max-width:860px; margin:auto; border-top:1px solid var(--border); } .faq-item { border-bottom:1px solid var(--border); } .faq-item summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 4px; font-size:14px; font-weight:700; } .faq-item summary::-webkit-details-marker { display:none; } .faq-item summary svg { width:16px; flex:none; transition:transform .2s; } .faq-item[open] summary svg { transform:rotate(45deg); } .faq-item p { font-size:13px; line-height:1.75; color:var(--muted-foreground); padding:0 35px 22px 4px; }
+/* ─── FAQ ACCORDION ────────────────────────────────────── */
+.faq-list {
+  max-width: 860px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s ease;
+  border-radius: 0;
+}
+.faq-item:hover {
+  background: var(--secondary);
+}
+.faq-item.open {
+  background: transparent;
+}
+.faq-summary {
+  width: 100%;
+  padding: 22px 8px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  font-family: inherit;
+  text-align: left;
+  transition: padding 0.2s ease;
+}
+.faq-item:hover .faq-summary {
+  padding-left: 16px;
+}
+.faq-question {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--foreground);
+  line-height: 1.5;
+}
+.faq-icon {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--secondary);
+  color: var(--muted-foreground);
+  transition: transform 0.3s ease, background-color 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+.faq-icon svg {
+  width: 14px;
+  height: 14px;
+}
+.faq-item:hover .faq-icon {
+  background: var(--azure);
+  color: white;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+  background: var(--azure);
+  color: white;
+}
+.faq-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.faq-item.open .faq-body {
+  max-height: 700px;
+}
+.faq-body p {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--muted-foreground);
+  padding: 0 40px 24px 8px;
+  margin: 0;
+}
 .final-cta { padding-block:75px; background:var(--navy); color:var(--primary-foreground); text-align:center; } .final-cta h2 { font-size:clamp(30px,3vw,44px); font-weight:700; } .final-cta p { max-width:600px; margin:15px auto 25px; font-size:14px; line-height:1.7; color:oklch(1 0 0 / 75%); } .final-cta-actions { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
 .footer { background:var(--hero); color:var(--primary-foreground); padding-top:60px; } .footer-grid { display:grid; grid-template-columns:2fr repeat(3,1fr); gap:40px; padding-bottom:60px; } .footer .brand-logo { width:195px; } .footer p { font-size:12px; line-height:1.7; color:oklch(1 0 0 / 65%); margin-top:17px; max-width:240px; } .footer h4 { font-size:11px; text-transform:uppercase; margin-bottom:19px; } .footer ul { list-style:none; padding:0; display:grid; gap:12px; } .footer a, .footer li { font-size:11px; color:oklch(1 0 0 / 68%); } .footer a:hover { color:var(--primary-foreground); } .footer-bottom { border-top:1px solid oklch(1 0 0 / 15%); padding-block:19px; display:flex; justify-content:space-between; gap:20px; font-size:10px; color:oklch(1 0 0 / 55%); } .footer-bottom div { display:flex; gap:20px; }
 .whatsapp { position:fixed; right:23px; bottom:23px; z-index:50; height:54px; width:54px; border-radius:50%; background:oklch(0.7 0.19 150); color:oklch(1 0 0); display:grid; place-items:center; box-shadow:0 8px 22px oklch(0.2 0.05 255 / 22%); transition:transform .2s; } .whatsapp:hover { transform:scale(1.05); } .whatsapp svg { width:26px; height:26px; }
@@ -1041,4 +1119,220 @@
   .home-calc-text { text-align: center; }
   .home-calc-text p { margin-left: auto; margin-right: auto; }
   .home-calc-mock { transform: none; }
+}
+
+
+/* ─── SERVICE PICKER (custom dropdown) ─────────────────── */
+.service-picker-trigger {
+  width: 100%;
+  min-height: 45px;
+  padding: 11px 16px;
+  background: var(--card);
+  border: 1px solid var(--input);
+  border-radius: 8px;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.service-picker-trigger:hover {
+  border-color: var(--azure);
+}
+.service-picker-trigger:focus-visible {
+  outline: none;
+  border-color: var(--azure);
+  box-shadow: 0 0 0 3px var(--accent);
+}
+.service-picker-trigger.has-value {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.service-picker-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.service-picker-chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  color: var(--muted-foreground);
+}
+.service-picker-trigger[aria-expanded="true"] .service-picker-chevron {
+  transform: rotate(180deg);
+}
+
+.service-picker-content {
+  width: var(--radix-popover-trigger-width);
+  max-width: 500px;
+  padding: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px oklch(0.2 0.05 255 / 15%);
+  z-index: 100;
+}
+
+.service-picker-content [cmdk-input-wrapper] {
+  border-bottom: 1px solid var(--border);
+  padding: 4px 0;
+}
+
+.service-picker-content [cmdk-input] {
+  font-size: 13px;
+}
+
+.service-picker-content [cmdk-list] {
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.service-picker-content [cmdk-group-heading] {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--muted-foreground);
+  padding: 10px 10px 6px;
+  opacity: 0.85;
+}
+
+.service-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--foreground);
+}
+.service-picker-item[data-selected="true"] {
+  background: var(--accent);
+}
+.service-picker-item-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--azure);
+  flex-shrink: 0;
+}
+.service-picker-item-label {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.service-picker-item-primary {
+  font-weight: 600;
+  color: var(--foreground);
+}
+.service-picker-item-secondary {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.service-picker-item-check {
+  width: 15px;
+  height: 15px;
+  color: var(--azure);
+  flex-shrink: 0;
+}
+
+
+/* ─── TYPOGRAPHY REFINEMENT PASS ──────────────────────── */
+
+/* Large headlines: tighter tracking for editorial density */
+h1, .hero h1, .page-intro h1 {
+  letter-spacing: -0.025em;
+}
+.section-heading h2, h2 {
+  letter-spacing: -0.02em;
+}
+
+/* Tighter line-height on multi-line headlines — visually cleaner */
+h1, .hero h1, .page-intro h1 {
+  line-height: 1.04;
+}
+.section-heading h2, h2 {
+  line-height: 1.12;
+}
+
+/* Better eyebrow / caption distinction */
+.eyebrow {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--azure);
+}
+
+/* Body: slightly more breathing room + mobile bump */
+p, li, .contact-form .field, .faq-body p {
+  line-height: 1.72;
+}
+@media (max-width: 640px) {
+  p, li {
+    font-size: 15px;
+  }
+}
+
+/* Tabular numbers — critical for prices, stats, calculator */
+.tier-price,
+.calc-option-price,
+.calc-option-row,
+.calc-addon-price,
+.calc-summary-total,
+.calc-option-rows li,
+.stat-value,
+.sla-cell,
+.price-value,
+.pulse-amount,
+.pulse-price,
+.service-picker-item-secondary {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Improve default link hover consistency */
+a {
+  transition: color 0.15s ease;
+}
+
+/* Inputs: cleaner type — larger min-height + touch target */
+.field input,
+.field select,
+.field textarea {
+  font-size: 14px;
+}
+
+/* Buttons: better weight + tighter tracking */
+.btn {
+  letter-spacing: -0.005em;
+  font-weight: 700;
+}
+
+/* Selection highlight — brand colored */
+::selection {
+  background: var(--accent);
+  color: var(--foreground);
+}
+
+/* Focus rings for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--azure);
+  outline-offset: 2px;
+  border-radius: 4px;
 }

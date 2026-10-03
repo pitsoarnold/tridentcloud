@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Cloud, Server, ShieldCheck, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { FAQAccordion } from "@/components/FAQAccordion";
 
 const plans = [
   { name: "Managed Hosting", subtitle: "One system. Fully supported.", icon: Cloud, key: "hosting", description: "For websites, small business applications and simple digital systems that need reliable, hands-off operation.", monthly: "R850", annual: "R8,500", setup: "R1,500 one-time", features: ["1 system operated by Trident", "Daily backups (14-day retention)", "SSL certificate (auto-renewed)", "Uptime monitoring (5-minute checks)", "Security patching (OS + application)", "Business-hours support (email & WhatsApp)", "Monthly health report"] },
@@ -39,4 +40,17 @@ export const pricingFaq = [
   ["How do I get started?", "Send us a short description of your systems. We'll arrange a conversation and recommend a suitable plan and scope."],
 ];
 
-export function FAQ() { return <section className="section section-muted"><div className="site-container"><div className="section-heading center"><span className="eyebrow">COMMON QUESTIONS</span><h2>Clear answers, from the start.</h2></div><div className="faq-list">{pricingFaq.map(([question, answer]) => <details className="faq-item" key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div></section>; }
+export function FAQ() {
+  const faqs = pricingFaq.map(([q, a]) => ({ q, a }));
+  return (
+    <section className="section section-muted">
+      <div className="site-container">
+        <div className="section-heading center">
+          <span className="eyebrow">COMMON QUESTIONS</span>
+          <h2>Clear answers, from the start.</h2>
+        </div>
+        <FAQAccordion faqs={faqs} />
+      </div>
+    </section>
+  );
+}

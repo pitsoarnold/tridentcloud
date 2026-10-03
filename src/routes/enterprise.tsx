@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Shield, Clock, Users, Server, Globe2, FileCheck, Headphones, TrendingUp, Check } from "lucide-react";
 import { PageIntro, FinalCTA, whatsappUrl } from "@/components/SiteChrome";
 import { Button } from "@/components/ui/button";
+import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 
 export const Route = createFileRoute("/enterprise")({
   head: () => ({
@@ -45,15 +46,15 @@ const onboardingSteps = [
   { number: "05", title: "Steady state", body: "Ongoing monitoring, reporting, quarterly reviews, and continuous improvement. Your infrastructure, our responsibility." },
 ];
 
-const faqs = [
-  ["What size organisations do you work with?", "Our Enterprise tier is built for organisations with 50+ staff, multi-location operations, or mission-critical systems. If you have one or more systems that cannot afford downtime, this is for you."],
-  ["Can you sign a formal SLA?", "Yes. Our Enterprise agreements include formal SLAs with uptime commitments, response time guarantees, and financial remedies if we miss them. Your legal team can review and negotiate."],
-  ["How do you handle POPIA compliance?", "We handle data on your behalf under POPIA standards — encryption, access controls, audit logging, and documented data handling procedures. We can sign a POPIA-compliant data processing agreement."],
-  ["Do you support multi-region deployments?", "Yes. We can architect for multiple regions (Cape Town, Johannesburg, Europe) with failover, load balancing, and latency optimisation."],
-  ["What happens if something goes wrong at 2 AM?", "Enterprise clients have access to our 24/7 escalation line. Critical incidents trigger our on-call rotation and we respond within the SLA commitment — typically within one hour."],
-  ["Can you migrate us off our current provider?", "Yes. We handle the migration from assessment through cutover, with rollback procedures. Most migrations complete without downtime."],
-  ["How is pricing structured?", "Enterprise pricing is scoped per engagement based on your infrastructure, SLA requirements, and support level. We provide a fixed monthly or annual fee with no hidden costs."],
-  ["What's your onboarding timeline?", "Typically 4-6 weeks from first conversation to full onboarding. We can move faster for urgent requirements."],
+const faqs: FAQItem[] = [
+  { q: "What size organisations do you work with?", a: "Our Enterprise tier is built for organisations with 50+ staff, multi-location operations, or mission-critical systems. If you have one or more systems that cannot afford downtime, this is for you." },
+  { q: "Can you sign a formal SLA?", a: "Yes. Our Enterprise agreements include formal SLAs with uptime commitments, response time guarantees, and financial remedies if we miss them. Your legal team can review and negotiate." },
+  { q: "How do you handle POPIA compliance?", a: "We handle data on your behalf under POPIA standards — encryption, access controls, audit logging, and documented data handling procedures. We can sign a POPIA-compliant data processing agreement." },
+  { q: "Do you support multi-region deployments?", a: "Yes. We can architect for multiple regions (Cape Town, Johannesburg, Europe) with failover, load balancing, and latency optimisation." },
+  { q: "What happens if something goes wrong at 2 AM?", a: "Enterprise clients have access to our 24/7 escalation line. Critical incidents trigger our on-call rotation and we respond within the SLA commitment — typically within one hour." },
+  { q: "Can you migrate us off our current provider?", a: "Yes. We handle the migration from assessment through cutover, with rollback procedures. Most migrations complete without downtime." },
+  { q: "How is pricing structured?", a: "Enterprise pricing is scoped per engagement based on your infrastructure, SLA requirements, and support level. We provide a fixed monthly or annual fee with no hidden costs." },
+  { q: "What's your onboarding timeline?", a: "Typically 4-6 weeks from first conversation to full onboarding. We can move faster for urgent requirements." },
 ];
 
 function EnterprisePage() {
@@ -218,14 +219,7 @@ function EnterprisePage() {
             <h2>Answers for enterprise teams.</h2>
           </div>
 
-          <div className="faq-list">
-            {faqs.map(([q, a]) => (
-              <details className="faq-item" key={q}>
-                <summary>{q}<span aria-hidden="true">+</span></summary>
-                <p>{a}</p>
-              </details>
-            ))}
-          </div>
+          <FAQAccordion faqs={faqs} />
         </div>
       </section>
 

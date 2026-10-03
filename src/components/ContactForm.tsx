@@ -3,89 +3,31 @@ import { useSearch } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowRight, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ServicePicker, serviceGroups } from "@/components/ServicePicker";
 import { submitEnquiry } from "@/lib/contact.functions";
-
-/**
- * Grouped options for the "What can we help with?" dropdown.
- * The first item in each group is the "general enquiry" default so that
- * links from /build and /pulse land cleanly on the right section.
- */
-const planGroups: Record<string, string[]> = {
-  "Trident Pulse (Subscription)": [
-    "Trident Pulse — Not sure of tier yet",
-    "Pulse Starter — R499/mo",
-    "Pulse Business — R899/mo",
-    "Pulse Premium — R1,499/mo",
-  ],
-  "Website Development": [
-    "Website Development — Not sure of tier yet",
-    "Website — Starter (R8,500)",
-    "Website — Business (R18,000)",
-    "Website — Premium (R38,000+)",
-  ],
-  "Web Applications": [
-    "Web Applications — Not sure of tier yet",
-    "Web App — MVP (R35,000)",
-    "Web App — Business (R85,000)",
-    "Web App — Platform (R180,000+)",
-  ],
-  "Desktop Applications": [
-    "Desktop Applications — Not sure of tier yet",
-    "Desktop — Basic (R65,000)",
-    "Desktop — Business (R140,000)",
-    "Desktop — Enterprise (R300,000+)",
-  ],
-  "Enterprise Systems": [
-    "Enterprise Systems — Not sure of tier yet",
-    "Enterprise — Integration (R120,000)",
-    "Enterprise — System Build (R280,000)",
-    "Enterprise — Platform (R600,000+)",
-  ],
-  "ERP Solutions": [
-    "ERP Solutions — Not sure of tier yet",
-    "ERP — Small Business (R150,000)",
-    "ERP — Mid-Market (R450,000)",
-    "ERP — Platform (R1.5M+)",
-  ],
-  "Cloud Hosting & Management": [
-    "Cloud Hosting — Not sure of plan yet",
-    "Managed Hosting",
-    "Managed Infrastructure",
-    "Managed Operations",
-    "Enterprise / Custom Hosting",
-  ],
-  "Something else": [
-    "Something else — I'll describe it below",
-  ],
-};
 
 export function ContactForm() {
   const search = useSearch({ strict: false }) as { plan?: string };
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const send = useServerFn(submitEnquiry);
-
-  // Normalise the incoming plan value:
-  // - If it's already a full option string, use it
-  // - Otherwise, try to match the group and use its default
-  const rawPlan = (search.plan || "").trim();
-  let prefillPlan = "";
-
-  if (rawPlan) {
-    // Check if rawPlan matches an option exactly
-    const allOptions = Object.values(planGroups).flat();
-    if (allOptions.includes(rawPlan)) {
-      prefillPlan = rawPlan;
-    } else {
-      // Try to find the group that matches this title and use its first option
-      for (const [group, options] of Object.entries(planGroups)) {
-        if (group.toLowerCase().includes(rawPlan.toLowerCase()) ||
-            rawPlan.toLowerCase().includes(group.toLowerCase().split(" ")[0])) {
-          prefillPlan = options[0];
-          break;
-        }
+  const [plan, setPlan] = useState<string>(() => {
+    // Normalise incoming query param to a valid option
+    const raw = (search.plan || "").trim();
+    if (!raw) return "";
+    const allOptions = serviceGroups.flatMap((g) => g.items);
+    if (allOptions.includes(raw)) return raw;
+    // Try to match by group prefix
+    for (const group of serviceGroups) {
+      if (
+        group.label.toLowerCase().includes(raw.toLowerCase()) ||
+        raw.toLowerCase().includes(group.label.toLowerCase().split(" ")[0])
+      ) {
+        return group.items[0];
       }
     }
-  }
+    return "";
+  });
+
+  const send = useServerFn(submitEnquiry);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -100,12 +42,13 @@ export function ContactForm() {
           company: String(data.get("company") || ""),
           systemCount: String(data.get("systemCount") || ""),
           message: String(data.get("message") || ""),
-          plan: String(data.get("plan") || ""),
+          plan,
           website: String(data.get("website") || ""),
         },
       });
       setStatus("sent");
       form.reset();
+      setPlan("");
     } catch {
       setStatus("error");
     }
@@ -113,12 +56,12 @@ export function ContactForm() {
 
   return (
     <form className="contact-form" onSubmit={onSubmit}>
-      {prefillPlan && (
+      {plan && (
         <div className="contact-prefill-banner">
           <Info aria-hidden="true" />
           <div>
-            <strong>You're enquiring about:</strong> {prefillPlan}
-            <span>Change the dropdown below if this isn't right.</span>
+            <strong>You're enquiring about:</strong> {plan}
+            <span>Change the picker below if this isn't right.</span>
           </div>
         </div>
       )}
@@ -153,17 +96,9 @@ export function ContactForm() {
       </div>
 
       <div className="field">
-        <label htmlFor="plan">What can we help you with?</label>
-        <select id="plan" name="plan" defaultValue={prefillPlan}>
-          <option value="">Not sure yet / Just exploring</option>
-          {Object.entries(planGroups).map(([group, options]) => (
-            <optgroup key={group} label={group}>
-              {options.map((opt) => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
+        <label>What can we help you with?</label>
+        <ServicePicker value={plan} onChange={setPlan} placeholder="Choose a service or plan..." />
+        <input type="hidden" name="plan" value={plan} />
       </div>
 
       <div className="field">

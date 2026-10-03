@@ -3,6 +3,7 @@ import { ArrowRight, Zap, Shield, Clock, Sparkles } from "lucide-react";
 import { PageIntro, FinalCTA } from "@/components/SiteChrome";
 import { PulsePricing } from "@/components/PulsePricing";
 import { Button } from "@/components/ui/button";
+import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 
 export const Route = createFileRoute("/pulse")({
   head: () => ({
@@ -25,17 +26,18 @@ const benefits = [
   { icon: Sparkles, title: "Grows with your business", body: "Upgrade tiers, add pages, add features anytime. No re-platforming, no rebuilds." },
 ];
 
-const faqs = [
-  ["What exactly is Trident Pulse?", "Pulse is our monthly subscription for small businesses that want a professional online presence without the technical overhead. You get a website, hosting, domain, SSL, support, and monthly content updates — all handled by us, all on one monthly price."],
-  ["Why monthly instead of once-off?", "Two reasons: (1) It keeps upfront costs low so you can launch today. (2) It keeps us invested in your success — we handle updates, security, and support every month, so your site stays current."],
-  ["Can I cancel at any time?", "You commit for the first 12 months (this covers the setup work). After that, you can cancel with 30 days' notice, or buy out the site entirely for a fixed fee."],
-  ["What happens if I want to leave?", "You can buy out the site at any time for R5,000 (Starter) / R8,000 (Business) / R12,000 (Premium). This covers migrating you off our infrastructure with full ownership of the code and content."],
-  ["What if I need something bigger later?", "Pulse is designed to grow with you. You can upgrade tiers anytime. When you outgrow Pulse, you can transition to our Build services — everything transfers cleanly."],
-  ["Do you offer the domain?", "Yes. We register and manage a .co.za domain for you in the first year, free. After that, it's included in your subscription."],
-  ["Can I use my existing domain?", "Absolutely. Point your existing domain to us and we'll handle the rest — no extra cost."],
-    ["Is there a setup fee?", "No setup fee. Everything is covered by your monthly or annual subscription."],
-  ["Is there a loyalty discount?", "Yes. If you stay on Pulse for 36 months, the full site — code, content, and domain — transfers to you at no cost. No buy-out fee. You own it outright."],
-  ["What if I cancel before 12 months?", "You're committing to a 12-month minimum. If you need to cancel earlier, you can buy out the site at any time using our standard buy-out fees, and we'll migrate you off Trident infrastructure with full ownership."],
+
+const faqs: FAQItem[] = [
+  { q:"What exactly is Trident Pulse?", a:"Pulse is our monthly subscription for small businesses that want a professional online presence without the technical overhead. You get a website, hosting, domain, SSL, support, and monthly content updates — all handled by us, all on one monthly price." },
+  { q:"Why monthly instead of once-off?", a:"Two reasons: (1) It keeps upfront costs low so you can launch today. (2) It keeps us invested in your success — we handle updates, security, and support every month, so your site stays current." },
+  { q:"Can I cancel at any time?", a:"You commit for the first 12 months (this covers the setup work). After that, you can cancel with 30 days' notice, or buy out the site entirely for a fixed fee." },
+  { q:"What happens if I want to leave?", a:"You can buy out the site at any time for R5,000 (Starter) / R8,000 (Business) / R12,000 (Premium). This covers migrating you off our infrastructure with full ownership of the code and content." },
+  { q:"What if I need something bigger later?", a:"Pulse is designed to grow with you. You can upgrade tiers anytime. When you outgrow Pulse, you can transition to our Build services — everything transfers cleanly." },
+  { q:"Do you offer the domain?", a:"Yes. We register and manage a .co.za domain for you in the first year, free. After that, it's included in your subscription." },
+  { q:"Can I use my existing domain?", a:"Absolutely. Point your existing domain to us and we'll handle the rest — no extra cost." },
+  { q:"Is there a setup fee?", a:"No setup fee. Everything is covered by your monthly or annual subscription." },
+  { q:"Is there a loyalty discount?", a:"Yes. If you stay on Pulse for 36 months, the full site — code, content, and domain — transfers to you at no cost. No buy-out fee. You own it outright." },
+  { q:"What if I cancel before 12 months?", a:"You're committing to a 12-month minimum. If you need to cancel earlier, you can buy out the site at any time using our standard buy-out fees, and we'll migrate you off Trident infrastructure with full ownership." },
 ];
 
 function PulsePage() {
@@ -146,14 +148,7 @@ function PulsePage() {
             <h2>Common questions</h2>
           </div>
 
-          <div className="faq-list">
-            {faqs.map(([q, a]) => (
-              <details className="faq-item" key={q}>
-                <summary>{q}<span aria-hidden="true">+</span></summary>
-                <p>{a}</p>
-              </details>
-            ))}
-          </div>
+          <FAQAccordion faqs={faqs} />
         </div>
       </section>
 
