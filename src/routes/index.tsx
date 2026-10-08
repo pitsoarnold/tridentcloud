@@ -475,12 +475,6 @@ function Home() {
       </div>
 
       <section className="section section-white problem-section">
-        <img
-          className="problem-background-image"
-          src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=60"
-          alt=""
-          aria-hidden="true"
-        />
         <div className="site-container problem-content">
           <Reveal>
             <div className="problem-copy section-heading center">
