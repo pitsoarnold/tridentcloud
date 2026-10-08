@@ -1336,3 +1336,233 @@ textarea:focus-visible {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Homepage motion and image treatments */
+.hero-title-line {
+  display: block;
+}
+
+.hero-ctas > div {
+  display: flex;
+}
+
+.trust-strip {
+  position: relative;
+  overflow: hidden;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 23px, oklch(0.24 0.077 250 / 3%) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, oklch(0.24 0.077 250 / 3%) 23px 24px);
+}
+
+.trust-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.problem-section,
+.services-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.problem-background-image,
+.services-background-image {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.problem-background-image {
+  opacity: 0.09;
+}
+
+.problem-section::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: oklch(0.24 0.077 250 / 4%);
+  content: "";
+  pointer-events: none;
+}
+
+.services-background-image {
+  opacity: 0.045;
+}
+
+.problem-content,
+.services-content {
+  position: relative;
+  z-index: 1;
+}
+
+.problem-point {
+  padding: 14px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.problem-point:hover {
+  transform: translateY(-2px);
+  border-color: var(--azure);
+  background: oklch(1 0 0 / 72%);
+}
+
+.pillar {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.pillar:hover {
+  border-color: oklch(0.62 0.18 243 / 55%);
+  box-shadow: 0 14px 34px oklch(0.62 0.18 243 / 14%);
+}
+
+.pillar-top svg {
+  transition: transform 0.2s ease;
+}
+
+.pillar:hover .pillar-top svg {
+  transform: rotate(5deg);
+}
+
+.pillar-number {
+  display: inline-block;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pillar:hover .pillar-number {
+  color: var(--azure);
+  transform: scale(1.08);
+}
+
+.why-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.why-section::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, oklch(0.62 0.18 243 / 9%), transparent 65%);
+  content: "";
+  pointer-events: none;
+}
+
+.why-item svg {
+  box-sizing: content-box;
+  padding: 9px;
+  border-radius: 50%;
+  background: oklch(0.62 0.18 243 / 8%);
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.why-item:hover svg {
+  transform: scale(1.04);
+  background: oklch(0.62 0.18 243 / 13%);
+  box-shadow: 0 0 0 5px oklch(0.62 0.18 243 / 5%);
+}
+
+.pricing-reveal.is-visible .price-card {
+  animation: homepage-price-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.pricing-reveal.is-visible .price-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.pricing-reveal.is-visible .price-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.pricing-reveal.is-visible .price-card:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.price-card.popular::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 28px oklch(0.62 0.18 243 / 26%);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  animation: homepage-feature-glow 3.2s ease-in-out infinite;
+}
+
+.pricing-reveal .price-card:hover {
+  box-shadow: 0 18px 35px oklch(0.2 0.05 255 / 14%);
+}
+
+.final-cta .final-cta-actions .btn-primary {
+  animation: homepage-cta-pulse 3.6s ease-in-out infinite;
+}
+
+@keyframes homepage-price-enter {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes homepage-feature-glow {
+  0%,
+  100% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes homepage-cta-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .problem-point,
+  .pillar,
+  .pillar-top svg,
+  .pillar-number,
+  .why-item svg {
+    transition-duration: 0.01ms;
+  }
+
+  .price-card.popular::after,
+  .final-cta .final-cta-actions .btn-primary {
+    animation: none;
+  }
+
+  .pricing-reveal.is-visible .price-card {
+    opacity: 1;
+    translate: 0 0;
+    animation: none;
+  }
+}
