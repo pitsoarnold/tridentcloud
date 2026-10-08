@@ -1566,3 +1566,126 @@ textarea:focus-visible {
     animation: none;
   }
 }
+
+/* Services route imagery and interaction treatments */
+.services-page-intro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.services-intro-image {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.services-page-intro::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(90deg, var(--navy) 0%, oklch(0.24 0.077 250 / 88%) 62%, oklch(0.24 0.077 250 / 75%));
+  content: "";
+  pointer-events: none;
+}
+
+.services-intro-content {
+  position: relative;
+  z-index: 1;
+}
+
+.services-page .services-section::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image: url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=60");
+  background-position: center;
+  background-repeat: repeat;
+  background-size: 960px auto;
+  content: "";
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.services-page .pillar {
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.services-page .pillar::before {
+  position: absolute;
+  top: 0;
+  left: 25px;
+  width: 42px;
+  height: 2px;
+  background: var(--azure);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.services-page .pillar:hover {
+  border-color: oklch(0.62 0.18 243 / 55%);
+  box-shadow: 0 14px 34px oklch(0.62 0.18 243 / 14%);
+}
+
+.services-page .pillar:hover::before {
+  transform: scaleX(1);
+}
+
+.services-page .pillar-top svg {
+  transition: transform 0.2s ease;
+}
+
+.services-page .pillar:hover .pillar-top svg {
+  transform: rotate(5deg);
+}
+
+.services-page .pillar-number {
+  display: inline-block;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.services-page .pillar:hover .pillar-number {
+  color: var(--azure);
+  transform: scale(1.08);
+}
+
+.services-page .services-final-cta .final-cta-actions .btn-primary {
+  animation: services-cta-pulse 3s ease-in-out infinite;
+}
+
+@keyframes services-cta-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-page .pillar,
+  .services-page .pillar::before,
+  .services-page .pillar-top svg,
+  .services-page .pillar-number {
+    transition-duration: 0.01ms;
+  }
+
+  .services-page .services-final-cta .final-cta-actions .btn-primary {
+    animation: none;
+  }
+}
