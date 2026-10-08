@@ -4,29 +4,245 @@ import { ArrowRight, Menu, X, MessageCircle, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import lockup from "@/assets/trident-lockup-dark.png";
 
-const links = [{ label: "Build", to: "/build" as const }, { label: "Manage", to: "/services" as const }, { label: "Pricing", to: "/pricing" as const }, { label: "Enterprise", to: "/enterprise" as const }, { label: "About", to: "/about" as const }, { label: "Contact", to: "/contact" as const }];
-export const whatsappUrl = "https://wa.me/26662068252?text=Hi%20Trident%20Cloud%20Services%2C%20I%27d%20like%20to%20discuss%20my%20systems.";
+const links = [
+  { label: "Build", to: "/build" as const },
+  { label: "Manage", to: "/services" as const },
+  { label: "Pricing", to: "/pricing" as const },
+  { label: "Pulse", to: "/pulse" as const },
+  { label: "Calculator", to: "/calculator" as const },
+  { label: "Enterprise", to: "/enterprise" as const },
+  { label: "About", to: "/about" as const },
+  { label: "Contact", to: "/contact" as const },
+];
+export const whatsappUrl =
+  "https://wa.me/26662068252?text=Hi%20Trident%20Cloud%20Services%2C%20I%27d%20like%20to%20discuss%20my%20systems.";
 export function Header() {
- const [open, setOpen] = useState(false);
- const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
 
- useEffect(() => {
-  if (!open) return;
+  useEffect(() => {
+    if (!open) return;
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-   if (event.key === "Escape") {
-	setOpen(false);
-	menuToggleRef.current?.focus();
-   }
-  };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuToggleRef.current?.focus();
+      }
+    };
 
-  document.addEventListener("keydown", handleKeyDown);
-  return () => document.removeEventListener("keydown", handleKeyDown);
- }, [open]);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
 
- return <header className="site-header"><div className="site-container site-header-inner"><Link to="/" className="brand" aria-label="Trident Cloud Services home" onClick={() => setOpen(false)}><img className="brand-logo" src={lockup} alt="Trident Cloud"/><span className="brand-rule"/><span className="brand-parent">A Trident Development Group Company</span></Link><nav className="nav-links" aria-label="Main navigation">{links.map((link) => <Link key={link.to} to={link.to}>{link.label}</Link>)}</nav><div className="header-actions"><span className="region"><Globe2 size={14}/> SA (ZAR)</span><Button asChild className="btn btn-primary"><Link to="/contact" search={{ plan: undefined }}>Get in touch <ArrowRight/></Link></Button></div><Button ref={menuToggleRef} className="mobile-menu-trigger" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-menu" variant="ghost" size="icon">{open ? <X/> : <Menu/>}</Button></div><nav id="mobile-menu" className={`mobile-menu ${open ? "open" : ""}`} aria-label="Mobile navigation">{links.map((link) => <Link key={link.to} to={link.to} onClick={() => setOpen(false)}>{link.label}</Link>)}<Button asChild className="btn btn-primary"><Link to="/contact" search={{ plan: undefined }} onClick={() => setOpen(false)}>Get in touch <ArrowRight/></Link></Button></nav></header>
+  return (
+    <header className="site-header">
+      <div className="site-container site-header-inner">
+        <Link
+          to="/"
+          className="brand"
+          aria-label="Trident Cloud Services home"
+          onClick={() => setOpen(false)}
+        >
+          <img className="brand-logo" src={lockup} alt="Trident Cloud" />
+          <span className="brand-rule" />
+          <span className="brand-parent">A Trident Development Group Company</span>
+        </Link>
+        <nav className="nav-links" aria-label="Main navigation">
+          {links.map((link) => (
+            <Link key={link.to} to={link.to}>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="header-actions">
+          <span className="region">
+            <Globe2 size={14} /> SA (ZAR)
+          </span>
+          <Button asChild className="btn btn-primary">
+            <Link to="/contact" search={{ plan: undefined }}>
+              Get in touch <ArrowRight />
+            </Link>
+          </Button>
+        </div>
+        <Button
+          ref={menuToggleRef}
+          className="mobile-menu-trigger"
+          onClick={() => setOpen(!open)}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          variant="ghost"
+          size="icon"
+        >
+          {open ? <X /> : <Menu />}
+        </Button>
+      </div>
+      <nav
+        id="mobile-menu"
+        className={`mobile-menu ${open ? "open" : ""}`}
+        aria-label="Mobile navigation"
+      >
+        {links.map((link) => (
+          <Link key={link.to} to={link.to} onClick={() => setOpen(false)}>
+            {link.label}
+          </Link>
+        ))}
+        <Button asChild className="btn btn-primary">
+          <Link to="/contact" search={{ plan: undefined }} onClick={() => setOpen(false)}>
+            Get in touch <ArrowRight />
+          </Link>
+        </Button>
+      </nav>
+    </header>
+  );
 }
-export function Footer() { return <footer className="footer"><div className="site-container"><div className="footer-grid"><div><Link to="/" aria-label="Trident Cloud home"><img className="brand-logo" src={lockup} alt="Trident Cloud"/></Link><p>Your systems. Our responsibility.<br/>A Trident Development Group Company.</p></div><div><h4>Services</h4><ul><li><Link to="/build">What We Build</Link></li><li><Link to="/pulse">Trident Pulse</Link></li><li><Link to="/services">Managed Hosting</Link></li><li><Link to="/pricing">All Plans</Link></li><li><Link to="/enterprise">Enterprise</Link></li></ul></div><div><h4>Company</h4><ul><li><Link to="/about">About us</Link></li><li><Link to="/why-trident">Why Trident</Link></li><li><Link to="/contact" search={{ plan: undefined }}>Contact</Link></li><li><Link to="/privacy">Privacy</Link></li><li><Link to="/terms">Terms</Link></li></ul></div><div><h4>Let's talk</h4><ul><li><Link to="/contact" search={{ plan: undefined }}>Send an enquiry</Link></li><li><a href={whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp our team</a></li><li>South Africa</li><li><a href="https://tridentcloud.co.za" target="_blank" rel="noopener noreferrer">tridentcloud.co.za</a></li></ul></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} Trident Cloud Services. All rights reserved.</span><div><Link to="/privacy">Privacy & POPIA</Link><Link to="/terms">Terms of service</Link></div></div></div></footer> }
-export function WhatsApp() { return <a className="whatsapp" href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat with Trident on WhatsApp" title="Chat on WhatsApp"><MessageCircle fill="currentColor" strokeWidth={1.5}/></a> }
-export function FinalCTA() { return <section className="final-cta"><div className="site-container"><h2>Ready to hand over the technical side?</h2><p>Tell us about your setup. We'll have an honest conversation about what you need and whether we're the right fit.</p><div className="final-cta-actions"><Button asChild className="btn btn-primary"><Link to="/contact" search={{ plan: undefined }}>Book a discovery conversation <ArrowRight/></Link></Button><Button asChild className="btn btn-outline-light"><a href={whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp us <MessageCircle/></a></Button></div></div></section> }
-export function PageIntro({ eyebrow, title, description }: { eyebrow:string; title:string; description:string }) { return <section className="page-intro"><div className="site-container"><span className="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{description}</p></div></section> }
+export function Footer() {
+  return (
+    <footer className="footer">
+      <div className="site-container">
+        <div className="footer-grid">
+          <div>
+            <Link to="/" aria-label="Trident Cloud home">
+              <img className="brand-logo" src={lockup} alt="Trident Cloud" />
+            </Link>
+            <p>
+              Your systems. Our responsibility.
+              <br />A Trident Development Group Company.
+            </p>
+          </div>
+          <div>
+            <h4>Services</h4>
+            <ul>
+              <li>
+                <Link to="/build">What We Build</Link>
+              </li>
+              <li>
+                <Link to="/pulse">Trident Pulse</Link>
+              </li>
+              <li>
+                <Link to="/calculator">Bundle Calculator</Link>
+              </li>
+              <li>
+                <Link to="/services">Managed Hosting</Link>
+              </li>
+              <li>
+                <Link to="/pricing">All Plans</Link>
+              </li>
+              <li>
+                <Link to="/enterprise">Enterprise</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul>
+              <li>
+                <Link to="/about">About us</Link>
+              </li>
+              <li>
+                <Link to="/why-trident">Why Trident</Link>
+              </li>
+              <li>
+                <Link to="/contact" search={{ plan: undefined }}>
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to="/privacy">Privacy</Link>
+              </li>
+              <li>
+                <Link to="/terms">Terms</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4>Let's talk</h4>
+            <ul>
+              <li>
+                <Link to="/contact" search={{ plan: undefined }}>
+                  Send an enquiry
+                </Link>
+              </li>
+              <li>
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                  WhatsApp our team
+                </a>
+              </li>
+              <li>South Africa</li>
+              <li>
+                <a href="https://tridentcloud.co.za" target="_blank" rel="noopener noreferrer">
+                  tridentcloud.co.za
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>© {new Date().getFullYear()} Trident Cloud Services. All rights reserved.</span>
+          <div>
+            <Link to="/privacy">Privacy & POPIA</Link>
+            <Link to="/terms">Terms of service</Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+export function WhatsApp() {
+  return (
+    <a
+      className="whatsapp"
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat with Trident on WhatsApp"
+      title="Chat on WhatsApp"
+    >
+      <MessageCircle fill="currentColor" strokeWidth={1.5} />
+    </a>
+  );
+}
+export function FinalCTA() {
+  return (
+    <section className="final-cta">
+      <div className="site-container">
+        <h2>Ready to hand over the technical side?</h2>
+        <p>
+          Tell us about your setup. We'll have an honest conversation about what you need and
+          whether we're the right fit.
+        </p>
+        <div className="final-cta-actions">
+          <Button asChild className="btn btn-primary">
+            <Link to="/contact" search={{ plan: undefined }}>
+              Book a discovery conversation <ArrowRight />
+            </Link>
+          </Button>
+          <Button asChild className="btn btn-outline-light">
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+              WhatsApp us <MessageCircle />
+            </a>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+export function PageIntro({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <section className="page-intro">
+      <div className="site-container">
+        <span className="eyebrow">{eyebrow}</span>
+        <h1>{title}</h1>
+        <p>{description}</p>
+      </div>
+    </section>
+  );
+}

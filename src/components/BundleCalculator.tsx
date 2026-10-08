@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import { Link } from "@tanstack/react-router";
 import { ArrowRight, Calculator, Check, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -83,10 +82,30 @@ type AddOn = {
 };
 
 const addOns: AddOn[] = [
-  { id: "extra-hosting", label: "Extra year of Managed Hosting", description: "Additional 12 months on top of the standard year", price: 10200 },
-  { id: "priority-support", label: "Priority support upgrade", description: "4-hour response during business hours + escalation line", price: 5000 },
-  { id: "team-training", label: "On-site team training", description: "Half-day training session for your team", price: 2500 },
-  { id: "extended-warranty", label: "Extended warranty (24 months)", description: "24-month post-launch support extension", price: 8000 },
+  {
+    id: "extra-hosting",
+    label: "Extra year of Managed Hosting",
+    description: "Additional 12 months on top of the standard year",
+    price: 10200,
+  },
+  {
+    id: "priority-support",
+    label: "Priority support upgrade",
+    description: "4-hour response during business hours + escalation line",
+    price: 5000,
+  },
+  {
+    id: "team-training",
+    label: "On-site team training",
+    description: "Half-day training session for your team",
+    price: 2500,
+  },
+  {
+    id: "extended-warranty",
+    label: "Extended warranty (24 months)",
+    description: "24-month post-launch support extension",
+    price: 8000,
+  },
 ];
 
 /* ─────────────────────────────────────────────────────────────
@@ -121,7 +140,7 @@ export function BundleCalculator() {
 
   const addOnTotal = useMemo(
     () => addOns.filter((a) => selectedAddOns.includes(a.id)).reduce((sum, a) => sum + a.price, 0),
-    [selectedAddOns]
+    [selectedAddOns],
   );
 
   const baseTotal = currentTier.price + addOnTotal;
@@ -139,15 +158,12 @@ export function BundleCalculator() {
   };
 
   const toggleAddOn = (id: string) => {
-    setSelectedAddOns((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    setSelectedAddOns((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
 
-  // Pre-fill string sent to the contact page
-  const enquiryPlan = `${currentService.shortName} — ${effectiveTierName}${
-    selectedAddOns.length > 0 ? ` + ${selectedAddOns.length} add-on${selectedAddOns.length > 1 ? "s" : ""}` : ""
-  }`;
+  const contactHref = (payment: "Standard" | "Milestone" | "Subscription") => {
+    return `/contact?service=${encodeURIComponent(currentService.name)}&tier=${encodeURIComponent(effectiveTierName)}&payment=${encodeURIComponent(payment)}&addons=${encodeURIComponent(selectedAddOns.join(","))}`;
+  };
 
   return (
     <div className="calc-shell">
@@ -171,7 +187,9 @@ export function BundleCalculator() {
               onChange={(e) => handleServiceChange(e.target.value)}
             >
               {services.map((s) => (
-                <option key={s.id} value={s.id}>{s.name}</option>
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
               ))}
             </select>
           </div>
@@ -197,7 +215,10 @@ export function BundleCalculator() {
             <label>Optional add-ons</label>
             <div className="calc-addons">
               {addOns.map((a) => (
-                <label key={a.id} className={`calc-addon ${selectedAddOns.includes(a.id) ? "active" : ""}`}>
+                <label
+                  key={a.id}
+                  className={`calc-addon ${selectedAddOns.includes(a.id) ? "active" : ""}`}
+                >
                   <input
                     type="checkbox"
                     checked={selectedAddOns.includes(a.id)}
@@ -218,7 +239,9 @@ export function BundleCalculator() {
           {/* Summary line */}
           <div className="calc-summary">
             <div className="calc-summary-row">
-              <span>{currentService.shortName} — {effectiveTierName}</span>
+              <span>
+                {currentService.shortName} — {effectiveTierName}
+              </span>
               <span>{formatR(currentTier.price)}</span>
             </div>
             {addOnTotal > 0 && (
@@ -249,36 +272,56 @@ export function BundleCalculator() {
               <div className="calc-option-price">{formatR(baseTotal)}</div>
               <div className="calc-option-sub">Paid as a project</div>
               <ul className="calc-option-rows">
-                <li><span>Due at kickoff</span><span>{formatR(baseTotal * 0.5)}</span></li>
-                <li><span>Due on delivery</span><span>{formatR(baseTotal * 0.5)}</span></li>
+                <li>
+                  <span>Due at kickoff</span>
+                  <span>{formatR(baseTotal * 0.5)}</span>
+                </li>
+                <li>
+                  <span>Due on delivery</span>
+                  <span>{formatR(baseTotal * 0.5)}</span>
+                </li>
               </ul>
               <div className="calc-option-total">
-                <span>Total</span><span>{formatR(baseTotal)}</span>
+                <span>Total</span>
+                <span>{formatR(baseTotal)}</span>
               </div>
               <Button asChild className="btn btn-outline-dark calc-option-cta">
-                <Link to="/contact" search={{ plan: enquiryPlan }}>
+                <a href={contactHref("Standard")}>
                   Choose this <ArrowRight />
-                </Link>
+                </a>
               </Button>
             </div>
 
             {/* Milestone */}
             <div className="calc-option">
               <div className="calc-option-name">Milestone</div>
-              <div className="calc-option-price">{formatR(baseTotal / 3)}<em>/mo equivalent</em></div>
+              <div className="calc-option-price">
+                {formatR(baseTotal / 3)}
+                <em>/mo equivalent</em>
+              </div>
               <div className="calc-option-sub">Paid as 3 equal parts</div>
               <ul className="calc-option-rows">
-                <li><span>Kickoff</span><span>{formatR(baseTotal / 3)}</span></li>
-                <li><span>Mid-project</span><span>{formatR(baseTotal / 3)}</span></li>
-                <li><span>On delivery</span><span>{formatR(baseTotal / 3)}</span></li>
+                <li>
+                  <span>Kickoff</span>
+                  <span>{formatR(baseTotal / 3)}</span>
+                </li>
+                <li>
+                  <span>Mid-project</span>
+                  <span>{formatR(baseTotal / 3)}</span>
+                </li>
+                <li>
+                  <span>On delivery</span>
+                  <span>{formatR(baseTotal / 3)}</span>
+                </li>
               </ul>
               <div className="calc-option-total">
-                <span>Total</span><span>{formatR(baseTotal)}</span>
+                <span>Total</span>
+                <span>{formatR(baseTotal)}</span>
               </div>
               <Button asChild className="btn btn-outline-dark calc-option-cta">
-                <Link to="/contact" search={{ plan: enquiryPlan }}>
+                <a href={contactHref("Milestone")}>
                   Choose this <ArrowRight />
-                </Link>
+                </a>
               </Button>
             </div>
 
@@ -286,20 +329,33 @@ export function BundleCalculator() {
             <div className="calc-option featured">
               <span className="calc-option-badge">LOWEST MONTHLY</span>
               <div className="calc-option-name">Subscription</div>
-              <div className="calc-option-price">{formatR(monthlyPayment)}<em>/month</em></div>
+              <div className="calc-option-price">
+                {formatR(monthlyPayment)}
+                <em>/month</em>
+              </div>
               <div className="calc-option-sub">× {SUBSCRIPTION_MONTHS} months</div>
               <ul className="calc-option-rows">
-                <li><span>Monthly payment</span><span>{formatR(monthlyPayment)}</span></li>
-                <li><span>Terms</span><span>{SUBSCRIPTION_MONTHS} months</span></li>
-                <li><span>Financing premium</span><span>~15%</span></li>
+                <li>
+                  <span>Monthly payment</span>
+                  <span>{formatR(monthlyPayment)}</span>
+                </li>
+                <li>
+                  <span>Terms</span>
+                  <span>{SUBSCRIPTION_MONTHS} months</span>
+                </li>
+                <li>
+                  <span>Financing premium</span>
+                  <span>~15%</span>
+                </li>
               </ul>
               <div className="calc-option-total">
-                <span>Total</span><span>{formatR(subscriptionTotal)}</span>
+                <span>Total</span>
+                <span>{formatR(subscriptionTotal)}</span>
               </div>
               <Button asChild className="btn btn-primary calc-option-cta">
-                <Link to="/contact" search={{ plan: enquiryPlan }}>
+                <a href={contactHref("Subscription")}>
                   Choose this <ArrowRight />
-                </Link>
+                </a>
               </Button>
             </div>
           </div>
@@ -308,15 +364,20 @@ export function BundleCalculator() {
           <div className="calc-included">
             <Check />
             <span>
-              <strong>Every option includes:</strong> 12 months of Managed Hosting · 90-day post-launch support ·
-              Full source code ownership · POPIA-compliant by default · Team training · Option to migrate off Trident anytime.
+              <strong>Every option includes:</strong> 12 months of Managed Hosting · 90-day
+              post-launch support · Full source code ownership · POPIA-compliant by default · Team
+              training · Option to migrate off Trident anytime.
             </span>
           </div>
 
           {/* WhatsApp alternative */}
           <div className="calc-alt">
             <span>Not sure which option fits?</span>
-            <a href="https://wa.me/26662068252?text=Hi%20Trident%20Cloud%2C%20I%27d%20like%20to%20discuss%20a%20project%20quote." target="_blank" rel="noreferrer">
+            <a
+              href="https://wa.me/26662068252?text=Hi%20Trident%20Cloud%2C%20I%27d%20like%20to%20discuss%20a%20project%20quote."
+              target="_blank"
+              rel="noreferrer"
+            >
               <MessageCircle /> WhatsApp us
             </a>
           </div>
