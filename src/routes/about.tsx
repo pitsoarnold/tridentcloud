@@ -33,6 +33,14 @@ const valueContainer: Variants = {
   },
 };
 
+const timelineContainer: Variants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12 },
+  },
+};
+
 const valueCard: Variants = {
   hidden: { opacity: 0, y: 20, scale: 0.98 },
   visible: {
@@ -42,6 +50,28 @@ const valueCard: Variants = {
     transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
   },
 };
+
+const stats = [
+  { value: "99.9%", label: "Uptime target" },
+  { value: "24/7", label: "Monitoring coverage" },
+  { value: "1 hour", label: "Critical response target" },
+  { value: "ZAR", label: "Local pricing, no USD surprises" },
+];
+
+const milestones = [
+  { date: "2025 Q4", title: "Trident Development Group founded" },
+  { date: "2026 Q1", title: "Trident Cloud Services launched" },
+  { date: "2026 Q2", title: "First managed hosting clients onboarded" },
+  { date: "2026 Q3", title: "Enterprise tier launched with formal SLAs" },
+];
+
+const teamMembers = [
+  {
+    name: "Pitso Arnold",
+    role: "Founder",
+    bio: "Senior infrastructure engineer who has run the systems behind small and mid-size businesses across Southern Africa.",
+  },
+];
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
@@ -53,6 +83,118 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
     >
       {children}
     </motion.div>
+  );
+}
+
+function AboutStats() {
+  return (
+    <section className="about-stats-section" aria-labelledby="about-stats-heading">
+      <Reveal>
+        <h2 id="about-stats-heading">By the numbers</h2>
+      </Reveal>
+      <motion.div
+        className="about-stat-grid"
+        variants={valueContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+      >
+        {stats.map(({ value, label }) => (
+          <motion.div className="about-stat" key={label} variants={valueCard}>
+            <div className="about-stat-value">{value}</div>
+            <div className="about-stat-label">{label}</div>
+          </motion.div>
+        ))}
+      </motion.div>
+      <p className="about-section-note">Numbers grow with us. Check back as we scale.</p>
+    </section>
+  );
+}
+
+function AboutTimeline() {
+  return (
+    <section className="about-timeline-section" aria-labelledby="about-timeline-heading">
+      <Reveal>
+        <h2 id="about-timeline-heading">Milestones</h2>
+      </Reveal>
+      <div className="about-timeline">
+        <motion.div
+          className="about-timeline-line"
+          aria-hidden="true"
+          initial={{ scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
+          viewport={revealViewport}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        />
+        <motion.div
+          className="about-timeline-list"
+          variants={timelineContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+        >
+          {milestones.map(({ date, title }) => (
+            <motion.div className="about-timeline-item" key={date} variants={revealItem}>
+              <motion.div
+                className="about-timeline-marker"
+                aria-hidden="true"
+                initial={{ scale: 0.7 }}
+                whileInView={{ scale: [0.7, 1.2, 1] }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, ease: "easeOut" }}
+              />
+              <div className="about-timeline-content">
+                <div className="about-timeline-date">{date}</div>
+                <div className="about-timeline-title">{title}</div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+      <p className="about-section-note">
+        This timeline is short today. It&apos;s already getting longer.
+      </p>
+    </section>
+  );
+}
+
+function AboutTeam() {
+  return (
+    <section className="about-team-section" aria-labelledby="about-team-heading">
+      <Reveal>
+        <div className="about-team-copy">
+          <span className="eyebrow">WHO WE ARE</span>
+          <h2 id="about-team-heading">Small team. Senior hands.</h2>
+          <p>
+            Clients work directly with the people who run their systems. There are no account
+            managers between you and the engineer responsible for the work.
+          </p>
+        </div>
+      </Reveal>
+      <motion.div
+        className="about-team-grid"
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={revealViewport}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {teamMembers.map(({ name, role, bio }) => (
+          <article className="about-team-card" key={name}>
+            <div className="about-team-avatar">
+              <img
+                src="/team/pitso.jpg"
+                alt="Pitso Arnold, Founder of Trident Cloud Services"
+                className="about-team-photo"
+                loading="lazy"
+              />
+            </div>
+            <h3>{name}</h3>
+            <p className="about-team-role">{role}</p>
+            <p className="about-team-bio">{bio}</p>
+          </article>
+        ))}
+      </motion.div>
+    </section>
   );
 }
 
@@ -144,6 +286,8 @@ function About() {
             </motion.p>
           </motion.div>
 
+          <AboutStats />
+
           <div className="about-values">
             <Reveal>
               <h2>What we stand for</h2>
@@ -191,6 +335,8 @@ function About() {
             </motion.div>
           </div>
 
+          <AboutTimeline />
+          <AboutTeam />
           <AboutCTA />
         </div>
       </section>

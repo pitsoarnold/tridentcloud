@@ -3870,6 +3870,224 @@ textarea:focus-visible {
   }
 }
 
+.about-page .about-stats-section {
+  margin-top: 56px;
+}
+
+.about-page .about-stats-section h2,
+.about-page .about-timeline-section h2 {
+  margin: 0 0 22px;
+  color: var(--navy);
+  font-size: clamp(24px, 2.5vw, 32px);
+  line-height: 1.2;
+}
+
+.about-page .about-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.about-page .about-stat {
+  min-height: 142px;
+  padding: 23px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+  box-shadow: 0 8px 22px rgba(10, 34, 64, 0.04);
+}
+
+.about-page .about-stat-value {
+  color: var(--navy);
+  font-size: clamp(25px, 2.6vw, 34px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.about-page .about-stat-label {
+  margin-top: 11px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.about-page .about-section-note {
+  margin: 15px 0 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.about-page .about-timeline-section {
+  margin-top: 62px;
+}
+
+.about-page .about-timeline {
+  position: relative;
+  isolation: isolate;
+}
+
+.about-page .about-timeline-line {
+  position: absolute;
+  z-index: -1;
+  top: 8px;
+  bottom: 8px;
+  left: 6px;
+  width: 2px;
+  transform-origin: top center;
+  background: var(--border);
+}
+
+.about-page .about-timeline-item {
+  position: relative;
+  min-height: 62px;
+  padding: 0 0 26px 34px;
+}
+
+.about-page .about-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.about-page .about-timeline-marker {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--card);
+  border-radius: 50%;
+  background: var(--azure);
+  box-shadow: 0 0 0 1px var(--azure);
+}
+
+.about-page .about-timeline-date {
+  color: var(--azure);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.about-page .about-timeline-title {
+  margin-top: 5px;
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.about-page .about-team-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 50px;
+  margin-top: 68px;
+}
+
+.about-page .about-team-copy h2 {
+  margin: 12px 0 14px;
+  color: var(--navy);
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.16;
+}
+
+.about-page .about-team-copy > p {
+  max-width: 440px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.about-page .about-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.about-page .about-team-card {
+  padding: 25px;
+  border: 1px solid oklch(0.62 0.18 243 / 28%);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow:
+    0 10px 30px rgba(10, 34, 64, 0.06),
+    0 0 20px oklch(0.62 0.18 243 / 8%);
+}
+
+.about-page .about-team-avatar {
+  display: grid;
+  width: 144px;
+  height: 144px;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.about-page .about-team-photo {
+  display: block;
+  width: 144px;
+  height: 144px;
+  border: 2px solid rgba(230, 57, 70, 0.15);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 65%;
+}
+
+.about-page .about-team-card h3 {
+  margin: 18px 0 3px;
+  color: var(--navy);
+  font-family: var(--font-editorial);
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.about-page .about-team-role {
+  margin: 0;
+  color: var(--azure);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.about-page .about-team-bio {
+  margin: 14px 0 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .about-page .about-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .about-page .about-team-section {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    margin-top: 56px;
+  }
+}
+
+@media (max-width: 520px) {
+  .about-page .about-stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-page .about-team-avatar,
+  .about-page .about-team-photo {
+    width: 104px;
+    height: 104px;
+  }
+}
+
 .services-section::after {
   content: "";
   position: absolute;
