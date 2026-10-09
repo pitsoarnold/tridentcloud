@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { useSearch } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowRight, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -244,9 +244,10 @@ export function ContactForm() {
       </div>
 
       <div className="field">
-        <label>What can we help you with?</label>
+        <label id="plan-label">What can we help you with?</label>
         <ServicePicker
           value={plan}
+          labelId="plan-label"
           onChange={(value) => {
             setPlan(value);
             setContextPlan(value);
@@ -270,7 +271,7 @@ export function ContactForm() {
           required
           minLength={10}
           maxLength={3000}
-          placeholder="What are you trying to build or improve? Include any context that helps us understand your needs."
+          placeholder="Tell us what you're trying to achieve — a new website, better hosting, a business system, or something else. Plain language is fine."
         />
       </div>
 
@@ -290,10 +291,19 @@ export function ContactForm() {
         </p>
       )}
 
-      <Button className="btn btn-primary" type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending…" : "Send enquiry"}
-        <ArrowRight />
-      </Button>
+      <p className="contact-response-hint">
+        Most enquiries are answered within a few hours during business hours.
+      </p>
+      <div className="contact-submit">
+        <Button className="btn btn-primary" type="submit" disabled={status === "sending"}>
+          {status === "sending" ? "Sending…" : "Send enquiry"}
+          <ArrowRight />
+        </Button>
+        <p className="contact-privacy-note">
+          We'll only use this to respond to your enquiry. See our{" "}
+          <Link to="/privacy">Privacy Notice</Link>.
+        </p>
+      </div>
     </form>
   );
 }

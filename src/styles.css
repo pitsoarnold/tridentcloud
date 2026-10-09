@@ -961,6 +961,23 @@
   color: var(--foreground);
   font-size: 12px;
 }
+.contact-response-hint,
+.contact-privacy-note {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.contact-submit {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+.contact-privacy-note a {
+  color: var(--navy);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 @media (max-width: 1100px) {
   .brand-parent,
   .brand-rule,
@@ -1001,8 +1018,10 @@
     background: transparent;
     border: 0;
     color: var(--primary-foreground);
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
   .mobile-menu-trigger svg {
     width: 25px;
@@ -1211,6 +1230,8 @@
 .build-cta {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
+  min-width: 44px;
   gap: 8px;
   background: transparent;
   border: 0;
@@ -2599,6 +2620,19 @@
 .calc-alt a svg {
   width: 15px;
   height: 15px;
+}
+
+@media (max-width: 760px) {
+  #mobile-menu-toggle,
+  .mobile-menu-trigger,
+  #theme-toggle,
+  .theme-toggle,
+  .mobile-menu-close,
+  .modal-close,
+  .tier-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
 }
 
 /* Responsive */

@@ -1,7 +1,24 @@
 import { useState } from "react";
-import { Check, ChevronDown, Globe, Layout, Monitor, Building2, Database, Cloud, HelpCircle } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  Globe,
+  Layout,
+  Monitor,
+  Building2,
+  Database,
+  Cloud,
+  HelpCircle,
+} from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 
 /* ─── Types ────────────────────────────────────────────── */
 export type ServiceGroup = {
@@ -92,10 +109,16 @@ export const serviceGroups: ServiceGroup[] = [
 type Props = {
   value: string;
   onChange: (value: string) => void;
+  labelId: string;
   placeholder?: string;
 };
 
-export function ServicePicker({ value, onChange, placeholder = "Select a service..." }: Props) {
+export function ServicePicker({
+  value,
+  onChange,
+  labelId,
+  placeholder = "Select a service...",
+}: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -106,18 +129,13 @@ export function ServicePicker({ value, onChange, placeholder = "Select a service
           className={`service-picker-trigger ${value ? "has-value" : ""}`}
           aria-expanded={open}
           aria-haspopup="listbox"
+          aria-labelledby={labelId}
         >
-          <span className="service-picker-value">
-            {value || placeholder}
-          </span>
+          <span className="service-picker-value">{value || placeholder}</span>
           <ChevronDown className="service-picker-chevron" aria-hidden="true" />
         </button>
       </PopoverTrigger>
-      <PopoverContent
-        className="service-picker-content"
-        align="start"
-        sideOffset={6}
-      >
+      <PopoverContent className="service-picker-content" align="start" sideOffset={6}>
         <Command shouldFilter={true}>
           <CommandInput placeholder="Search services or plans..." />
           <CommandList>
@@ -138,15 +156,19 @@ export function ServicePicker({ value, onChange, placeholder = "Select a service
                     >
                       <Icon className="service-picker-item-icon" aria-hidden="true" />
                       <span className="service-picker-item-label">
-  {item.includes(" — ") ? (
-    <>
-      <span className="service-picker-item-primary">{item.split(" — ")[0]}</span>
-      <span className="service-picker-item-secondary">{item.split(" — ")[1]}</span>
-    </>
-  ) : (
-    item
-  )}
-</span>
+                        {item.includes(" — ") ? (
+                          <>
+                            <span className="service-picker-item-primary">
+                              {item.split(" — ")[0]}
+                            </span>
+                            <span className="service-picker-item-secondary">
+                              {item.split(" — ")[1]}
+                            </span>
+                          </>
+                        ) : (
+                          item
+                        )}
+                      </span>
                       {value === item && <Check className="service-picker-item-check" />}
                     </CommandItem>
                   ))}
