@@ -147,7 +147,7 @@ export function PulsePricing() {
             </ul>
 
             <Button asChild className="btn btn-primary pulse-cta">
-              <Link to="/contact" search={{ plan: `${t.name} — R${t.monthly}/mo` }}>
+              <Link to="/contact" search={{ service: "Trident Pulse", tier: t.name }}>
                 Get started <ArrowRight />
               </Link>
             </Button>

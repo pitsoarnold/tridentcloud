@@ -124,7 +124,7 @@ function ServicesFinalCTA() {
         <Reveal delay={0.16}>
           <div className="final-cta-actions">
             <Button asChild className="btn btn-primary">
-              <Link to="/contact" search={{ plan: undefined }}>
+              <Link to="/contact" search={{ plan: "Managed Hosting" }}>
                 Book a discovery conversation <ArrowRight />
               </Link>
             </Button>

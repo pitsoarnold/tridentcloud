@@ -1346,6 +1346,31 @@
   background: oklch(0.97 0.02 245);
   box-shadow: 0 8px 22px oklch(0.55 0.18 245 / 10%);
 }
+.tier.selected {
+  border-color: var(--azure);
+  box-shadow: 0 0 0 2px oklch(0.55 0.18 245 / 18%);
+}
+.tier-select {
+  margin-top: 18px;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--navy);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.tier-select:hover,
+.tier-select[aria-pressed="true"] {
+  border-color: var(--azure);
+  background: oklch(0.97 0.02 245);
+}
+.tier-select[aria-pressed="true"] {
+  color: var(--azure);
+}
 .tier-badge {
   position: absolute;
   top: -10px;
@@ -2586,6 +2611,52 @@
   }
   .calc-options {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 761px) and (max-width: 900px) {
+  .site-header-inner {
+    min-height: 66px;
+  }
+  .brand-parent,
+  .brand-rule,
+  .region,
+  .nav-links,
+  .header-actions {
+    display: none;
+  }
+  .mobile-menu-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    color: var(--primary-foreground);
+    width: 40px;
+    height: 40px;
+  }
+  .mobile-menu-trigger svg {
+    width: 25px;
+  }
+  .mobile-menu {
+    position: fixed;
+    inset: 66px 0 0;
+    z-index: 70;
+    background: var(--hero);
+    padding: 36px 25px;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .mobile-menu.open {
+    display: flex;
+  }
+  .mobile-menu a {
+    color: var(--primary-foreground);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .mobile-menu .btn {
+    font-size: 13px;
+    align-self: start;
   }
 }
 @media (max-width: 760px) {
@@ -4100,6 +4171,42 @@ textarea:focus-visible {
   );
   pointer-events: none;
   z-index: 1;
+}
+
+.pulse-page .pulse-pricing-section {
+  background-color: var(--background);
+  background-image: radial-gradient(circle, rgba(10, 34, 64, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.pulse-page .pulse-benefit {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.pulse-page .pulse-benefit-icon {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.pulse-page .pulse-benefit:hover .pulse-benefit-icon {
+  background: oklch(0.62 0.18 243 / 13%);
+  color: var(--azure);
+}
+
+.pulse-page .pulse-compare-card {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.pulse-page .pulse-compare-card:hover {
+  border-color: var(--azure);
+  box-shadow: 0 14px 32px rgba(10, 34, 64, 0.12);
 }
 
 .problem-section .problem-content,

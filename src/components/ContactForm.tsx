@@ -6,18 +6,69 @@ import { Button } from "@/components/ui/button";
 import { ServicePicker, serviceGroups } from "@/components/ServicePicker";
 import { submitEnquiry } from "@/lib/contact.functions";
 
-function normalizeServiceSelection(rawValue: string) {
-  const raw = rawValue.trim();
+function normalizeServiceSelection(rawValue: string, tier = "") {
+  const raw = rawValue.trim().toLocaleLowerCase();
   if (!raw) return "";
   const allOptions = serviceGroups.flatMap((group) => group.items);
-  if (allOptions.includes(raw)) return raw;
+  const exactOption = allOptions.find((option) => option.toLocaleLowerCase() === raw);
+  if (exactOption) return exactOption;
+
+  const matchingGroup = serviceGroups.find((group) => {
+    const label = group.label.toLocaleLowerCase();
+    return label === raw || label.startsWith(raw) || raw.startsWith(label);
+  });
+  if (matchingGroup) {
+    if (tier) {
+      const normalizedTier = tier.trim().toLocaleLowerCase();
+      const tierOption = matchingGroup.items.find((option) => {
+        const [name, details = ""] = option.split(" — ");
+        return (
+          name.toLocaleLowerCase() === normalizedTier ||
+          details.toLocaleLowerCase().startsWith(normalizedTier)
+        );
+      });
+      if (tierOption) return tierOption;
+    }
+    return matchingGroup.items[0] ?? "";
+  }
+
+  const inferredTierOption = allOptions.find((option) => {
+    const [name, details = ""] = option.split(" — ");
+    const tierName = details.split("(")[0]?.trim().toLocaleLowerCase() ?? "";
+    return tierName && raw.startsWith(`${name.toLocaleLowerCase()} — ${tierName}`);
+  });
+  if (inferredTierOption) return inferredTierOption;
+
+  const optionPrefixMatch = allOptions.find((option) =>
+    raw.startsWith(option.split(" — ")[0]?.toLocaleLowerCase() ?? ""),
+  );
+  if (optionPrefixMatch) return optionPrefixMatch;
 
   for (const group of serviceGroups) {
-    if (
-      group.label.toLowerCase().includes(raw.toLowerCase()) ||
-      raw.toLowerCase().includes(group.label.toLowerCase().split(" ")[0])
-    ) {
-      return group.items[0] ?? "";
+    const label = group.label.toLocaleLowerCase();
+    const firstLabelWord = label.split(" ")[0] ?? "";
+    const matchingItem = group.items.find((option) => {
+      const optionName = option.split(" — ")[0]?.toLocaleLowerCase() ?? "";
+      return (
+        optionName === raw ||
+        optionName.startsWith(`${raw} `) ||
+        raw.startsWith(`${optionName} —`) ||
+        (raw.startsWith(firstLabelWord) && optionName.startsWith(firstLabelWord))
+      );
+    });
+    if (matchingItem) {
+      if (tier) {
+        const normalizedTier = tier.trim().toLocaleLowerCase();
+        const tierOption = group.items.find((option) => {
+          const [name, details = ""] = option.split(" — ");
+          return (
+            name.toLocaleLowerCase() === normalizedTier ||
+            details.toLocaleLowerCase().startsWith(normalizedTier)
+          );
+        });
+        if (tierOption) return tierOption;
+      }
+      return matchingItem;
     }
   }
   return "";
@@ -31,41 +82,47 @@ function formatAddonId(id: string) {
 }
 
 export function ContactForm() {
-  const search = useSearch({ strict: false }) as { plan?: string };
+  const search = useSearch({ strict: false }) as {
+    plan?: string;
+    service?: string;
+    tier?: string;
+    payment?: string;
+    addons?: string;
+  };
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [tier, setTier] = useState("");
   const [payment, setPayment] = useState("");
   const [contextService, setContextService] = useState("");
   const [addons, setAddons] = useState<string[]>([]);
   const [contextPlan, setContextPlan] = useState(search.plan || "");
-  const [plan, setPlan] = useState<string>(() => normalizeServiceSelection(search.plan || ""));
+  const [plan, setPlan] = useState<string>(() =>
+    normalizeServiceSelection(search.service || search.plan || "", search.tier),
+  );
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const serviceParam = (params.get("service") || "").trim();
-    const planParam = (params.get("plan") || search.plan || "").trim();
+    const serviceParam = (search.service || "").trim();
+    const planParam = (search.plan || "").trim();
     setContextService(serviceParam);
     setContextPlan(planParam);
-    if (serviceParam) {
-      setPlan(normalizeServiceSelection(serviceParam));
-    } else if (planParam) {
-      setPlan(normalizeServiceSelection(planParam));
+    const selection = serviceParam || planParam;
+    if (selection) {
+      setPlan(normalizeServiceSelection(selection, search.tier));
     }
-    setTier((params.get("tier") || "").trim().slice(0, 50));
+    setTier((search.tier || "").trim().slice(0, 50));
     setAddons(
-      (params.get("addons") || "")
+      (search.addons || "")
         .split(",")
         .map((addon) => addon.trim().slice(0, 60))
         .filter(Boolean)
         .slice(0, 10),
     );
-    const paymentParam = params.get("payment");
+    const paymentParam = search.payment;
     setPayment(
       paymentParam === "Standard" || paymentParam === "Milestone" || paymentParam === "Subscription"
         ? paymentParam
         : "",
     );
-  }, [search.plan]);
+  }, [search.addons, search.payment, search.plan, search.service, search.tier]);
 
   const send = useServerFn(submitEnquiry);
 
