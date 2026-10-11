@@ -23,7 +23,7 @@ const tiers = [
       "Business email setup (1 address)",
       "POPIA-compliant by default",
       "Business-hours support",
-      "Cancel after 12 months",
+      "Cancel anytime after 12 months with 30 days' written notice",
     ],
   },
   {
@@ -50,7 +50,7 @@ const tiers = [
       "Form submissions dashboard",
       "Monthly health report",
       "Business-hours support",
-      "Cancel after 12 months",
+      "Cancel anytime after 12 months with 30 days' written notice",
     ],
   },
   {
@@ -77,17 +77,17 @@ const tiers = [
       "Admin dashboard (view submissions)",
       "Quarterly strategy call",
       "Priority support",
-      "Cancel after 12 months",
+      "Cancel anytime after 12 months with 30 days' written notice",
     ],
   },
 ];
 
 const alwaysIncluded = [
-  "Full ownership — no lock-in, cancel anytime after 12 months",
+  "12-month minimum, then month-to-month; cancel anytime after 12 months with 30 days' written notice",
   "90-day post-launch support on every plan",
   "Deployed on Trident Cloud infrastructure",
   "POPIA-compliant data handling",
-  "Option to migrate off Trident anytime",
+  "Full code, content, and domain transfer through buy-out or free after 36 continuous months",
   "ZAR pricing, SA support hours",
 ];
 

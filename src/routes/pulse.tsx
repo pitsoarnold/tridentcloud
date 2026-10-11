@@ -121,20 +121,36 @@ const faqs: FAQItem[] = [
     a: "Two reasons: (1) It keeps upfront costs low so you can launch today. (2) It keeps us invested in your success — we handle updates, security, and support every month, so your site stays current.",
   },
   {
-    q: "Can I cancel at any time?",
-    a: "You commit for the first 12 months (this covers the setup work). After that, you can cancel with 30 days' notice, or buy out the site entirely for a fixed fee.",
+    q: "How long am I committed for?",
+    a: "There is a 12-month minimum commitment, which covers the setup and design work. Trident owns the site during your subscription.",
   },
   {
-    q: "What happens if I want to leave?",
-    a: "You can buy out the site at any time for R5,000 (Starter) / R8,000 (Business) / R12,000 (Premium). This covers migrating you off our infrastructure with full ownership of the code and content.",
+    q: "What happens after the first 12 months?",
+    a: "Your plan continues month-to-month. You can cancel anytime after 12 months with 30 days' written notice.",
+  },
+  {
+    q: "Can I leave before 12 months?",
+    a: "Yes. A buy-out fee applies to leave before the 12-month minimum: R5,000 (Starter), R8,000 (Business), or R12,000 (Premium). Buying out transfers the full site — code, content, and domain — to you, with no further obligation to Trident.",
+  },
+  {
+    q: "What do I get if I buy out the site?",
+    a: "A buy-out unlocks full transfer of the site — code, content, and domain. Once transferred, you own the site outright and have no further obligation to Trident.",
+  },
+  {
+    q: "Is there a loyalty reward for staying longer?",
+    a: "After 36 continuous months on Pulse, the full site — code, content, and domain — transfers to you for free, with no buy-out fee. You then own it outright.",
+  },
+  {
+    q: "What if I cancel at month 12 without buying out?",
+    a: "The site is deactivated and your data is preserved for 30 days in case you return. There is no refund for the 12 months paid, and you do not own the site unless you pay the applicable buy-out fee.",
   },
   {
     q: "What if I need something bigger later?",
-    a: "Pulse is designed to grow with you. You can upgrade tiers anytime. When you outgrow Pulse, you can transition to our Build services — everything transfers cleanly.",
+    a: "Pulse is designed to grow with you. You can upgrade tiers anytime. When you outgrow Pulse, you can transition to our Build services. Trident owns the site during your subscription unless you complete a buy-out or the free transfer after 36 continuous months.",
   },
   {
     q: "Do you offer the domain?",
-    a: "Yes. We register and manage a .co.za domain for you in the first year, free. After that, it's included in your subscription.",
+    a: "Yes. We register and manage a .co.za domain for you in the first year, free. After that, it's included in your subscription. The domain transfers to you with a buy-out or the free transfer after 36 continuous months.",
   },
   {
     q: "Can I use my existing domain?",
@@ -142,15 +158,7 @@ const faqs: FAQItem[] = [
   },
   {
     q: "Is there a setup fee?",
-    a: "No setup fee. Everything is covered by your monthly or annual subscription.",
-  },
-  {
-    q: "Is there a loyalty discount?",
-    a: "Yes. If you stay on Pulse for 36 months, the full site — code, content, and domain — transfers to you at no cost. No buy-out fee. You own it outright.",
-  },
-  {
-    q: "What if I cancel before 12 months?",
-    a: "You're committing to a 12-month minimum. If you need to cancel earlier, you can buy out the site at any time using our standard buy-out fees, and we'll migrate you off Trident infrastructure with full ownership.",
+    a: "There is no separate setup fee. Setup and design work are covered by the 12-month minimum subscription.",
   },
 ];
 
@@ -210,17 +218,14 @@ function PulsePage() {
             <div className="section-heading center">
               <span className="eyebrow">PRICING</span>
               <h2>Three plans. One monthly price. Everything included.</h2>
-              <p>
-                Choose your tier. Cancel anytime after the first 12 months. No hidden fees, no
-                surprises.
-              </p>
+              <p>Choose your tier. Cancel anytime after 12 months. No hidden fees, no surprises.</p>
             </div>
           </Reveal>
 
           <Reveal delay={0.1}>
             <div className="pulse-loyalty-note">
-              <strong>Loyalty discount:</strong> Stay on Pulse for 36 months and the site transfers
-              to you for free. No buy-out fee, no strings attached.
+              <strong>Loyalty reward:</strong> Stay on Pulse for 36 months and the site transfers to
+              you for free. No buy-out fee, no strings.
             </div>
           </Reveal>
 
@@ -235,6 +240,15 @@ function PulsePage() {
           <Reveal>
             <PulsePricing />
           </Reveal>
+          <div className="pulse-terms-summary">
+            <h3>The terms, in plain English</h3>
+            <p>12-month minimum, then month-to-month.</p>
+            <p>
+              Early exit: buy-out from R5,000 (Starter) / R8,000 (Business) / R12,000 (Premium).
+            </p>
+            <p>Loyalty reward: stay 36 months and the site is yours — free.</p>
+            <p>Every plan includes hosting, SSL, backups and support.</p>
+          </div>
         </div>
       </section>
 
@@ -246,8 +260,10 @@ function PulsePage() {
               <span className="eyebrow">PULSE VS ONCE-OFF</span>
               <h2>Which is right for you?</h2>
               <p>
-                Pulse is our subscription. Once-off is our traditional project model. Both give you
-                full ownership and 12 months of hosting. The difference is upfront cost.
+                Pulse is our subscription. Once-off is our traditional project model. Trident owns
+                the site during a Pulse subscription; ownership transfers after a buy-out or free
+                transfer after 36 continuous months. Once-off projects give you ownership, and both
+                options include 12 months of hosting.
               </p>
             </div>
           </Reveal>
@@ -280,7 +296,7 @@ function PulsePage() {
                   <Check /> Monthly content updates included
                 </li>
                 <li>
-                  <Check /> Buy-out option available
+                  <Check /> Early buy-out option available at a fee
                 </li>
               </ul>
               <p className="pulse-compare-note">
@@ -297,7 +313,7 @@ function PulsePage() {
               <h3>From R8,500 once-off</h3>
               <ul>
                 <li>
-                  <Check /> You own the system outright
+                  <Check /> You own the system outright after project handover
                 </li>
                 <li>
                   <Check /> No ongoing subscription (12 mo hosting included)
@@ -313,7 +329,7 @@ function PulsePage() {
                 </li>
               </ul>
               <p className="pulse-compare-note">
-                Best for: Established businesses wanting full ownership.
+                Best for: Established businesses wanting outright ownership from project handover.
               </p>
             </motion.div>
           </motion.div>

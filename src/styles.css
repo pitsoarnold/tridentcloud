@@ -1938,6 +1938,27 @@
   white-space: nowrap;
 }
 
+.pulse-terms-summary {
+  margin: 28px auto 0;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--secondary);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.pulse-terms-summary h3 {
+  margin: 0 0 6px;
+  color: var(--foreground);
+  font-size: 13px;
+}
+
+.pulse-terms-summary p {
+  margin: 0;
+}
+
 @media (max-width: 560px) {
   .pulse-loyalty-note {
     flex-direction: column;
