@@ -1,45 +1,26 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import { useServerFn } from "@tanstack/react-start";
 import { motion, type Variants } from "motion/react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
   ArrowRight,
   BookOpen,
   Check,
+  CheckCircle2,
   Handshake,
   MessageCircle,
   Sparkles,
   Tag,
-  Users,
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
+import {
+  getFoundingAvailability,
+  submitFoundingApplication,
+} from "@/lib/founding-clients.functions";
 
 const revealViewport = { once: true, margin: "-80px" as const };
 
-type FoundingDatabase = Omit<Database, "public"> & {
-  public: Omit<Database["public"], "Tables"> & {
-    Tables: Database["public"]["Tables"] & {
-      founding_client_config: {
-        Row: { id: string; is_active: boolean };
-        Insert: { id?: string };
-        Update: { id?: string; is_active?: boolean };
-        Relationships: [];
-      };
-      founding_client_applications: {
-        Row: { id: string; status: string };
-        Insert: { id?: string; status: string };
-        Update: { id?: string; status?: string };
-        Relationships: [];
-      };
-    };
-  };
-};
-
-// These public tables are provisioned in Supabase but are not in the generated local schema yet.
-const foundingSupabase = supabase as unknown as SupabaseClient<FoundingDatabase>;
 const contactSearch = (plan: string | undefined) => ({
   plan,
   service: undefined,
@@ -91,6 +72,9 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
 }
 
 export const Route = createFileRoute("/founding-clients")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    plan: typeof search["plan"] === "string" ? search["plan"] : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Founding Client Programme | Trident Cloud Services" },
@@ -206,65 +190,37 @@ const steps = [
 function FoundingCounter() {
   const [state, setState] = useState<
     | { status: "loading" }
-    | { status: "ready"; acceptedCount: number }
+    | { status: "ready"; filledSpots: number; totalSpots: number }
     | { status: "error" }
     | { status: "inactive" }
   >({ status: "loading" });
+  const fetchAvailability = useServerFn(getFoundingAvailability);
 
   useEffect(() => {
     let active = true;
 
-    const loadAvailability = async () => {
-      try {
-        const configResult = await foundingSupabase
-          .from("founding_client_config")
-          .select("is_active")
-          .single();
-
+    void fetchAvailability()
+      .then((availability) => {
         if (!active) return;
-
-        if (configResult.error) {
-          console.error("Could not load founding client config.", configResult.error);
-          setState({ status: "error" });
-          return;
-        }
-
-        if (!configResult.data.is_active) {
-          setState({ status: "inactive" });
-          return;
-        }
-
-        const applicationsResult = await foundingSupabase
-          .from("founding_client_applications")
-          .select("*", { count: "exact", head: true })
-          .eq("status", "accepted");
-
+        setState(
+          availability.isActive
+            ? {
+                status: "ready",
+                filledSpots: availability.filledSpots,
+                totalSpots: availability.totalSpots,
+              }
+            : { status: "inactive" },
+        );
+      })
+      .catch(() => {
         if (!active) return;
-
-        if (applicationsResult.error || applicationsResult.count === null) {
-          if (applicationsResult.error)
-            console.error(
-              "Could not count accepted founding client applications.",
-              applicationsResult.error,
-            );
-          setState({ status: "error" });
-          return;
-        }
-
-        setState({ status: "ready", acceptedCount: applicationsResult.count });
-      } catch (error) {
-        if (!active) return;
-        console.error("Unable to check founding client availability.", error);
         setState({ status: "error" });
-      }
-    };
-
-    void loadAvailability();
+      });
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [fetchAvailability]);
 
   if (state.status === "inactive") return null;
 
@@ -284,10 +240,9 @@ function FoundingCounter() {
     );
   }
 
-  const cohortSize = 10;
-  const filledSpots = Math.min(state.acceptedCount, cohortSize);
-  const remainingSpots = cohortSize - filledSpots;
-  const progress = (filledSpots / cohortSize) * 100;
+  const filledSpots = Math.min(state.filledSpots, state.totalSpots);
+  const remainingSpots = state.totalSpots - filledSpots;
+  const progress = (filledSpots / state.totalSpots) * 100;
 
   return (
     <div
@@ -296,7 +251,7 @@ function FoundingCounter() {
       aria-label={
         remainingSpots === 0
           ? "Cohort is full — join the waiting list"
-          : `${filledSpots} of ${cohortSize} programme spots filled`
+          : `${filledSpots} of ${state.totalSpots} programme spots filled`
       }
       aria-live="polite"
     >
@@ -307,7 +262,7 @@ function FoundingCounter() {
           <>
             <span>
               <strong>
-                {filledSpots} of {cohortSize}
+                {filledSpots} of {state.totalSpots}
               </strong>{" "}
               spots filled
             </span>
@@ -320,7 +275,7 @@ function FoundingCounter() {
         role="progressbar"
         aria-label="Founding Client Programme spots filled"
         aria-valuemin={0}
-        aria-valuemax={cohortSize}
+        aria-valuemax={state.totalSpots}
         aria-valuenow={filledSpots}
       >
         <motion.span
@@ -334,7 +289,193 @@ function FoundingCounter() {
   );
 }
 
+const tierByPlan: Record<string, "presence" | "digital-office" | "digital-sales"> = {
+  Presence: "presence",
+  "Digital Office": "digital-office",
+  "Digital Sales": "digital-sales",
+};
+const preferredTierOptions = ["presence", "digital-office", "digital-sales", "unsure"] as const;
+type PreferredTier = (typeof preferredTierOptions)[number];
+
+function FoundingApplicationForm({ plan }: { plan: string | undefined }) {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [preferredTier, setPreferredTier] = useState<PreferredTier>(
+    () => tierByPlan[plan ?? ""] ?? "unsure",
+  );
+  const [applicant, setApplicant] = useState({ name: "", email: "" });
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const submitApplication = useServerFn(submitFoundingApplication);
+
+  useEffect(() => {
+    setPreferredTier(tierByPlan[plan ?? ""] ?? "unsure");
+  }, [plan]);
+
+  useEffect(() => {
+    let frame = 0;
+    const focusApplication = () => {
+      if (window.location.hash !== "#apply") return;
+      frame = window.requestAnimationFrame(() => {
+        nameInputRef.current?.focus({ preventScroll: true });
+      });
+    };
+
+    focusApplication();
+    window.addEventListener("hashchange", focusApplication);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", focusApplication);
+    };
+  }, [plan]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("sending");
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get("name") ?? "");
+    const email = String(formData.get("email") ?? "");
+    const selectedTier = preferredTierOptions.find(
+      (tier) => tier === String(formData.get("preferred_tier") ?? ""),
+    );
+
+    try {
+      await submitApplication({
+        data: {
+          name,
+          email,
+          business_name: String(formData.get("business_name") ?? ""),
+          preferred_tier: selectedTier ?? "unsure",
+          message: String(formData.get("message") ?? ""),
+          website: String(formData.get("website") ?? ""),
+        },
+      });
+      setApplicant({ name, email });
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (status === "sent") {
+    return (
+      <div className="founding-form">
+        <div className="founding-form-success" aria-live="polite">
+          <span className="founding-form-success-icon">
+            <CheckCircle2 aria-hidden="true" />
+          </span>
+          <h2>Application received</h2>
+          <p>
+            Thanks {applicant.name} — we'll review your application and get back to you within 2
+            business days. A confirmation has been sent to {applicant.email}.
+          </p>
+          <Button asChild className="btn btn-outline-dark">
+            <Link to="/">
+              Back to homepage <ArrowRight />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="founding-form">
+      <form className="founding-form-fields" onSubmit={handleSubmit}>
+        <div className="founding-form-field">
+          <label htmlFor="founding-name">Your name *</label>
+          <input
+            ref={nameInputRef}
+            id="founding-name"
+            name="name"
+            type="text"
+            required
+            minLength={2}
+            maxLength={100}
+            autoComplete="name"
+            placeholder="Your full name"
+          />
+        </div>
+        <div className="founding-form-field">
+          <label htmlFor="founding-email">Work email *</label>
+          <input
+            id="founding-email"
+            name="email"
+            type="email"
+            required
+            maxLength={255}
+            autoComplete="email"
+            placeholder="you@company.com"
+          />
+        </div>
+        <div className="founding-form-field">
+          <label htmlFor="founding-business-name">Business name</label>
+          <input
+            id="founding-business-name"
+            name="business_name"
+            type="text"
+            maxLength={150}
+            autoComplete="organization"
+            placeholder="Your business"
+          />
+        </div>
+        <div className="founding-form-field">
+          <label htmlFor="founding-preferred-tier">Which founding tier interests you? *</label>
+          <select
+            id="founding-preferred-tier"
+            name="preferred_tier"
+            required
+            value={preferredTier}
+            onChange={(event) => {
+              const selectedTier = preferredTierOptions.find(
+                (tier) => tier === event.currentTarget.value,
+              );
+              setPreferredTier(selectedTier ?? "unsure");
+            }}
+          >
+            <option value="presence">Presence — R500/mo</option>
+            <option value="digital-office">Digital Office — R1,500/mo</option>
+            <option value="digital-sales">Digital Sales — R3,500/mo</option>
+            <option value="unsure">Not sure yet</option>
+          </select>
+        </div>
+        <div className="founding-form-field">
+          <label htmlFor="founding-message">Anything we should know?</label>
+          <textarea
+            id="founding-message"
+            name="message"
+            maxLength={2000}
+            rows={5}
+            placeholder="Tell us a little about your business or what you need."
+          />
+        </div>
+        <div className="founding-form-honeypot" aria-hidden="true">
+          <label htmlFor="founding-website">Leave this field empty</label>
+          <input
+            id="founding-website"
+            name="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
+        <div className="founding-form-submit">
+          <Button type="submit" className="btn btn-primary" disabled={status === "sending"}>
+            {status === "sending" ? "Sending application…" : "Submit application"}
+            {status !== "sending" && <ArrowRight />}
+          </Button>
+          {status === "error" && (
+            <p className="founding-form-error" role="alert" aria-live="polite">
+              We couldn't send your application. Please try again or WhatsApp us at +266 6206 8252.
+            </p>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+}
+
 function FoundingClientsPage() {
+  const search = Route.useSearch();
+
   return (
     <main className="founding-page">
       <section className="founding-hero">
@@ -466,8 +607,8 @@ function FoundingClientsPage() {
                   Founding rate. Standard rate: {tier.standardRate}/month.
                 </p>
                 <Button asChild className="btn btn-primary">
-                  <Link to="/contact" search={contactSearch(tier.name)}>
-                    Ask about {tier.name} <ArrowRight />
+                  <Link to="/founding-clients" search={{ plan: tier.name }} hash="apply">
+                    Apply for {tier.name} <ArrowRight />
                   </Link>
                 </Button>
               </motion.article>
@@ -602,26 +743,16 @@ function FoundingClientsPage() {
         </div>
       </section>
 
-      {/* TODO: Application form goes here (Prompt B will build this) */}
-      {/* Form will post to Supabase table `founding_client_applications`. Fields: name, email, business_name, preferred_tier, message. */}
       <section className="section section-muted founding-application-section" id="apply">
         <div className="site-container">
           <Reveal>
-            <div className="founding-application-placeholder">
-              <div className="founding-icon">
-                <Users aria-hidden="true" />
+            <div className="founding-application-content">
+              <div className="section-heading center">
+                <span className="eyebrow">FOUNDING CLIENT APPLICATION</span>
+                <h2>Tell us about your business</h2>
+                <p>Share a few details and we’ll review your application within 2 business days.</p>
               </div>
-              <span className="eyebrow">FOUNDING CLIENT APPLICATION</span>
-              <h2>Application form coming soon</h2>
-              <p>
-                We’re preparing a short application form. In the meantime, tell us you’re interested
-                and we’ll get back to you within 2 business days.
-              </p>
-              <Button asChild className="btn btn-primary">
-                <Link to="/contact" search={contactSearch("Founding Client Programme")}>
-                  Register your interest <ArrowRight />
-                </Link>
-              </Button>
+              <FoundingApplicationForm plan={search.plan} />
             </div>
           </Reveal>
         </div>

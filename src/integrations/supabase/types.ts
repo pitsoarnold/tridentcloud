@@ -50,6 +50,60 @@ export type Database = {
         }
         Relationships: []
       }
+      founding_client_applications: {
+        Row: {
+          business_name: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          preferred_tier: string
+          status: string
+        }
+        Insert: {
+          business_name?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          preferred_tier: string
+          status?: string
+        }
+        Update: {
+          business_name?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          preferred_tier?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      founding_client_config: {
+        Row: {
+          created_at: string
+          id: number
+          is_active: boolean
+          total_spots: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_active?: boolean
+          total_spots?: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_active?: boolean
+          total_spots?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
