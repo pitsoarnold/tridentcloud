@@ -2005,6 +2005,629 @@
   font-weight: 700;
 }
 
+/* ─── FOUNDING CLIENT PROGRAMME ───────────────────────── */
+.founding-page {
+  overflow: hidden;
+}
+
+.founding-page .founding-hero {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--navy);
+  background-image:
+    radial-gradient(circle, oklch(1 0 0 / 10%) 1px, transparent 1px),
+    radial-gradient(ellipse at 82% 25%, oklch(0.4 0.12 245 / 45%), transparent 38%);
+  background-size:
+    28px 28px,
+    auto;
+  background-position:
+    0 0,
+    center;
+  color: var(--primary-foreground);
+}
+
+.founding-page .founding-hero-inner {
+  min-height: 570px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.65fr);
+  align-items: center;
+  gap: clamp(36px, 7vw, 100px);
+  padding-block: 76px;
+}
+
+.founding-page .founding-hero-copy {
+  max-width: 750px;
+}
+
+.founding-page .founding-hero .eyebrow {
+  color: var(--cream, #f3e9d7);
+}
+
+.founding-page .founding-hero h1 {
+  max-width: 760px;
+  margin: 18px 0;
+  font-size: clamp(42px, 5.6vw, 72px);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+
+.founding-page .founding-hero-copy > p:not(.founding-closing-note) {
+  max-width: 620px;
+  color: oklch(1 0 0 / 78%);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.founding-page .founding-hero-actions,
+.founding-page .founding-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.founding-page .founding-hero-actions {
+  margin-top: 30px;
+}
+
+.founding-page .founding-closing-note {
+  margin: 16px 0 0;
+  color: oklch(1 0 0 / 64%);
+  font-size: 12px;
+}
+
+.founding-page .founding-hero-aside {
+  display: grid;
+  gap: 18px;
+}
+
+.founding-page .founding-counter {
+  padding: 23px;
+  border: 1px solid oklch(1 0 0 / 22%);
+  border-radius: 12px;
+  background: oklch(1 0 0 / 7%);
+}
+
+.founding-page .founding-counter-label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: oklch(1 0 0 / 76%);
+  font-size: 12px;
+}
+
+.founding-page .founding-counter-label strong {
+  color: white;
+  font-size: 17px;
+}
+
+.founding-page .founding-counter-error {
+  color: oklch(1 0 0 / 82%);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.founding-page .founding-progress-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: oklch(1 0 0 / 18%);
+}
+
+.founding-page .founding-progress-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--azure);
+  transition: width 400ms ease;
+}
+
+.founding-page .founding-aside-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 4px 0;
+  color: oklch(1 0 0 / 76%);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.founding-page .founding-aside-note svg {
+  width: 21px;
+  flex: none;
+  color: var(--cream, #f3e9d7);
+}
+
+.founding-page .section-heading {
+  margin-bottom: 38px;
+}
+
+.founding-page .section-heading h2,
+.founding-page .founding-section-intro h2,
+.founding-page .founding-cta-panel h2,
+.founding-page .founding-application-placeholder h2 {
+  color: var(--navy);
+}
+
+.founding-page .founding-benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.founding-page .founding-benefit-card {
+  min-height: 185px;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.founding-page .founding-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: oklch(0.95 0.035 240);
+  color: var(--azure);
+}
+
+.founding-page .founding-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.founding-page .founding-benefit-card h3,
+.founding-page .founding-ask-list h3 {
+  margin: 16px 0 7px;
+  color: var(--navy);
+  font-size: 16px;
+}
+
+.founding-page .founding-benefit-card p,
+.founding-page .founding-ask-list p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.founding-page .founding-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 18px;
+}
+
+.founding-page .founding-tier-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 27px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.founding-page .founding-tier-card.featured {
+  border: 2px solid var(--azure);
+  box-shadow:
+    0 12px 32px oklch(0.3 0.07 245 / 10%),
+    0 0 34px oklch(0.62 0.18 243 / 10%);
+}
+
+.founding-page .founding-tier-badge {
+  position: absolute;
+  top: 0;
+  right: 18px;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  border-radius: 99px;
+  background: var(--azure);
+  color: white;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.founding-page .founding-tier-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.founding-page .founding-tier-heading h3 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 20px;
+}
+
+.founding-page .founding-tier-commitment {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  text-align: right;
+}
+
+.founding-page .founding-tier-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 21px 0;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+
+.founding-page .founding-tier-price strong {
+  color: var(--navy);
+  font-size: 34px;
+  letter-spacing: -0.04em;
+}
+
+.founding-page .founding-tier-card ul {
+  display: grid;
+  gap: 13px;
+  margin: 0 0 25px;
+  padding: 0;
+  list-style: none;
+}
+
+.founding-page .founding-tier-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.founding-page .founding-tier-card li svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  margin-top: 1px;
+  color: var(--azure);
+}
+
+.founding-page .founding-tier-note {
+  margin: auto 0 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.founding-page .founding-tier-card .btn {
+  width: 100%;
+}
+
+.founding-page .founding-discount-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-top: 24px;
+  padding: 19px 22px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--rust, #b54d3f);
+  border-radius: 8px;
+  background: var(--cream, #f8f4ed);
+}
+
+.founding-page .founding-discount-callout svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+  margin-top: 2px;
+  color: var(--rust, #b54d3f);
+}
+
+.founding-page .founding-discount-callout p {
+  margin: 0;
+  color: var(--navy);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.founding-page .founding-two-column {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  align-items: start;
+  gap: clamp(38px, 8vw, 110px);
+}
+
+.founding-page .founding-section-intro {
+  max-width: 410px;
+}
+
+.founding-page .founding-section-intro h2 {
+  margin: 12px 0;
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 1.16;
+}
+
+.founding-page .founding-section-intro p {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.founding-page .founding-ask-list {
+  display: grid;
+  gap: 23px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.founding-page .founding-ask-list li {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 14px;
+}
+
+.founding-page .founding-check-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: oklch(0.95 0.035 240);
+  color: var(--azure);
+}
+
+.founding-page .founding-check-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.founding-page .founding-ask-list h3 {
+  margin: 0 0 4px;
+}
+
+.founding-page .founding-timeline {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.founding-page .founding-timeline li {
+  position: relative;
+  min-height: 150px;
+  padding: 0 14px 0 0;
+}
+
+.founding-page .founding-timeline-connector {
+  position: absolute;
+  z-index: 0;
+  background: var(--border);
+}
+
+.founding-page .founding-timeline-connector-desktop {
+  top: 20px;
+  right: -10px;
+  left: 53px;
+  height: 1px;
+  transform-origin: left;
+}
+
+.founding-page .founding-timeline-connector-mobile {
+  display: none;
+}
+
+.founding-page .founding-step-number {
+  position: relative;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--azure);
+  border-radius: 50%;
+  background: var(--background);
+  color: var(--azure);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.founding-page .founding-step-copy h3 {
+  margin: 16px 0 5px;
+  color: var(--navy);
+  font-size: 15px;
+}
+
+.founding-page .founding-step-copy p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.founding-page .founding-cta-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+  padding: clamp(25px, 5vw, 48px);
+  border-radius: 14px;
+  background: var(--navy);
+  color: white;
+}
+
+.founding-page .founding-cta-panel .eyebrow {
+  color: var(--cream, #f3e9d7);
+}
+
+.founding-page .founding-cta-panel h2 {
+  margin: 12px 0 8px;
+  color: white;
+  font-size: clamp(25px, 3vw, 36px);
+}
+
+.founding-page .founding-cta-panel p {
+  margin: 0;
+  color: oklch(1 0 0 / 72%);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.founding-page .founding-cta-actions {
+  flex: none;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.founding-page .founding-cta-actions .btn-outline-dark {
+  border-color: oklch(1 0 0 / 48%);
+  color: white;
+}
+
+.founding-page .founding-cta-actions .btn-outline-dark:hover {
+  background: oklch(1 0 0 / 10%);
+}
+
+.founding-page .founding-application-section {
+  scroll-margin-top: 84px;
+}
+
+.founding-page .founding-application-placeholder {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 52px);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  text-align: center;
+}
+
+.founding-page .founding-application-placeholder .founding-icon {
+  margin: 0 auto 18px;
+}
+
+.founding-page .founding-application-placeholder h2 {
+  margin: 10px 0;
+  font-size: clamp(26px, 3vw, 36px);
+}
+
+.founding-page .founding-application-placeholder p {
+  max-width: 520px;
+  margin: 0 auto 22px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .founding-page .founding-hero-inner {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-block: 70px;
+  }
+
+  .founding-page .founding-hero-aside {
+    max-width: 520px;
+  }
+
+  .founding-page .founding-tier-grid {
+    grid-template-columns: 1fr;
+    max-width: 650px;
+    margin-inline: auto;
+    gap: 22px;
+  }
+
+  .founding-page .founding-tier-card.featured {
+    margin-block: 5px;
+  }
+
+  .founding-page .founding-timeline {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .founding-page .founding-timeline li {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 15px;
+    padding: 0 0 26px;
+  }
+
+  .founding-page .founding-timeline-connector-desktop {
+    display: none;
+  }
+
+  .founding-page .founding-timeline-connector-mobile {
+    top: 40px;
+    bottom: 0;
+    left: 19px;
+    display: block;
+    width: 1px;
+    transform-origin: top;
+  }
+
+  .founding-page .founding-step-copy h3 {
+    margin: 2px 0 5px;
+  }
+}
+
+@media (max-width: 640px) {
+  .founding-page .founding-hero-inner {
+    padding-block: 58px;
+  }
+
+  .founding-page .founding-hero h1 {
+    font-size: clamp(38px, 10vw, 54px);
+  }
+
+  .founding-page .founding-hero-actions,
+  .founding-page .founding-cta-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .founding-page .founding-hero-actions .btn {
+    justify-content: center;
+  }
+
+  .founding-page .founding-benefit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .founding-page .founding-benefit-card {
+    min-height: 0;
+  }
+
+  .founding-page .founding-tier-card {
+    padding: 23px;
+  }
+
+  .founding-page .founding-tier-heading {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .founding-page .founding-tier-commitment {
+    text-align: left;
+  }
+
+  .founding-page .founding-two-column {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .founding-page .founding-cta-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
 .contact-prefill-banner span {
   font-size: 11px;
   color: var(--muted-foreground);

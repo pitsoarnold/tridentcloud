@@ -15,6 +15,7 @@ import { Route as BuildRouteImport } from './routes/build'
 import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
+import { Route as FoundingClientsRouteImport } from './routes/founding-clients'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PulseRouteImport } from './routes/pulse'
@@ -50,6 +51,11 @@ const ContactRoute = ContactRouteImport.update({
 const EnterpriseRoute = EnterpriseRouteImport.update({
   id: '/enterprise',
   path: '/enterprise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundingClientsRoute = FoundingClientsRouteImport.update({
+  id: '/founding-clients',
+  path: '/founding-clients',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
+  '/founding-clients': typeof FoundingClientsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
+  '/founding-clients': typeof FoundingClientsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
+  '/founding-clients': typeof FoundingClientsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/calculator'
     | '/contact'
     | '/enterprise'
+    | '/founding-clients'
     | '/pricing'
     | '/privacy'
     | '/pulse'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/calculator'
     | '/contact'
     | '/enterprise'
+    | '/founding-clients'
     | '/pricing'
     | '/privacy'
     | '/pulse'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/calculator'
     | '/contact'
     | '/enterprise'
+    | '/founding-clients'
     | '/pricing'
     | '/privacy'
     | '/pulse'
@@ -178,6 +190,7 @@ export interface RootRouteChildren {
   CalculatorRoute: typeof CalculatorRoute
   ContactRoute: typeof ContactRoute
   EnterpriseRoute: typeof EnterpriseRoute
+  FoundingClientsRoute: typeof FoundingClientsRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   PulseRoute: typeof PulseRoute
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/enterprise'
       fullPath: '/enterprise'
       preLoaderRoute: typeof EnterpriseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founding-clients': {
+      id: '/founding-clients'
+      path: '/founding-clients'
+      fullPath: '/founding-clients'
+      preLoaderRoute: typeof FoundingClientsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -282,6 +302,7 @@ const rootRouteChildren: RootRouteChildren = {
   CalculatorRoute: CalculatorRoute,
   ContactRoute: ContactRoute,
   EnterpriseRoute: EnterpriseRoute,
+  FoundingClientsRoute: FoundingClientsRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   PulseRoute: PulseRoute,

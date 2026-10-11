@@ -131,6 +131,9 @@ export function Footer() {
               <li>
                 <Link to="/enterprise">Enterprise</Link>
               </li>
+              <li>
+                <Link to="/founding-clients">Founding Clients</Link>
+              </li>
             </ul>
           </div>
           <div>
