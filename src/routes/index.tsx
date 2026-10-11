@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pricing, FAQ } from "@/components/Pricing";
+import { SolutionChooser } from "@/components/SolutionChooser";
 import { FinalCTA } from "@/components/SiteChrome";
 import capeTown from "@/assets/cape-town-dusk.jpg";
 
@@ -519,6 +520,7 @@ function Home() {
         </div>
       </section>
 
+      <SolutionChooser />
       <ServicesSection />
       <CalculatorTeaser />
       <motion.div
