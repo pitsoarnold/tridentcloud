@@ -24,6 +24,7 @@ import {
 export type ServiceGroup = {
   label: string;
   icon: typeof Globe;
+  accent: "pulse" | "azure" | "azure-deep" | "violet" | "navy" | "teal" | "olive";
   items: string[];
 };
 
@@ -31,6 +32,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     label: "Trident Pulse (Subscription)",
     icon: Cloud,
+    accent: "pulse",
     items: [
       "Trident Pulse — Not sure of tier yet",
       "Pulse Starter — R499/mo",
@@ -41,6 +43,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     label: "Website Development",
     icon: Globe,
+    accent: "azure",
     items: [
       "Website Development — Not sure of tier yet",
       "Website — Starter (R8,500)",
@@ -51,6 +54,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     label: "Web Applications",
     icon: Layout,
+    accent: "azure-deep",
     items: [
       "Web Applications — Not sure of tier yet",
       "Web App — MVP (R35,000)",
@@ -61,6 +65,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     label: "Desktop Applications",
     icon: Monitor,
+    accent: "violet",
     items: [
       "Desktop Applications — Not sure of tier yet",
       "Desktop — Basic (R65,000)",
@@ -71,6 +76,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     label: "Enterprise Systems",
     icon: Building2,
+    accent: "navy",
     items: [
       "Enterprise Systems — Not sure of tier yet",
       "Enterprise — Integration (R120,000)",
@@ -81,6 +87,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     label: "ERP Solutions",
     icon: Database,
+    accent: "teal",
     items: [
       "ERP Solutions — Not sure of tier yet",
       "ERP — Small Business (R150,000)",
@@ -91,6 +98,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     label: "Cloud Hosting & Management",
     icon: Cloud,
+    accent: "olive",
     items: [
       "Cloud Hosting — Not sure of plan yet",
       "Managed Hosting",
@@ -102,6 +110,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     label: "Something else",
     icon: HelpCircle,
+    accent: "azure",
     items: ["Something else — I'll describe it below"],
   },
 ];
@@ -143,7 +152,11 @@ export function ServicePicker({
             {serviceGroups.map((group) => {
               const Icon = group.icon;
               return (
-                <CommandGroup key={group.label} heading={group.label}>
+                <CommandGroup
+                  key={group.label}
+                  heading={group.label}
+                  className={`service-picker-group service-picker-group-${group.accent}`}
+                >
                   {group.items.map((item) => (
                     <CommandItem
                       key={item}
@@ -152,9 +165,11 @@ export function ServicePicker({
                         onChange(item === value ? "" : item);
                         setOpen(false);
                       }}
-                      className="service-picker-item"
+                      className={`service-picker-item${value === item ? " is-selected" : ""}`}
                     >
-                      <Icon className="service-picker-item-icon" aria-hidden="true" />
+                      <span className="service-picker-item-thumb" aria-hidden="true">
+                        <Icon />
+                      </span>
                       <span className="service-picker-item-label">
                         {item.includes(" — ") ? (
                           <>
@@ -166,7 +181,7 @@ export function ServicePicker({
                             </span>
                           </>
                         ) : (
-                          item
+                          <span className="service-picker-item-primary">{item}</span>
                         )}
                       </span>
                       {value === item && <Check className="service-picker-item-check" />}

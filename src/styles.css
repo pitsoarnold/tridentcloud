@@ -2905,6 +2905,12 @@
 }
 
 .service-picker-content {
+  --pick-accent-pulse: var(--rust, #e63946);
+  --pick-accent-azure: var(--azure, #3b82f6);
+  --pick-accent-violet: var(--violet, #8b5cf6);
+  --pick-accent-navy: var(--navy, #0a2240);
+  --pick-accent-teal: #14b8a6;
+  --pick-accent-olive: #84cc16;
   width: var(--radix-popover-trigger-width);
   max-width: 500px;
   padding: 0;
@@ -2931,55 +2937,129 @@
 }
 
 .service-picker-content [cmdk-group-heading] {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.6px;
   color: var(--muted-foreground);
-  padding: 10px 10px 6px;
+  padding: 18px 10px 7px;
   opacity: 0.85;
+}
+
+.service-picker-content
+  [cmdk-group]:not([hidden])
+  ~ [cmdk-group]:not([hidden])
+  [cmdk-group-heading] {
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 17px;
+}
+
+.service-picker-content .service-picker-group-pulse {
+  --service-picker-accent: var(--pick-accent-pulse);
+}
+
+.service-picker-content .service-picker-group-azure {
+  --service-picker-accent: var(--pick-accent-azure);
+}
+
+.service-picker-content .service-picker-group-azure-deep {
+  --service-picker-accent: color-mix(in oklch, var(--pick-accent-azure) 72%, var(--navy));
+}
+
+.service-picker-content .service-picker-group-violet {
+  --service-picker-accent: var(--pick-accent-violet);
+}
+
+.service-picker-content .service-picker-group-navy {
+  --service-picker-accent: var(--pick-accent-navy);
+}
+
+.service-picker-content .service-picker-group-teal {
+  --service-picker-accent: var(--pick-accent-teal);
+}
+
+.service-picker-content .service-picker-group-olive {
+  --service-picker-accent: var(--pick-accent-olive);
+}
+
+.service-picker-content .service-picker-group [cmdk-group-items] {
+  display: grid;
+  gap: 6px;
 }
 
 .service-picker-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
+  gap: 12px;
+  padding: 10px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-size: 14px;
   color: var(--foreground);
+  transition: background-color 0.2s ease;
 }
+.service-picker-item:hover,
 .service-picker-item[data-selected="true"] {
-  background: var(--accent);
+  background: color-mix(in oklch, var(--service-picker-accent) 6%, transparent);
 }
-.service-picker-item-icon {
-  width: 16px;
-  height: 16px;
-  color: var(--azure);
+.service-picker-item-thumb {
+  display: grid;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
+  place-items: center;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--service-picker-accent) 15%, transparent);
+  color: var(--service-picker-accent);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+.service-picker-item-thumb svg {
+  width: 14px;
+  height: 14px;
+}
+.service-picker-item:hover .service-picker-item-thumb {
+  transform: scale(1.08);
+}
+.service-picker-item.is-selected .service-picker-item-thumb {
+  border-color: var(--service-picker-accent);
 }
 .service-picker-item-label {
-  flex: 1;
+  min-width: 0;
+  flex: 1 1 auto;
   display: flex;
+  justify-content: space-between;
   gap: 8px;
   align-items: baseline;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .service-picker-item-primary {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
   font-weight: 600;
   color: var(--foreground);
 }
+.service-picker-item.is-selected .service-picker-item-primary {
+  font-weight: 700;
+}
 .service-picker-item-secondary {
+  flex: 0 0 auto;
+  margin-left: auto;
+  text-align: right;
   font-size: 12px;
   color: var(--muted-foreground);
 }
 .service-picker-item-check {
   width: 15px;
   height: 15px;
-  color: var(--azure);
+  color: var(--service-picker-accent);
   flex-shrink: 0;
 }
 
