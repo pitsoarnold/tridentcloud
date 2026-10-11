@@ -33,7 +33,7 @@ export const getFoundingAvailability = createServerFn({ method: "GET" }).handler
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data: config, error: configError } = await supabaseAdmin
     .from("founding_client_config")
-    .select("is_active, total_spots")
+    .select("is_active, total_spots, manual_taken")
     .single();
 
   if (configError) {
@@ -60,7 +60,7 @@ export const getFoundingAvailability = createServerFn({ method: "GET" }).handler
 
   return {
     isActive: true,
-    filledSpots: count,
+    filledSpots: Math.min(config.total_spots, config.manual_taken ?? count),
     totalSpots: config.total_spots,
   };
 });
