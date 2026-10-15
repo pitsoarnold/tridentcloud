@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BuildRouteImport } from './routes/build'
 import { Route as CalculatorRouteImport } from './routes/calculator'
+import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
 import { Route as FoundingClientsRouteImport } from './routes/founding-clients'
@@ -41,6 +42,11 @@ const BuildRoute = BuildRouteImport.update({
 const CalculatorRoute = CalculatorRouteImport.update({
   id: '/calculator',
   path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseStudiesRoute = CaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
   '/calculator': typeof CalculatorRoute
+  '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
   '/founding-clients': typeof FoundingClientsRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
   '/calculator': typeof CalculatorRoute
+  '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
   '/founding-clients': typeof FoundingClientsRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/build': typeof BuildRoute
   '/calculator': typeof CalculatorRoute
+  '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/enterprise': typeof EnterpriseRoute
   '/founding-clients': typeof FoundingClientsRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/build'
     | '/calculator'
+    | '/case-studies'
     | '/contact'
     | '/enterprise'
     | '/founding-clients'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/build'
     | '/calculator'
+    | '/case-studies'
     | '/contact'
     | '/enterprise'
     | '/founding-clients'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/build'
     | '/calculator'
+    | '/case-studies'
     | '/contact'
     | '/enterprise'
     | '/founding-clients'
@@ -188,6 +200,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BuildRoute: typeof BuildRoute
   CalculatorRoute: typeof CalculatorRoute
+  CaseStudiesRoute: typeof CaseStudiesRoute
   ContactRoute: typeof ContactRoute
   EnterpriseRoute: typeof EnterpriseRoute
   FoundingClientsRoute: typeof FoundingClientsRoute
@@ -227,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/calculator'
       fullPath: '/calculator'
       preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies': {
+      id: '/case-studies'
+      path: '/case-studies'
+      fullPath: '/case-studies'
+      preLoaderRoute: typeof CaseStudiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -300,6 +320,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BuildRoute: BuildRoute,
   CalculatorRoute: CalculatorRoute,
+  CaseStudiesRoute: CaseStudiesRoute,
   ContactRoute: ContactRoute,
   EnterpriseRoute: EnterpriseRoute,
   FoundingClientsRoute: FoundingClientsRoute,
