@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Pricing, FAQ } from "@/components/Pricing";
 import { SolutionChooser } from "@/components/SolutionChooser";
 import { FinalCTA } from "@/components/SiteChrome";
+import { useFoundingStatus as useStatus } from "@/lib/useFoundingStatus";
 import capeTown from "@/assets/cape-town-dusk.jpg";
 
 const revealViewport = { once: true, margin: "-80px" as const };
@@ -308,6 +309,42 @@ export function CalculatorTeaser() {
   );
 }
 
+function FoundingPromo() {
+  const { isActive, isFull, filledSpots, totalSpots, isLoading } = useStatus();
+
+  if (isLoading || !isActive || isFull) return null;
+
+  return (
+    <Reveal>
+      <section className="founding-promo">
+        <div className="site-container">
+          <div className="founding-promo-card">
+            <div className="founding-promo-eyebrow">FOUNDING CLIENT PROGRAMME</div>
+            <h2 className="founding-promo-title">
+              First 10 clients. <em>Real partnership.</em>
+            </h2>
+            <div className="founding-promo-counter">
+              <span className="founding-promo-counter-num">{filledSpots}</span>
+              <span className="founding-promo-counter-sep">of</span>
+              <span className="founding-promo-counter-num">{totalSpots}</span>
+              <span className="founding-promo-counter-label">spots filled</span>
+            </div>
+            <p className="founding-promo-body">
+              Special pricing locked for 12 months, a free AI sales assistant, and direct founder
+              access. Built for the businesses that move first.
+            </p>
+            <Button asChild className="btn btn-primary">
+              <Link to="/founding-clients">
+                See the programme <ArrowRight />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+    </Reveal>
+  );
+}
+
 function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const [pricingVisible, setPricingVisible] = useState(false);
@@ -521,6 +558,7 @@ function Home() {
       </section>
 
       <SolutionChooser />
+      <FoundingPromo />
       <ServicesSection />
       <CalculatorTeaser />
       <motion.div

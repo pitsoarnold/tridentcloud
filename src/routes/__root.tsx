@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { Header, Footer, WhatsApp } from "@/components/SiteChrome";
+import { AnnouncementBar } from "@/components/AnnouncementBar";
 
 import appCss from "../styles.css?url";
 import { reportClientError } from "../lib/error-reporting";
@@ -127,6 +128,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <AnnouncementBar />
       <Header />
       <Outlet />
       <Footer />
