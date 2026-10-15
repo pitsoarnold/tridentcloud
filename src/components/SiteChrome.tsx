@@ -146,7 +146,7 @@ export function Footer() {
                 <Link to="/why-trident">Why Trident</Link>
               </li>
               <li>
-                <Link to="/case-studies">Case Studies</Link>
+                <Link to="/case-studies">Client Work</Link>
               </li>
               <li>
                 <Link to="/contact" search={{ plan: undefined }}>

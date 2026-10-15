@@ -41,7 +41,9 @@ type CaseStudy = {
   description: string;
   features: string[];
   stats: { value: string; label: string }[];
+  rowClass: "case-study-row";
   href?: string;
+  browserUrl: string;
   image: string;
   imageAlt: string;
   imageSide: "left" | "right";
@@ -68,7 +70,9 @@ const caseStudies: CaseStudy[] = [
       { value: "100%", label: "Uptime since launch" },
       { value: "24/7", label: "Automated monitoring" },
     ],
+    rowClass: "case-study-row",
     href: "https://auctionbidpro.co.ls",
+    browserUrl: "auctionbidpro.co.ls",
     image: "/case-studies/abp-home.png",
     imageAlt: "Vehicle auction platform website homepage",
     imageSide: "left",
@@ -93,7 +97,9 @@ const caseStudies: CaseStudy[] = [
       { value: "100%", label: "Uptime since launch" },
       { value: "24/7", label: "Automated monitoring" },
     ],
+    rowClass: "case-study-row",
     href: "https://homelytaste.co.ls",
+    browserUrl: "homelytaste.co.ls",
     image: "/case-studies/homelytaste-home.png",
     imageAlt: "Bakery products and ordering website homepage",
     imageSide: "right",
@@ -118,6 +124,8 @@ const caseStudies: CaseStudy[] = [
       { value: "99.9%", label: "Uptime since launch" },
       { value: "API‑first", label: "Integrations ready" },
     ],
+    rowClass: "case-study-row",
+    browserUrl: "app.orbitvision.co.za",
     image: "/case-studies/orbitvision-dashboard.png",
     imageAlt: "Fleet management and vehicle tracking dashboard",
     imageSide: "left",
@@ -147,26 +155,36 @@ const approachPrinciples = [
 function CaseStudyCard({ study }: { study: CaseStudy }) {
   const image = (
     <motion.div
-      className="case-studies-featured-image"
+      className="case-study-browser"
       initial={{ opacity: 0, scale: 1.04 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={revealViewport}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
-      <img src={study.image} alt={study.imageAlt} loading="lazy" />
+      <div className="case-study-browser-bar" aria-hidden="true">
+        <span className="case-study-browser-dot" />
+        <span className="case-study-browser-dot" />
+        <span className="case-study-browser-dot" />
+        <span className="case-study-browser-url">{study.browserUrl}</span>
+      </div>
+      <div className="case-study-browser-viewport">
+        <img src={study.image} alt={study.imageAlt} loading="lazy" />
+      </div>
     </motion.div>
   );
 
   const content = (
-    <div className="case-studies-featured-content">
-      <span className="eyebrow">{study.eyebrow}</span>
-      <h2 id={`case-study-title-${study.id}`}>{study.title}</h2>
-      <p className="case-studies-subtitle">{study.subtitle}</p>
-      <p className="case-studies-featured-description">
+    <div className="case-study-content">
+      <span className="case-study-eyebrow">{study.eyebrow}</span>
+      <h2 className="case-study-title" id={`case-study-title-${study.id}`}>
+        {study.title}
+      </h2>
+      <p className="case-study-subtitle">{study.subtitle}</p>
+      <p className="case-study-description">
         {study.description.replace("{{title}}", study.title)}
       </p>
 
-      <div className="case-studies-built">
+      <div className="case-study-built">
         <h3>What we built</h3>
         <motion.ul
           variants={staggerContainer}
@@ -183,7 +201,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         </motion.ul>
       </div>
 
-      <div className="case-studies-stats" aria-label="Project results">
+      <div className="case-study-stats" aria-label="Project results">
         {study.stats.map(({ value, label }) => (
           <div key={label}>
             <strong>{value}</strong>
@@ -194,7 +212,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
 
       {study.href && (
         <a
-          className="case-studies-visit-link"
+          className="case-study-visit-link"
           href={study.href}
           target="_blank"
           rel="noopener noreferrer"
@@ -208,20 +226,11 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
   return (
     <Reveal>
       <article
-        className="case-studies-featured-card"
+        className={`${study.rowClass}${study.imageSide === "right" ? " reverse" : ""}`}
         aria-labelledby={`case-study-title-${study.id}`}
       >
-        {study.imageSide === "left" ? (
-          <>
-            {image}
-            {content}
-          </>
-        ) : (
-          <>
-            {content}
-            {image}
-          </>
-        )}
+        {image}
+        {content}
       </article>
     </Reveal>
   );
@@ -230,7 +239,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
 function CaseStudies() {
   return (
     <section className="case-studies-featured-section" aria-label="Client case studies">
-      <div className="site-container case-studies-list" style={{ display: "grid", gap: "32px" }}>
+      <div className="site-container case-studies-list">
         {caseStudies.map((study) => (
           <CaseStudyCard key={study.id} study={study} />
         ))}
