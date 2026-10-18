@@ -1333,7 +1333,7 @@
           title: String(formData.get("title") || "").trim(),
           subtitle: String(formData.get("subtitle") || "").trim(),
           category: String(formData.get("category") || "").trim(),
-          domain_url: String(formData.get("domain_url") || "").trim(),
+          domain: String(formData.get("domain") || "").trim(),
           description: String(formData.get("description") || "").trim(),
           image_url: String(formData.get("image_url") || "").trim(),
           bullets: parseLines(String(formData.get("bullets") || "")),
@@ -2136,7 +2136,7 @@
           <tr>
             <td style="font-weight:600;">${escapeHtml(study.title)}</td>
             <td style="color:var(--muted);">${escapeHtml(study.category) || "—"}</td>
-            <td style="color:var(--muted);">${escapeHtml(study.domain_url) || "—"}</td>
+            <td style="color:var(--muted);">${escapeHtml(study.domain) || "—"}</td>
             <td style="white-space:nowrap;">
               <button class="btn btn-outline btn-sm" onclick="openCaseStudyForm('${escapeHtml(study.id)}')">Edit</button>
               <button class="btn btn-outline btn-sm" style="color:#f87171;border-color:rgba(248,113,113,0.3);" onclick="deleteCaseStudy('${escapeHtml(study.id)}')">Delete</button>
@@ -2173,7 +2173,7 @@
           <div class="form-field"><label class="form-label">Subtitle</label><input class="form-input" name="subtitle" value="${escapeHtml(study?.subtitle || "")}"></div>
           <div class="founding-settings-grid">
             <div class="form-field"><label class="form-label">Category</label><input class="form-input" name="category" value="${escapeHtml(study?.category || "")}"></div>
-            <div class="form-field"><label class="form-label">Domain URL</label><input class="form-input" name="domain_url" type="url" value="${escapeHtml(study?.domain_url || "")}"></div>
+            <div class="form-field"><label class="form-label">Domain URL</label><input class="form-input" name="domain" type="url" value="${escapeHtml(study?.domain || "")}"></div>
           </div>
           <div class="form-field"><label class="form-label">Description</label><textarea class="form-input" name="description" rows="4">${escapeHtml(study?.description || "")}</textarea></div>
           <div class="form-field"><label class="form-label">Image URL</label><input class="form-input" name="image_url" type="text" value="${escapeHtml(study?.image_url || "")}"></div>
