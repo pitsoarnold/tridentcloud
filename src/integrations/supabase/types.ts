@@ -8,6 +8,45 @@ export type Database = {
   };
   public: {
     Tables: {
+      case_studies: {
+        Row: {
+          bullets: string[];
+          category: string;
+          description: string;
+          domain: string;
+          id: string;
+          image_url: string;
+          sort_order: number;
+          stats: { value: string; label: string }[];
+          subtitle: string;
+          title: string;
+        };
+        Insert: {
+          bullets?: string[];
+          category: string;
+          description: string;
+          domain: string;
+          id?: string;
+          image_url: string;
+          sort_order?: number;
+          stats?: { value: string; label: string }[];
+          subtitle: string;
+          title: string;
+        };
+        Update: {
+          bullets?: string[];
+          category?: string;
+          description?: string;
+          domain?: string;
+          id?: string;
+          image_url?: string;
+          sort_order?: number;
+          stats?: { value: string; label: string }[];
+          subtitle?: string;
+          title?: string;
+        };
+        Relationships: [];
+      };
       contact_enquiries: {
         Row: {
           company: string | null;

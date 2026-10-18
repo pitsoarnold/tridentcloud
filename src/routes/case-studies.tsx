@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { motion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { ArrowRight, ClipboardCheck, Handshake, Server } from "lucide-react";
 import { FinalCTA, PageIntro } from "@/components/SiteChrome";
+import { supabase } from "@/integrations/supabase/client";
 
 const revealViewport = { once: true, margin: "-80px" as const };
 
@@ -36,101 +38,15 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
 type CaseStudy = {
   id: string;
   title: string;
-  eyebrow: string;
   subtitle: string;
+  category: string;
+  domain: string;
   description: string;
-  features: string[];
+  image_url: string;
+  bullets: string[];
   stats: { value: string; label: string }[];
-  rowClass: "case-study-row";
-  href?: string;
-  browserUrl: string;
-  image: string;
-  imageAlt: string;
-  imageSide: "left" | "right";
+  sort_order: number;
 };
-
-const caseStudies: CaseStudy[] = [
-  {
-    id: "auction-bid-pro",
-    title: "Auction Bid Pro",
-    eyebrow: "AUTOMOTIVE AUCTION HOUSE · LESOTHO",
-    subtitle: "Auction platform for a Lesotho vehicle auction house",
-    description:
-      "{{title}} runs physical vehicle auctions. When they needed a professional online presence to capture seller bookings and bidder applications, they came to us. The site handles appointments, bidder registrations, and enquiries end-to-end — with WhatsApp notifications on every submission.",
-    features: [
-      "Public site (services, portfolio, contact)",
-      "Seller appointment booking system",
-      "Bidder application form with approval workflow",
-      "Admin dashboard for managing enquiries",
-      "Dual email notifications (admin + applicant)",
-      "Deployed on our managed infrastructure",
-    ],
-    stats: [
-      { value: "< 5 days", label: "Time to first deploy" },
-      { value: "100%", label: "Uptime since launch" },
-      { value: "24/7", label: "Automated monitoring" },
-    ],
-    rowClass: "case-study-row",
-    href: "https://auctionbidpro.co.ls",
-    browserUrl: "auctionbidpro.co.ls",
-    image: "/case-studies/abp-home.png",
-    imageAlt: "Vehicle auction platform website homepage",
-    imageSide: "left",
-  },
-  {
-    id: "homely-taste",
-    title: "Homely Taste",
-    eyebrow: "BAKERY · LESOTHO",
-    subtitle: "E‑commerce and order management for a local bakery",
-    description:
-      "{{title}} needed a simple way to showcase their products, take orders, and manage prices. We built a fully dynamic site with an admin panel where they can update products, prices, and contact details — all without touching code. Customers can browse, place orders via WhatsApp, and see banking details instantly.",
-    features: [
-      "Public product catalogue with per‑cookie pricing",
-      "Order form integrated with WhatsApp",
-      "Admin panel for products, prices, and site settings",
-      "Supabase backend with real‑time updates",
-      "Contact page with banking and M‑Pesa details",
-      "Deployed on our managed infrastructure",
-    ],
-    stats: [
-      { value: "2 days", label: "Time to first deploy" },
-      { value: "100%", label: "Uptime since launch" },
-      { value: "24/7", label: "Automated monitoring" },
-    ],
-    rowClass: "case-study-row",
-    href: "https://homelytaste.co.ls",
-    browserUrl: "homelytaste.co.ls",
-    image: "/case-studies/homelytaste-home.png",
-    imageAlt: "Bakery products and ordering website homepage",
-    imageSide: "right",
-  },
-  {
-    id: "orbitvision",
-    title: "OrbitVision",
-    eyebrow: "LOGISTICS · FLEET MANAGEMENT",
-    subtitle: "Fleet operations dashboard for a CTMS provider",
-    description:
-      "{{title}} provides fleet management and telematics solutions. They needed a real‑time dashboard to track vehicles, drivers, and deliveries. We built a web‑based operations centre that integrates GPS data, driver check‑ins, and daily reporting — giving their team a single view of the entire fleet.",
-    features: [
-      "Real‑time fleet tracking dashboard",
-      "GPS integration (Traccar)",
-      "Driver check‑in and delivery tracking",
-      "Operational reporting and alerts",
-      "Role-based access for dispatch and management",
-      "Deployed on our managed infrastructure",
-    ],
-    stats: [
-      { value: "Real‑time", label: "Vehicle tracking" },
-      { value: "99.9%", label: "Uptime since launch" },
-      { value: "API‑first", label: "Integrations ready" },
-    ],
-    rowClass: "case-study-row",
-    browserUrl: "app.orbitvision.co.za",
-    image: "/case-studies/orbitvision-dashboard.png",
-    imageAlt: "Fleet management and vehicle tracking dashboard",
-    imageSide: "left",
-  },
-];
 
 const approachPrinciples = [
   {
@@ -152,7 +68,10 @@ const approachPrinciples = [
   },
 ];
 
-function CaseStudyCard({ study }: { study: CaseStudy }) {
+function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
+  const domainUrl = study.domain.startsWith("http") ? study.domain : `https://${study.domain}`;
+  const browserUrl = study.domain.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  const imageSide = index % 2 === 1 ? "right" : "left";
   const image = (
     <motion.div
       className="case-study-browser"
@@ -165,17 +84,17 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         <span className="case-study-browser-dot" />
         <span className="case-study-browser-dot" />
         <span className="case-study-browser-dot" />
-        <span className="case-study-browser-url">{study.browserUrl}</span>
+        <span className="case-study-browser-url">{browserUrl}</span>
       </div>
       <div className="case-study-browser-viewport">
-        <img src={study.image} alt={study.imageAlt} loading="lazy" />
+        <img src={study.image_url} alt={`${study.title} project preview`} loading="lazy" />
       </div>
     </motion.div>
   );
 
   const content = (
     <div className="case-study-content">
-      <span className="case-study-eyebrow">{study.eyebrow}</span>
+      <span className="case-study-eyebrow">{study.category}</span>
       <h2 className="case-study-title" id={`case-study-title-${study.id}`}>
         {study.title}
       </h2>
@@ -192,10 +111,10 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
           whileInView="visible"
           viewport={revealViewport}
         >
-          {study.features.map((feature) => (
-            <motion.li variants={revealItem} key={feature}>
+          {study.bullets.map((bullet) => (
+            <motion.li variants={revealItem} key={bullet}>
               <span aria-hidden="true">✓</span>
-              {feature}
+              {bullet}
             </motion.li>
           ))}
         </motion.ul>
@@ -210,14 +129,14 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         ))}
       </div>
 
-      {study.href && (
+      {study.domain && (
         <a
           className="case-study-visit-link"
-          href={study.href}
+          href={domainUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Visit {study.href.replace(/^https?:\/\//, "")} <ArrowRight aria-hidden="true" />
+          Visit {browserUrl} <ArrowRight aria-hidden="true" />
         </a>
       )}
     </div>
@@ -226,7 +145,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
   return (
     <Reveal>
       <article
-        className={`${study.rowClass}${study.imageSide === "right" ? " reverse" : ""}`}
+        className={`case-study-row${imageSide === "right" ? " reverse" : ""}`}
         aria-labelledby={`case-study-title-${study.id}`}
       >
         {image}
@@ -236,13 +155,27 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
   );
 }
 
-function CaseStudies() {
+function CaseStudies({
+  caseStudies,
+  isLoading,
+  hasError,
+}: {
+  caseStudies: CaseStudy[];
+  isLoading: boolean;
+  hasError: boolean;
+}) {
+  if (isLoading) return null;
+
   return (
     <section className="case-studies-featured-section" aria-label="Client case studies">
       <div className="site-container case-studies-list">
-        {caseStudies.map((study) => (
-          <CaseStudyCard key={study.id} study={study} />
-        ))}
+        {hasError ? (
+          <p role="status">Client case studies are temporarily unavailable.</p>
+        ) : (
+          caseStudies.map((study, index) => (
+            <CaseStudyCard key={study.id} study={study} index={index} />
+          ))
+        )}
       </div>
     </section>
   );
@@ -288,6 +221,19 @@ function ClientWorkApproach() {
 }
 
 function CaseStudiesPage() {
+  const {
+    data: caseStudies = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["case-studies"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("case_studies").select("*").order("sort_order");
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <main className="case-studies-page">
       <PageIntro
@@ -295,7 +241,7 @@ function CaseStudiesPage() {
         title="Systems we've built and run."
         description="Real projects. Real clients. Real systems in production. Every case study shows what we built, what it does, and how it's running today."
       />
-      <CaseStudies />
+      <CaseStudies caseStudies={caseStudies} isLoading={isLoading} hasError={isError} />
       <ClientWorkApproach />
       <FinalCTA />
     </main>

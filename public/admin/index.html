@@ -931,6 +931,13 @@
       .modal-body {
         padding: 24px 32px;
       }
+      .modal .form-field {
+        margin-bottom: 16px;
+      }
+      .modal textarea.form-input {
+        resize: vertical;
+        min-height: 90px;
+      }
       .modal-footer {
         padding: 20px 32px;
         border-top: 1px solid var(--border);
@@ -1071,6 +1078,10 @@
         foundingConfig: null,
         foundingFilter: "all",
         selectedFoundingApplication: null,
+        caseStudies: [],
+        selectedCaseStudy: null,
+        pulseSubscriptions: [],
+        selectedPulseSubscription: null,
       };
 
       // ════════════════════════════════════════════════════════════════════
@@ -1162,6 +1173,10 @@
         state.foundingApplications = [];
         state.foundingConfig = null;
         state.selectedFoundingApplication = null;
+        state.caseStudies = [];
+        state.selectedCaseStudy = null;
+        state.pulseSubscriptions = [];
+        state.selectedPulseSubscription = null;
         state.view = "dashboard";
         render();
       }
@@ -1200,7 +1215,34 @@
         render();
       }
 
+      async function loadCaseStudies() {
+        const { data, error } = await sb.from("case_studies").select("*").order("sort_order");
+        if (error) {
+          toast("Failed to load Case Studies: " + error.message, "error");
+          return;
+        }
+        state.caseStudies = data || [];
+        render();
+      }
+
+      async function loadPulseSubscriptions() {
+        const { data, error } = await sb
+          .from("pulse_subscriptions")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) {
+          toast("Failed to load Pulse Subscriptions: " + error.message, "error");
+          return;
+        }
+        state.pulseSubscriptions = data || [];
+        render();
+      }
+
       async function updateStatus(id, status) {
+        if (!["new", "contacted", "qualified", "won", "lost", "archived"].includes(status)) {
+          toast("Invalid enquiry status.", "error");
+          return;
+        }
         const { error } = await sb.from("contact_enquiries").update({ status }).eq("id", id);
         if (error) {
           toast("Update failed: " + error.message, "error");
@@ -1209,6 +1251,164 @@
         toast("Status updated to " + status, "success");
         await loadEnquiries();
         closeModal();
+      }
+
+      function csvEscape(value) {
+        const text = value === null || value === undefined ? "" : String(value);
+        return '"' + text.replace(/"/g, '""') + '"';
+      }
+
+      function downloadCsv(filename, rows) {
+        const csv = rows.map((row) => row.map(csvEscape).join(",")).join("\r\n");
+        const url = URL.createObjectURL(
+          new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" }),
+        );
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+
+      function exportEnquiriesCsv() {
+        const filtered =
+          state.filter === "all"
+            ? state.enquiries
+            : state.enquiries.filter((enquiry) => enquiry.status === state.filter);
+        downloadCsv("enquiries.csv", [
+          ["Name", "Email", "Company", "Plan", "Message", "Status", "Date"],
+          ...filtered.map((enquiry) => [
+            enquiry.name,
+            enquiry.email,
+            enquiry.company,
+            enquiry.plan,
+            enquiry.message,
+            enquiry.status,
+            enquiry.created_at,
+          ]),
+        ]);
+      }
+
+      function exportFoundingCsv() {
+        const filtered =
+          state.foundingFilter === "all"
+            ? state.foundingApplications
+            : state.foundingApplications.filter(
+                (application) => application.status === state.foundingFilter,
+              );
+        downloadCsv("founding-clients.csv", [
+          ["Name", "Email", "Company", "Plan", "Message", "Status", "Date"],
+          ...filtered.map((application) => [
+            application.name,
+            application.email,
+            application.business_name,
+            foundingTierLabel(application.preferred_tier),
+            application.message,
+            application.status,
+            application.created_at,
+          ]),
+        ]);
+      }
+
+      function parseLines(value) {
+        return value
+          .split(/\r?\n/)
+          .map((line) => line.trim())
+          .filter(Boolean);
+      }
+
+      async function saveCaseStudy(form) {
+        const formData = new FormData(form);
+        const stats = parseLines(String(formData.get("stats") || "")).map((line) => {
+          const separator = line.indexOf("|");
+          if (separator === -1) return { value: line, label: "" };
+          return {
+            value: line.slice(0, separator).trim(),
+            label: line.slice(separator + 1).trim(),
+          };
+        });
+        const record = {
+          title: String(formData.get("title") || "").trim(),
+          subtitle: String(formData.get("subtitle") || "").trim(),
+          category: String(formData.get("category") || "").trim(),
+          domain_url: String(formData.get("domain_url") || "").trim(),
+          description: String(formData.get("description") || "").trim(),
+          image_url: String(formData.get("image_url") || "").trim(),
+          bullets: parseLines(String(formData.get("bullets") || "")),
+          stats,
+          sort_order: Number(formData.get("sort_order")),
+        };
+        if (!record.title || !Number.isFinite(record.sort_order)) {
+          toast("Enter a title and valid sort order.", "error");
+          return;
+        }
+        const id = formData.get("id");
+        const result = id
+          ? await sb.from("case_studies").update(record).eq("id", id)
+          : await sb.from("case_studies").insert(record);
+        if (result.error) {
+          toast("Case Study save failed: " + result.error.message, "error");
+          return;
+        }
+        toast(id ? "Case Study updated" : "Case Study created", "success");
+        closeModal();
+        await loadCaseStudies();
+      }
+
+      async function deleteCaseStudy(id) {
+        if (!confirm("Delete this case study permanently? This cannot be undone.")) return;
+        const { error } = await sb.from("case_studies").delete().eq("id", id);
+        if (error) {
+          toast("Delete failed: " + error.message, "error");
+          return;
+        }
+        toast("Case Study deleted", "success");
+        await loadCaseStudies();
+      }
+
+      async function savePulseSubscription(form) {
+        const formData = new FormData(form);
+        const record = {
+          client_name: String(formData.get("name") || "").trim(),
+          email: String(formData.get("email") || "").trim(),
+          tier: String(formData.get("tier") || "").trim(),
+          amount: Number(formData.get("amount")),
+          next_billing_date: String(formData.get("next_billing_date") || "") || null,
+          status: String(formData.get("status") || "active"),
+        };
+        if (
+          !record.client_name ||
+          !record.email ||
+          !record.tier ||
+          !Number.isFinite(record.amount)
+        ) {
+          toast("Enter valid subscription details.", "error");
+          return;
+        }
+        const id = formData.get("id");
+        const result = id
+          ? await sb.from("pulse_subscriptions").update(record).eq("id", id)
+          : await sb.from("pulse_subscriptions").insert(record);
+        if (result.error) {
+          toast("Subscription save failed: " + result.error.message, "error");
+          return;
+        }
+        toast(id ? "Subscription updated" : "Subscription created", "success");
+        closeModal();
+        await loadPulseSubscriptions();
+      }
+
+      async function deletePulseSubscription(id) {
+        if (!confirm("Delete this subscription permanently? This cannot be undone.")) return;
+        const { error } = await sb.from("pulse_subscriptions").delete().eq("id", id);
+        if (error) {
+          toast("Delete failed: " + error.message, "error");
+          return;
+        }
+        toast("Subscription deleted", "success");
+        await loadPulseSubscriptions();
       }
 
       async function deleteEnquiry(id) {
@@ -1354,7 +1554,7 @@
       <main class="main">
         ${renderTopbar()}
         <div class="content">
-          ${state.view === "dashboard" ? renderDashboard() : state.view === "enquiries" ? renderEnquiriesView() : renderFoundingClientsView()}
+          ${state.view === "dashboard" ? renderDashboard() : state.view === "enquiries" ? renderEnquiriesView() : state.view === "founding-clients" ? renderFoundingClientsView() : state.view === "case-studies" ? renderCaseStudiesView() : state.view === "pulse" ? renderPulseView() : ""}
         </div>
       </main>
     </div>
@@ -1400,6 +1600,16 @@
       <div class="nav-section">PROGRAMMES</div>
       <button class="nav-item ${state.view === "founding-clients" ? "active" : ""}" onclick="switchView('founding-clients')">
         <i data-lucide="users"></i><span>Founding Clients</span><span class="badge-count">${state.foundingApplications.filter((a) => a.status === "new").length}</span>
+      </button>
+
+      <div class="nav-section">Content</div>
+      <button class="nav-item ${state.view === "case-studies" ? "active" : ""}" onclick="switchView('case-studies')">
+        <i data-lucide="layout"></i><span>Case Studies</span>
+      </button>
+
+      <div class="nav-section">Revenue</div>
+      <button class="nav-item ${state.view === "pulse" ? "active" : ""}" onclick="switchView('pulse')">
+        <i data-lucide="credit-card"></i><span>Pulse Subscriptions</span>
       </button>
 
       <div class="nav-section">System</div>
@@ -1706,6 +1916,7 @@
           qualified: "Qualified",
           won: "Won",
           lost: "Lost",
+          archived: "Archived Enquiries",
         };
         return `
     <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:24px;">
@@ -1714,6 +1925,7 @@
         <p style="font-size:13px;color:var(--dim);margin-top:4px;">${state.enquiries.length} total enquiries</p>
       </div>
       <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="exportEnquiriesCsv()"><i data-lucide="download"></i> Download CSV</button>
         <button class="btn btn-outline btn-sm" onclick="switchView('dashboard')"><i data-lucide="arrow-left"></i> Back</button>
         <button class="btn btn-outline btn-sm" onclick="loadEnquiries()"><i data-lucide="refresh-cw"></i> Refresh</button>
       </div>
@@ -1721,7 +1933,7 @@
       }
 
       function renderFilters() {
-        const filters = ["all", "new", "contacted", "qualified", "won", "lost"];
+        const filters = ["all", "new", "contacted", "qualified", "won", "lost", "archived"];
         return `
     <div class="filters">
       ${filters
@@ -1776,7 +1988,18 @@
               <td style="color:var(--muted);">${escapeHtml(e.company) || "—"}</td>
               <td style="color:var(--muted);">${escapeHtml(e.system_count) || "—"}</td>
               <td style="color:var(--muted);">${escapeHtml(e.plan) || "—"}</td>
-              <td><span class="badge ${e.status}">${e.status}</span></td>
+              <td onclick="event.stopPropagation()">
+                <select class="form-input" aria-label="Update status for ${escapeHtml(e.name)}"
+                  style="width:auto;min-width:112px;padding:7px 9px;font-size:12px;"
+                  onchange="updateStatus('${escapeHtml(e.id)}',this.value)">
+                  ${[...new Set(["new", "contacted", "won", "archived", e.status])]
+                    .map(
+                      (status) =>
+                        `<option value="${status}" ${e.status === status ? "selected" : ""}>${status}</option>`,
+                    )
+                    .join("")}
+                </select>
+              </td>
             </tr>
           `,
             )
@@ -1802,6 +2025,10 @@
 
       function renderFoundingClientsView() {
         return `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div><h1 style="font-size:26px;font-weight:700;letter-spacing:-0.5px;">Founding Clients</h1><p style="font-size:13px;color:var(--dim);margin-top:4px;">Manage programme applications</p></div>
+      <button class="btn btn-outline btn-sm" onclick="exportFoundingCsv()"><i data-lucide="download"></i> Download CSV</button>
+    </div>
     ${renderFoundingStats()}
     ${renderFoundingFilters()}
     ${renderFoundingTable()}
@@ -1889,6 +2116,153 @@
         </tbody>
       </table>
     </div>`;
+      }
+
+      function renderCaseStudiesView() {
+        return `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <div><h1 style="font-size:26px;font-weight:700;letter-spacing:-0.5px;">Case Studies</h1><p style="font-size:13px;color:var(--dim);margin-top:4px;">Manage published project stories</p></div>
+    <button class="btn btn-primary btn-sm" onclick="openCaseStudyForm()"><i data-lucide="plus"></i> New Case Study</button>
+    </div>
+    <div class="table-card founding-table-wrap">
+    <table>
+      <thead><tr><th>Title</th><th>Category</th><th>Domain</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${
+          state.caseStudies.length
+            ? state.caseStudies
+                .map(
+                  (study) => `
+          <tr>
+            <td style="font-weight:600;">${escapeHtml(study.title)}</td>
+            <td style="color:var(--muted);">${escapeHtml(study.category) || "—"}</td>
+            <td style="color:var(--muted);">${escapeHtml(study.domain_url) || "—"}</td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-outline btn-sm" onclick="openCaseStudyForm('${escapeHtml(study.id)}')">Edit</button>
+              <button class="btn btn-outline btn-sm" style="color:#f87171;border-color:rgba(248,113,113,0.3);" onclick="deleteCaseStudy('${escapeHtml(study.id)}')">Delete</button>
+            </td>
+          </tr>`,
+                )
+                .join("")
+            : '<tr><td colspan="4"><div class="empty"><i data-lucide="layout"></i><div class="empty-title">No case studies found</div></div></td></tr>'
+        }
+      </tbody>
+    </table>
+    </div>`;
+      }
+
+      function openCaseStudyForm(id) {
+        const study = id ? state.caseStudies.find((item) => String(item.id) === String(id)) : null;
+        if (id && !study) {
+          toast("Case Study not found.", "error");
+          return;
+        }
+        state.selectedCaseStudy = study;
+        const bullets = Array.isArray(study?.bullets) ? study.bullets.join("\n") : "";
+        const stats = Array.isArray(study?.stats)
+          ? study.stats.map((stat) => `${stat.value || ""}|${stat.label || ""}`).join("\n")
+          : "";
+        document.getElementById("modal-root").innerHTML = `
+    <div class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+      <div class="modal-header"><div><h2>${study ? "Edit Case Study" : "New Case Study"}</h2></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
+      <form onsubmit="event.preventDefault();saveCaseStudy(this)">
+        <div class="modal-body">
+          <input type="hidden" name="id" value="${escapeHtml(study?.id || "")}">
+          <div class="form-field"><label class="form-label">Title</label><input class="form-input" name="title" value="${escapeHtml(study?.title || "")}" required></div>
+          <div class="form-field"><label class="form-label">Subtitle</label><input class="form-input" name="subtitle" value="${escapeHtml(study?.subtitle || "")}"></div>
+          <div class="founding-settings-grid">
+            <div class="form-field"><label class="form-label">Category</label><input class="form-input" name="category" value="${escapeHtml(study?.category || "")}"></div>
+            <div class="form-field"><label class="form-label">Domain URL</label><input class="form-input" name="domain_url" type="url" value="${escapeHtml(study?.domain_url || "")}"></div>
+          </div>
+          <div class="form-field"><label class="form-label">Description</label><textarea class="form-input" name="description" rows="4">${escapeHtml(study?.description || "")}</textarea></div>
+          <div class="form-field"><label class="form-label">Image URL</label><input class="form-input" name="image_url" type="text" value="${escapeHtml(study?.image_url || "")}"></div>
+          <div class="form-field"><label class="form-label">Bullets (one per line)</label><textarea class="form-input" name="bullets" rows="4">${escapeHtml(bullets)}</textarea></div>
+          <div class="form-field"><label class="form-label">Stats (Value|Label, one per line)</label><textarea class="form-input" name="stats" rows="4">${escapeHtml(stats)}</textarea></div>
+          <div class="form-field"><label class="form-label">Sort Order</label><input class="form-input" name="sort_order" type="number" step="1" value="${escapeHtml(study?.sort_order ?? 0)}" required></div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-primary btn-sm" type="submit">Save Case Study</button><button class="btn btn-outline btn-sm" type="button" onclick="closeModal()">Cancel</button></div>
+      </form>
+    </div>
+    </div>`;
+        refreshIcons();
+      }
+
+      function renderPulseView() {
+        const active = state.pulseSubscriptions.filter(
+          (subscription) => subscription.status === "active",
+        );
+        const mrr = active.reduce(
+          (total, subscription) => total + (Number(subscription.amount) || 0),
+          0,
+        );
+        return `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <div><h1 style="font-size:26px;font-weight:700;letter-spacing:-0.5px;">Pulse Subscriptions</h1><p style="font-size:13px;color:var(--dim);margin-top:4px;">Manage recurring Pulse clients</p></div>
+    <button class="btn btn-primary btn-sm" onclick="openPulseForm()"><i data-lucide="plus"></i> New Subscription</button>
+    </div>
+    <div class="stat-grid">
+    ${statCard("Active Subscribers", active.length, "users", "#3b82f6", "Currently active")}
+    ${statCard("MRR", "R" + mrr.toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 }), "credit-card", "#10B981", "Active monthly recurring revenue")}
+    </div>
+    <div class="table-card founding-table-wrap">
+    <table class="founding-table">
+      <thead><tr><th>Client Name</th><th>Email</th><th>Tier</th><th>Amount</th><th>Next Billing</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${
+          state.pulseSubscriptions.length
+            ? state.pulseSubscriptions
+                .map(
+                  (subscription) => `
+          <tr>
+            <td class="application-name">${escapeHtml(subscription.client_name || subscription.name)}</td>
+            <td><a href="mailto:${escapeHtml(subscription.email)}">${escapeHtml(subscription.email)}</a></td>
+            <td>${escapeHtml(subscription.tier) || "—"}</td>
+            <td>R${(Number(subscription.amount) || 0).toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td>${subscription.next_billing_date ? fmtDate(subscription.next_billing_date) : "—"}</td>
+            <td><span class="badge ${escapeHtml(subscription.status)}">${escapeHtml(subscription.status)}</span></td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-outline btn-sm" onclick="openPulseForm('${escapeHtml(subscription.id)}')">Edit</button>
+              <button class="btn btn-outline btn-sm" style="color:#f87171;border-color:rgba(248,113,113,0.3);" onclick="deletePulseSubscription('${escapeHtml(subscription.id)}')">Delete</button>
+            </td>
+          </tr>`,
+                )
+                .join("")
+            : '<tr><td colspan="7"><div class="empty"><i data-lucide="credit-card"></i><div class="empty-title">No subscriptions found</div></div></td></tr>'
+        }
+      </tbody>
+    </table>
+    </div>`;
+      }
+
+      function openPulseForm(id) {
+        const subscription = id
+          ? state.pulseSubscriptions.find((item) => String(item.id) === String(id))
+          : null;
+        if (id && !subscription) {
+          toast("Subscription not found.", "error");
+          return;
+        }
+        state.selectedPulseSubscription = subscription;
+        document.getElementById("modal-root").innerHTML = `
+    <div class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+      <div class="modal-header"><div><h2>${subscription ? "Edit Subscription" : "New Subscription"}</h2></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
+      <form onsubmit="event.preventDefault();savePulseSubscription(this)">
+        <div class="modal-body">
+          <input type="hidden" name="id" value="${escapeHtml(subscription?.id || "")}">
+          <div class="form-field"><label class="form-label">Name</label><input class="form-input" name="name" value="${escapeHtml(subscription?.name || "")}" required></div>
+          <div class="form-field"><label class="form-label">Email</label><input class="form-input" name="email" type="email" value="${escapeHtml(subscription?.email || "")}" required></div>
+          <div class="form-field"><label class="form-label">Tier</label><input class="form-input" name="tier" value="${escapeHtml(subscription?.tier || "")}" required></div>
+          <div class="form-field"><label class="form-label">Amount</label><input class="form-input" name="amount" type="number" min="0" step="0.01" value="${escapeHtml(subscription?.amount ?? "")}" required></div>
+          <div class="form-field"><label class="form-label">Next Billing Date</label><input class="form-input" name="next_billing_date" type="date" value="${escapeHtml(subscription?.next_billing_date || "")}"></div>
+          <div class="form-field"><label class="form-label">Status</label><select class="form-input" name="status"><option value="active" ${subscription?.status === "active" || !subscription ? "selected" : ""}>Active</option><option value="paused" ${subscription?.status === "paused" ? "selected" : ""}>Paused</option><option value="cancelled" ${subscription?.status === "cancelled" ? "selected" : ""}>Cancelled</option></select></div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-primary btn-sm" type="submit">Save Subscription</button><button class="btn btn-outline btn-sm" type="button" onclick="closeModal()">Cancel</button></div>
+      </form>
+    </div>
+    </div>`;
+        refreshIcons();
       }
 
       function renderFoundingSettings() {
@@ -2069,6 +2443,8 @@
         document.getElementById("modal-root").innerHTML = "";
         state.selected = null;
         state.selectedFoundingApplication = null;
+        state.selectedCaseStudy = null;
+        state.selectedPulseSubscription = null;
         if (foundingModalKeyHandler) {
           document.removeEventListener("keydown", foundingModalKeyHandler);
           foundingModalKeyHandler = null;
@@ -2083,6 +2459,8 @@
         state.selected = null;
         state.selectedFoundingApplication = null;
         render();
+        if (view === "case-studies") loadCaseStudies();
+        if (view === "pulse") loadPulseSubscriptions();
       }
 
       function switchEnquiries(filter) {
