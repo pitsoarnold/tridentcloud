@@ -2235,7 +2235,7 @@
     </div>`;
       }
 
-      function openPulseForm(id) {
+      function openPulseForm(id, prefill = {}) {
         const subscription = id
           ? state.pulseSubscriptions.find((item) => String(item.id) === String(id))
           : null;
@@ -2251,10 +2251,18 @@
       <form onsubmit="event.preventDefault();savePulseSubscription(this)">
         <div class="modal-body">
           <input type="hidden" name="id" value="${escapeHtml(subscription?.id || "")}">
-          <div class="form-field"><label class="form-label">Name</label><input class="form-input" name="name" value="${escapeHtml(subscription?.name || "")}" required></div>
-          <div class="form-field"><label class="form-label">Email</label><input class="form-input" name="email" type="email" value="${escapeHtml(subscription?.email || "")}" required></div>
-          <div class="form-field"><label class="form-label">Tier</label><input class="form-input" name="tier" value="${escapeHtml(subscription?.tier || "")}" required></div>
-          <div class="form-field"><label class="form-label">Amount</label><input class="form-input" name="amount" type="number" min="0" step="0.01" value="${escapeHtml(subscription?.amount ?? "")}" required></div>
+          <div class="form-field"><label class="form-label">Client Name</label><input class="form-input" name="name" value="${escapeHtml(subscription?.client_name || subscription?.name || prefill.name || "")}" required></div>
+          <div class="form-field"><label class="form-label">Email</label><input class="form-input" name="email" type="email" value="${escapeHtml(subscription?.email || prefill.email || "")}" required></div>
+          <div class="form-field"><label class="form-label">Tier</label><select class="form-input" name="tier" required>
+            <option value="Starter" ${subscription?.tier === "Starter" || !subscription ? "selected" : ""}>Starter</option>
+            <option value="Business" ${subscription?.tier === "Business" ? "selected" : ""}>Business</option>
+            <option value="Premium" ${subscription?.tier === "Premium" ? "selected" : ""}>Premium</option>
+          </select></div>
+          <div class="form-field"><label class="form-label">Amount</label><select class="form-input" name="amount" required>
+            <option value="499" ${Number(subscription?.amount) === 499 || !subscription ? "selected" : ""}>R499</option>
+            <option value="1499" ${Number(subscription?.amount) === 1499 || prefill.amount === 1499 ? "selected" : ""}>R1,499</option>
+            <option value="3500" ${Number(subscription?.amount) === 3500 || prefill.amount === 3500 ? "selected" : ""}>R3,500</option>
+          </select></div>
           <div class="form-field"><label class="form-label">Next Billing Date</label><input class="form-input" name="next_billing_date" type="date" value="${escapeHtml(subscription?.next_billing_date || "")}"></div>
           <div class="form-field"><label class="form-label">Status</label><select class="form-input" name="status"><option value="active" ${subscription?.status === "active" || !subscription ? "selected" : ""}>Active</option><option value="paused" ${subscription?.status === "paused" ? "selected" : ""}>Paused</option><option value="cancelled" ${subscription?.status === "cancelled" ? "selected" : ""}>Cancelled</option></select></div>
         </div>
@@ -2262,6 +2270,12 @@
       </form>
     </div>
     </div>`;
+        const tierSelect = document.querySelector('#modal-root select[name="tier"]');
+        const amountSelect = document.querySelector('#modal-root select[name="amount"]');
+        tierSelect.addEventListener("change", () => {
+          const tierPrices = { Starter: "499", Business: "1499", Premium: "3500" };
+          amountSelect.value = tierPrices[tierSelect.value];
+        });
         refreshIcons();
       }
 
@@ -2309,6 +2323,16 @@
       function openDetail(id) {
         state.selected = state.enquiries.find((e) => e.id === id);
         renderModal();
+      }
+
+      function convertEnquiryToSubscription() {
+        const enquiry = state.selected;
+        if (!enquiry) {
+          toast("Enquiry not found.", "error");
+          return;
+        }
+        closeModal();
+        openPulseForm(null, { name: enquiry.name, email: enquiry.email });
       }
 
       let foundingModalKeyHandler = null;
@@ -2424,6 +2448,9 @@
             .join("")}
           <button class="btn btn-outline btn-sm" style="color:#f87171;border-color:rgba(248,113,113,0.3);margin-left:auto;" onclick="deleteEnquiry('${e.id}')">
             <i data-lucide="trash-2"></i> Delete
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="convertEnquiryToSubscription()">
+            <i data-lucide="credit-card"></i> Convert to Subscription
           </button>
         </div>
       </div>
