@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { m, useReducedMotion, type Variants } from "motion/react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -271,7 +271,7 @@ export function SolutionChooser() {
                 aria-valuemax={100}
                 aria-valuenow={Math.round(progress)}
               >
-                <motion.span
+                <m.span
                   className="solution-chooser-progress-fill"
                   initial={shouldReduceMotion ? false : { width: 0 }}
                   animate={{ width: `${progress}%` }}
@@ -284,7 +284,7 @@ export function SolutionChooser() {
               {question.heading}
             </h3>
 
-            <motion.div
+            <m.div
               className="solution-chooser-options"
               variants={questionVariants}
               initial={shouldReduceMotion ? false : "hidden"}
@@ -293,7 +293,7 @@ export function SolutionChooser() {
               {question.options.map((option) => {
                 const Icon = option.icon;
                 return (
-                  <motion.button
+                  <m.button
                     className={`solution-chooser-option${selectedOption === option.id ? " is-selected" : ""}`}
                     key={option.id}
                     type="button"
@@ -306,10 +306,10 @@ export function SolutionChooser() {
                     </span>
                     <span className="solution-chooser-option-label">{option.label}</span>
                     <ChevronRight className="solution-chooser-option-chevron" aria-hidden="true" />
-                  </motion.button>
+                  </m.button>
                 );
               })}
-            </motion.div>
+            </m.div>
 
             {step !== "question-1" && (
               <button
@@ -326,7 +326,7 @@ export function SolutionChooser() {
         )}
 
         {step === "result" && recommendation && (
-          <motion.div
+          <m.div
             className="solution-chooser-result"
             initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -358,11 +358,11 @@ export function SolutionChooser() {
             <Link className="solution-chooser-all-services" to="/services">
               Not quite right? See all services <ArrowRight aria-hidden="true" />
             </Link>
-          </motion.div>
+          </m.div>
         )}
 
         {step === "result" && q1 === "unsure" && (
-          <motion.div
+          <m.div
             className="solution-chooser-unsure"
             initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -395,7 +395,7 @@ export function SolutionChooser() {
             <Link className="btn btn-primary solution-chooser-talk-cta" to="/contact">
               Talk to us — we'll help you decide <ArrowRight aria-hidden="true" />
             </Link>
-          </motion.div>
+          </m.div>
         )}
 
         {step === "result" && (

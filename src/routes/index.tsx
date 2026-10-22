@@ -1,6 +1,6 @@
 import { useRef, useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform } from "motion/react";
+import { m, useScroll, useTransform } from "motion/react";
 import {
   Activity,
   AlertTriangle,
@@ -47,14 +47,14 @@ const revealItem = {
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={revealViewport}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -157,7 +157,7 @@ export function ServicesSection() {
             </p>
           </div>
         </Reveal>
-        <motion.div
+        <m.div
           className="pillars"
           variants={staggerContainer}
           initial="hidden"
@@ -165,7 +165,7 @@ export function ServicesSection() {
           viewport={revealViewport}
         >
           {pillars.map((pillar) => (
-            <motion.article
+            <m.article
               className="pillar"
               key={pillar.title}
               variants={revealItem}
@@ -185,9 +185,9 @@ export function ServicesSection() {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-            </motion.article>
+            </m.article>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
@@ -204,38 +204,38 @@ export function WhySection() {
             <p>We work alongside your business, not behind a ticket number.</p>
           </div>
         </Reveal>
-        <motion.div
+        <m.div
           className="why-grid"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={revealViewport}
         >
-          <motion.article className="why-item" variants={revealItem}>
+          <m.article className="why-item" variants={revealItem}>
             <MapPin />
             <h3>Grounded in South Africa</h3>
             <p>
               Local business context, ZAR pricing and infrastructure decisions made with South
               African requirements, including POPIA, in mind.
             </p>
-          </motion.article>
-          <motion.article className="why-item" variants={revealItem}>
+          </m.article>
+          <m.article className="why-item" variants={revealItem}>
             <Users />
             <h3>Real humans. Clear ownership.</h3>
             <p>
               A direct line to people who know your systems. No vendor shuffle when something needs
               attention.
             </p>
-          </motion.article>
-          <motion.article className="why-item" variants={revealItem}>
+          </m.article>
+          <m.article className="why-item" variants={revealItem}>
             <Layers3 />
             <h3>Built for what comes next</h3>
             <p>
               From a single website to a connected digital operation, we plan with your growth in
               mind.
             </p>
-          </motion.article>
-        </motion.div>
+          </m.article>
+        </m.div>
       </div>
     </section>
   );
@@ -246,7 +246,7 @@ export function CalculatorTeaser() {
     <section className="section section-muted">
       <div className="site-container">
         <div className="home-calc-teaser">
-          <motion.div
+          <m.div
             className="home-calc-text"
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -264,8 +264,8 @@ export function CalculatorTeaser() {
                 Open the calculator <ArrowRight />
               </Link>
             </Button>
-          </motion.div>
-          <motion.div
+          </m.div>
+          <m.div
             className="home-calc-preview"
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -302,7 +302,7 @@ export function CalculatorTeaser() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>
@@ -357,7 +357,7 @@ function Home() {
   return (
     <main>
       <section className="hero" ref={heroRef}>
-        <motion.img
+        <m.img
           src={capeTown}
           className="hero-image"
           alt="Cape Town and Table Mountain at dusk"
@@ -368,15 +368,15 @@ function Home() {
         />
         <div className="site-container hero-inner">
           <div className="hero-content">
-            <motion.span
+            <m.span
               className="eyebrow"
               initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
               A TRIDENT DEVELOPMENT GROUP COMPANY · SOUTH AFRICA
-            </motion.span>
-            <motion.h1
+            </m.span>
+            <m.h1
               variants={{
                 hidden: {},
                 visible: { transition: { staggerChildren: 0.15 } },
@@ -384,14 +384,14 @@ function Home() {
               initial="hidden"
               animate="visible"
             >
-              <motion.span className="hero-title-line" variants={revealItem}>
+              <m.span className="hero-title-line" variants={revealItem}>
                 We run the technology
-              </motion.span>
-              <motion.span className="hero-title-line" variants={revealItem}>
+              </m.span>
+              <m.span className="hero-title-line" variants={revealItem}>
                 <em>your business</em> depends on.
-              </motion.span>
-            </motion.h1>
-            <motion.p
+              </m.span>
+            </m.h1>
+            <m.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -399,30 +399,30 @@ function Home() {
               Trident Cloud Services operates the infrastructure behind your websites, applications
               and business systems — so your team can focus on running the business, not the
               servers.
-            </motion.p>
-            <motion.div
+            </m.p>
+            <m.div
               className="hero-ctas"
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.18 }}>
+              <m.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.18 }}>
                 <Button asChild className="btn btn-primary">
                   <Link to="/contact" search={{}}>
                     Get in touch <ArrowRight />
                   </Link>
                 </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.18 }}>
+              </m.div>
+              <m.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.18 }}>
                 <Button asChild className="btn btn-outline-light">
                   <Link to="/services">
                     See how we work <Play />
                   </Link>
                 </Button>
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           </div>
-          <motion.div
+          <m.div
             className="hero-badges"
             variants={{
               hidden: {},
@@ -431,7 +431,7 @@ function Home() {
             initial="hidden"
             animate="visible"
           >
-            <motion.div
+            <m.div
               className="hero-badge"
               variants={{
                 hidden: { opacity: 0, x: 24 },
@@ -444,8 +444,8 @@ function Home() {
                 <br />
                 (business-hours response)
               </span>
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               className="hero-badge"
               variants={{
                 hidden: { opacity: 0, x: 24 },
@@ -458,8 +458,8 @@ function Home() {
                 <br />
                 and backups
               </span>
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               className="hero-badge"
               variants={{
                 hidden: { opacity: 0, x: 24 },
@@ -472,13 +472,13 @@ function Home() {
                 <br />
                 for growth
               </span>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
       </section>
 
       <div className="trust-strip">
-        <motion.div
+        <m.div
           className="site-container trust-inner"
           initial="hidden"
           whileInView="visible"
@@ -492,24 +492,24 @@ function Home() {
             },
           }}
         >
-          <motion.span className="trust-title" variants={revealItem}>
+          <m.span className="trust-title" variants={revealItem}>
             Built around what matters most
-          </motion.span>
+          </m.span>
           <div className="trust-items">
-            <motion.span variants={revealItem}>
+            <m.span variants={revealItem}>
               <ShieldCheck /> Security by design
-            </motion.span>
-            <motion.span variants={revealItem}>
+            </m.span>
+            <m.span variants={revealItem}>
               <Activity /> Proactive monitoring
-            </motion.span>
-            <motion.span variants={revealItem}>
+            </m.span>
+            <m.span variants={revealItem}>
               <Server /> Hands-on operations
-            </motion.span>
-            <motion.span variants={revealItem}>
+            </m.span>
+            <m.span variants={revealItem}>
               <CheckCircle2 /> One accountable partner
-            </motion.span>
+            </m.span>
           </div>
-        </motion.div>
+        </m.div>
       </div>
 
       <section className="section section-white problem-section">
@@ -525,35 +525,35 @@ function Home() {
               </p>
             </div>
           </Reveal>
-          <motion.div
+          <m.div
             className="problem-points"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={revealViewport}
           >
-            <motion.div className="problem-point" variants={revealItem}>
+            <m.div className="problem-point" variants={revealItem}>
               <AlertTriangle />
               <div>
                 <strong>Downtime disrupts business</strong>
                 <p>Monitor early, respond clearly and keep critical systems available.</p>
               </div>
-            </motion.div>
-            <motion.div className="problem-point" variants={revealItem}>
+            </m.div>
+            <m.div className="problem-point" variants={revealItem}>
               <LockKeyhole />
               <div>
                 <strong>Security needs constant care</strong>
                 <p>Keep patches, backups and access under active management.</p>
               </div>
-            </motion.div>
-            <motion.div className="problem-point" variants={revealItem}>
+            </m.div>
+            <m.div className="problem-point" variants={revealItem}>
               <Users />
               <div>
                 <strong>Your team has better things to do</strong>
                 <p>Put infrastructure in capable hands and focus on your work.</p>
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
       </section>
 
@@ -561,7 +561,7 @@ function Home() {
       <FoundingPromo />
       <ServicesSection />
       <CalculatorTeaser />
-      <motion.div
+      <m.div
         className={`pricing-reveal${pricingVisible ? " is-visible" : ""}`}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -570,7 +570,7 @@ function Home() {
         onAnimationComplete={() => setPricingVisible(true)}
       >
         <Pricing />
-      </motion.div>
+      </m.div>
       <WhySection />
       <Reveal>
         <FAQ />

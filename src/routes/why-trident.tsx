@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, type Variants } from "motion/react";
+import { m, type Variants } from "motion/react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -175,14 +175,14 @@ const principles = [
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={viewport}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -210,7 +210,7 @@ function ValueStack() {
             <p>Seven commitments. Every client. Every project.</p>
           </div>
         </Reveal>
-        <motion.div
+        <m.div
           className="why-value-stack-grid"
           variants={QContainer}
           initial="hidden"
@@ -218,7 +218,7 @@ function ValueStack() {
           viewport={viewport}
         >
           {valueItems.map(({ icon: Icon, title, description }) => (
-            <motion.article
+            <m.article
               className="why-value-card"
               key={title}
               variants={Q}
@@ -229,9 +229,9 @@ function ValueStack() {
               </span>
               <h3>{title}</h3>
               <p>{description}</p>
-            </motion.article>
+            </m.article>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
@@ -322,7 +322,7 @@ function Principles() {
             <h2 id="why-principles-heading">How we work</h2>
           </div>
         </Reveal>
-        <motion.div
+        <m.div
           className="why-principles-grid"
           variants={QContainer}
           initial="hidden"
@@ -330,13 +330,13 @@ function Principles() {
           viewport={viewport}
         >
           {principles.map(({ title, description }, index) => (
-            <motion.article className="why-principle-card" variants={Q} key={title}>
+            <m.article className="why-principle-card" variants={Q} key={title}>
               <span className="why-principle-number">0{index + 1}</span>
               <h3>{title}</h3>
               <p>{description}</p>
-            </motion.article>
+            </m.article>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
@@ -346,7 +346,7 @@ function FounderNote() {
   return (
     <section className="why-section why-founder-section" aria-labelledby="why-founder-heading">
       <div className="site-container">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={viewport}
@@ -379,7 +379,7 @@ function FounderNote() {
               </Link>
             </div>
           </article>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

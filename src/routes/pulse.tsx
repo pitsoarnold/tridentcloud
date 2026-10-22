@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Zap, Shield, Clock, Sparkles } from "lucide-react";
-import { motion, type Variants } from "motion/react";
+import { m, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { PageIntro, FinalCTA } from "@/components/SiteChrome";
 import { PulsePricing } from "@/components/PulsePricing";
@@ -55,14 +55,14 @@ const comparisonRight: Variants = {
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={revealViewport}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -186,7 +186,7 @@ function PulsePage() {
             </div>
           </Reveal>
 
-          <motion.div
+          <m.div
             className="pulse-benefits"
             variants={staggerContainer}
             initial="hidden"
@@ -194,7 +194,7 @@ function PulsePage() {
             viewport={revealViewport}
           >
             {benefits.map((b, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 className="pulse-benefit"
                 variants={benefitCard}
@@ -205,9 +205,9 @@ function PulsePage() {
                 </div>
                 <h3>{b.title}</h3>
                 <p>{b.body}</p>
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -268,14 +268,14 @@ function PulsePage() {
             </div>
           </Reveal>
 
-          <motion.div
+          <m.div
             className="pulse-compare"
             variants={comparisonContainer}
             initial="hidden"
             whileInView="visible"
             viewport={revealViewport}
           >
-            <motion.div
+            <m.div
               className="pulse-compare-card"
               variants={comparisonLeft}
               whileHover={{ y: -3, transition: { duration: 0.2 } }}
@@ -302,9 +302,9 @@ function PulsePage() {
               <p className="pulse-compare-note">
                 Best for: New businesses, tight budgets, quick launches.
               </p>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               className="pulse-compare-card"
               variants={comparisonRight}
               whileHover={{ y: -3, transition: { duration: 0.2 } }}
@@ -331,8 +331,8 @@ function PulsePage() {
               <p className="pulse-compare-note">
                 Best for: Established businesses wanting outright ownership from project handover.
               </p>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
 
           <div className="pulse-compare-cta">
             <Button asChild className="btn btn-primary">

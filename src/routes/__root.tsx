@@ -14,6 +14,8 @@ import { AnnouncementBar } from "@/components/AnnouncementBar";
 
 import appCss from "../styles.css?url";
 import { reportClientError } from "../lib/error-reporting";
+import { LazyMotion, domAnimation } from "motion/react";
+
 
 function NotFoundComponent() {
   return (
@@ -126,6 +128,9 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
+    <html lang="en">
+    <body>
+      <LazyMotion features={domAnimation} strict>
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AnnouncementBar />
@@ -134,5 +139,8 @@ function RootComponent() {
       <Footer />
       <WhatsApp />
     </QueryClientProvider>
-  );
+  </LazyMotion>
+    </body>
+  </html>
+);
 }

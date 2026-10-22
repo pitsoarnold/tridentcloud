@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, type Variants } from "motion/react";
+import { m, type Variants } from "motion/react";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
@@ -51,14 +51,14 @@ function Reveal({
   y?: number;
 }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -72,7 +72,7 @@ function ServicesIntro() {
         aria-hidden="true"
       />
       <div className="site-container services-intro-content">
-        <motion.span
+        <m.span
           className="eyebrow"
           initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -80,21 +80,21 @@ function ServicesIntro() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           OUR SERVICES
-        </motion.span>
-        <motion.h1
+        </m.span>
+        <m.h1
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={titleVariants}
         >
-          <motion.span className="hero-title-line" variants={titleLineVariants}>
+          <m.span className="hero-title-line" variants={titleLineVariants}>
             Infrastructure handled.
-          </motion.span>
-          <motion.span className="hero-title-line" variants={titleLineVariants}>
+          </m.span>
+          <m.span className="hero-title-line" variants={titleLineVariants}>
             Business moving.
-          </motion.span>
-        </motion.h1>
-        <motion.p
+          </m.span>
+        </m.h1>
+        <m.p
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -102,7 +102,7 @@ function ServicesIntro() {
         >
           We take care of the critical work behind your digital systems: deploying, operating,
           protecting and scaling them.
-        </motion.p>
+        </m.p>
       </div>
     </section>
   );

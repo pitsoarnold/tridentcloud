@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { motion, type Variants } from "motion/react";
+import { m, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { ArrowRight, ClipboardCheck, Handshake, Server } from "lucide-react";
 import { FinalCTA, PageIntro } from "@/components/SiteChrome";
-import { supabase } from "@/integrations/supabase/client";
+import { getCaseStudies } from "@/lib/case-studies.functions";
+import { CaseStudyPreview } from "@/components/CaseStudyPreview";
 
 const revealViewport = { once: true, margin: "-80px" as const };
 
@@ -24,14 +25,14 @@ const revealItem: Variants = {
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={revealViewport}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -69,11 +70,21 @@ const approachPrinciples = [
 ];
 
 function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
-  const domainUrl = study.domain.startsWith("http") ? study.domain : `https://${study.domain}`;
-  const browserUrl = study.domain.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  const cleanDomain = study.domain?.replace(/^https?:\/\//, "").replace(/\/$/, "");
   const imageSide = index % 2 === 1 ? "right" : "left";
-  const image = (
-    <motion.div
+
+  // Render the interactive iframe if a domain exists, otherwise fallback to the image
+  const image = study.domain ? (
+    <m.div
+      initial={{ opacity: 0, scale: 1.04 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={revealViewport}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <CaseStudyPreview url={study.domain} title={study.title} />
+    </m.div>
+  ) : (
+    <m.div
       className="case-study-browser"
       initial={{ opacity: 0, scale: 1.04 }}
       whileInView={{ opacity: 1, scale: 1 }}
@@ -84,12 +95,12 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
         <span className="case-study-browser-dot" />
         <span className="case-study-browser-dot" />
         <span className="case-study-browser-dot" />
-        <span className="case-study-browser-url">{browserUrl}</span>
+        <span className="case-study-browser-url">{cleanDomain}</span>
       </div>
       <div className="case-study-browser-viewport">
         <img src={study.image_url} alt={`${study.title} project preview`} loading="lazy" />
       </div>
-    </motion.div>
+    </m.div>
   );
 
   const content = (
@@ -105,19 +116,19 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
 
       <div className="case-study-built">
         <h3>What we built</h3>
-        <motion.ul
+        <m.ul
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={revealViewport}
         >
           {study.bullets.map((bullet) => (
-            <motion.li variants={revealItem} key={bullet}>
+            <m.li variants={revealItem} key={bullet}>
               <span aria-hidden="true">✓</span>
               {bullet}
-            </motion.li>
+            </m.li>
           ))}
-        </motion.ul>
+        </m.ul>
       </div>
 
       <div className="case-study-stats" aria-label="Project results">
@@ -132,11 +143,11 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
       {study.domain && (
         <a
           className="case-study-visit-link"
-          href={domainUrl}
+          href={`https://${cleanDomain}`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Visit {browserUrl} <ArrowRight aria-hidden="true" />
+          Visit {cleanDomain} <ArrowRight aria-hidden="true" />
         </a>
       )}
     </div>
@@ -194,7 +205,7 @@ function ClientWorkApproach() {
             <h2 id="case-studies-approach-heading">How we approach client work</h2>
           </div>
         </Reveal>
-        <motion.div
+        <m.div
           className="case-studies-approach-grid"
           variants={staggerContainer}
           initial="hidden"
@@ -202,7 +213,7 @@ function ClientWorkApproach() {
           viewport={revealViewport}
         >
           {approachPrinciples.map(({ icon: Icon, title, description }) => (
-            <motion.article
+            <m.article
               className="case-studies-approach-card"
               variants={revealItem}
               key={title}
@@ -212,9 +223,9 @@ function ClientWorkApproach() {
               </span>
               <h3>{title}</h3>
               <p>{description}</p>
-            </motion.article>
+            </m.article>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
@@ -227,11 +238,7 @@ function CaseStudiesPage() {
     isError,
   } = useQuery({
     queryKey: ["case-studies"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("case_studies").select("*").order("sort_order");
-      if (error) throw error;
-      return data;
-    },
+    queryFn: () => getCaseStudies(),
   });
 
   return (

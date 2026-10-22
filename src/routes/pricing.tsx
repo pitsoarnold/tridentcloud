@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion, type Variants } from "motion/react";
+import { m, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { FinalCTA } from "@/components/SiteChrome";
 import { Pricing, FAQ } from "@/components/Pricing";
@@ -41,14 +41,14 @@ export const Route = createFileRoute("/pricing")({
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -62,7 +62,7 @@ function PricingIntro() {
         aria-hidden="true"
       />
       <div className="site-container pricing-intro-content">
-        <motion.span
+        <m.span
           className="eyebrow"
           initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -70,21 +70,21 @@ function PricingIntro() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           PRICING
-        </motion.span>
-        <motion.h1
+        </m.span>
+        <m.h1
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={titleVariants}
         >
-          <motion.span className="hero-title-line" variants={titleLineVariants}>
+          <m.span className="hero-title-line" variants={titleLineVariants}>
             The right level of care
-          </motion.span>
-          <motion.span className="hero-title-line" variants={titleLineVariants}>
+          </m.span>
+          <m.span className="hero-title-line" variants={titleLineVariants}>
             for your systems.
-          </motion.span>
-        </motion.h1>
-        <motion.p
+          </m.span>
+        </m.h1>
+        <m.p
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -92,7 +92,7 @@ function PricingIntro() {
         >
           From one essential website to complex digital operations, choose a starting point.
           We&apos;ll confirm the scope together before any work begins.
-        </motion.p>
+        </m.p>
       </div>
     </section>
   );
@@ -102,7 +102,7 @@ function PricingPage() {
   return (
     <main className="pricing-page">
       <PricingIntro />
-      <motion.div
+      <m.div
         className="pricing-page-plans"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -119,7 +119,7 @@ function PricingPage() {
           aria-hidden="true"
         />
         <Pricing compact />
-      </motion.div>
+      </m.div>
       <Reveal>
         <FAQ />
       </Reveal>

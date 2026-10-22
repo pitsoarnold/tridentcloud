@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { motion, type Variants } from "motion/react";
+import { m, type Variants } from "motion/react";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
   ArrowRight,
@@ -60,14 +60,14 @@ const titleLineVariants: Variants = {
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={revealViewport}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -278,7 +278,7 @@ function FoundingCounter() {
         aria-valuemax={state.totalSpots}
         aria-valuenow={filledSpots}
       >
-        <motion.span
+        <m.span
           initial={{ width: 0 }}
           whileInView={{ width: `${progress}%` }}
           viewport={revealViewport}
@@ -480,23 +480,23 @@ function FoundingClientsPage() {
     <main className="founding-page">
       <section className="founding-hero">
         <div className="site-container founding-hero-inner">
-          <motion.div
+          <m.div
             className="founding-hero-copy"
             initial="hidden"
             animate="visible"
             variants={titleVariants}
           >
-            <motion.span className="eyebrow" variants={titleLineVariants}>
+            <m.span className="eyebrow" variants={titleLineVariants}>
               FOUNDING CLIENT PROGRAMME
-            </motion.span>
-            <motion.h1 variants={titleLineVariants}>
+            </m.span>
+            <m.h1 variants={titleLineVariants}>
               The first 10 clients. Special pricing. Real partnership.
-            </motion.h1>
-            <motion.p variants={titleLineVariants}>
+            </m.h1>
+            <m.p variants={titleLineVariants}>
               We're opening our doors with a limited cohort. Founding Clients get preferred pricing,
               hands-on attention, and a stake in how we build.
-            </motion.p>
-            <motion.div className="founding-hero-actions" variants={titleLineVariants}>
+            </m.p>
+            <m.div className="founding-hero-actions" variants={titleLineVariants}>
               <Button asChild className="btn btn-primary">
                 <a href="#apply">
                   Apply to the programme <ArrowRight />
@@ -507,12 +507,12 @@ function FoundingClientsPage() {
                   Talk to us first <MessageCircle />
                 </Link>
               </Button>
-            </motion.div>
-            <motion.p className="founding-closing-note" variants={titleLineVariants}>
+            </m.div>
+            <m.p className="founding-closing-note" variants={titleLineVariants}>
               Closes when 10 spots fill. No fixed deadline.
-            </motion.p>
-          </motion.div>
-          <motion.div
+            </m.p>
+          </m.div>
+          <m.div
             className="founding-hero-aside"
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
@@ -523,7 +523,7 @@ function FoundingClientsPage() {
               <Handshake aria-hidden="true" />
               <span>Small cohort. Direct founder access. Built together.</span>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -538,7 +538,7 @@ function FoundingClientsPage() {
               </p>
             </div>
           </Reveal>
-          <motion.div
+          <m.div
             className="founding-benefit-grid"
             variants={staggerVariants}
             initial="hidden"
@@ -546,7 +546,7 @@ function FoundingClientsPage() {
             viewport={revealViewport}
           >
             {benefits.map((benefit) => (
-              <motion.article
+              <m.article
                 className="founding-benefit-card"
                 key={benefit.title}
                 variants={itemVariants}
@@ -557,9 +557,9 @@ function FoundingClientsPage() {
                 </div>
                 <h3>{benefit.title}</h3>
                 <p>{benefit.body}</p>
-              </motion.article>
+              </m.article>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -572,7 +572,7 @@ function FoundingClientsPage() {
               <p>Three clear packages with founding rates for the first 10 clients.</p>
             </div>
           </Reveal>
-          <motion.div
+          <m.div
             className="founding-tier-grid"
             variants={staggerVariants}
             initial="hidden"
@@ -580,7 +580,7 @@ function FoundingClientsPage() {
             viewport={revealViewport}
           >
             {tiers.map((tier) => (
-              <motion.article
+              <m.article
                 className={`founding-tier-card${tier.featured ? " featured" : ""}`}
                 key={tier.name}
                 variants={itemVariants}
@@ -611,9 +611,9 @@ function FoundingClientsPage() {
                     Apply for {tier.name} <ArrowRight />
                   </Link>
                 </Button>
-              </motion.article>
+              </m.article>
             ))}
-          </motion.div>
+          </m.div>
           <Reveal delay={0.1}>
             <div className="founding-discount-callout">
               <Sparkles aria-hidden="true" />
@@ -638,7 +638,7 @@ function FoundingClientsPage() {
               </p>
             </div>
           </Reveal>
-          <motion.ul
+          <m.ul
             className="founding-ask-list"
             variants={staggerVariants}
             initial="hidden"
@@ -646,7 +646,7 @@ function FoundingClientsPage() {
             viewport={revealViewport}
           >
             {commitments.map((commitment) => (
-              <motion.li key={commitment.title} variants={itemVariants}>
+              <m.li key={commitment.title} variants={itemVariants}>
                 <span className="founding-check-icon">
                   <Check aria-hidden="true" />
                 </span>
@@ -654,9 +654,9 @@ function FoundingClientsPage() {
                   <h3>{commitment.title}</h3>
                   <p>{commitment.body}</p>
                 </div>
-              </motion.li>
+              </m.li>
             ))}
-          </motion.ul>
+          </m.ul>
         </div>
       </section>
 
@@ -669,7 +669,7 @@ function FoundingClientsPage() {
               <p>Clear steps from first conversation to launch.</p>
             </div>
           </Reveal>
-          <motion.ol
+          <m.ol
             className="founding-timeline"
             variants={staggerVariants}
             initial="hidden"
@@ -677,7 +677,7 @@ function FoundingClientsPage() {
             viewport={revealViewport}
           >
             {steps.map((step, index) => (
-              <motion.li key={step.title} variants={itemVariants}>
+              <m.li key={step.title} variants={itemVariants}>
                 <span className="founding-step-number">0{index + 1}</span>
                 <div className="founding-step-copy">
                   <h3>{step.title}</h3>
@@ -685,7 +685,7 @@ function FoundingClientsPage() {
                 </div>
                 {index < steps.length - 1 && (
                   <>
-                    <motion.span
+                    <m.span
                       className="founding-timeline-connector founding-timeline-connector-desktop"
                       aria-hidden="true"
                       initial={{ scaleX: 0 }}
@@ -697,7 +697,7 @@ function FoundingClientsPage() {
                         ease: [0.16, 1, 0.3, 1],
                       }}
                     />
-                    <motion.span
+                    <m.span
                       className="founding-timeline-connector founding-timeline-connector-mobile"
                       aria-hidden="true"
                       initial={{ scaleY: 0 }}
@@ -711,9 +711,9 @@ function FoundingClientsPage() {
                     />
                   </>
                 )}
-              </motion.li>
+              </m.li>
             ))}
-          </motion.ol>
+          </m.ol>
         </div>
       </section>
 

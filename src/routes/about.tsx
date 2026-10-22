@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { m, useReducedMotion, type Variants } from "motion/react";
 import { ArrowRight, MessageSquare, ShieldCheck, TrendingUp } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
@@ -75,14 +75,14 @@ const teamMembers = [
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={revealViewport}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -92,7 +92,7 @@ function AboutStats() {
       <Reveal>
         <h2 id="about-stats-heading">By the numbers</h2>
       </Reveal>
-      <motion.div
+      <m.div
         className="about-stat-grid"
         variants={valueContainer}
         initial="hidden"
@@ -100,12 +100,12 @@ function AboutStats() {
         viewport={revealViewport}
       >
         {stats.map(({ value, label }) => (
-          <motion.div className="about-stat" key={label} variants={valueCard}>
+          <m.div className="about-stat" key={label} variants={valueCard}>
             <div className="about-stat-value">{value}</div>
             <div className="about-stat-label">{label}</div>
-          </motion.div>
+          </m.div>
         ))}
-      </motion.div>
+      </m.div>
       <p className="about-section-note">Numbers grow with us. Check back as we scale.</p>
     </section>
   );
@@ -118,7 +118,7 @@ function AboutTimeline() {
         <h2 id="about-timeline-heading">Milestones</h2>
       </Reveal>
       <div className="about-timeline">
-        <motion.div
+        <m.div
           className="about-timeline-line"
           aria-hidden="true"
           initial={{ scaleY: 0 }}
@@ -126,7 +126,7 @@ function AboutTimeline() {
           viewport={revealViewport}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         />
-        <motion.div
+        <m.div
           className="about-timeline-list"
           variants={timelineContainer}
           initial="hidden"
@@ -134,8 +134,8 @@ function AboutTimeline() {
           viewport={revealViewport}
         >
           {milestones.map(({ date, title }) => (
-            <motion.div className="about-timeline-item" key={date} variants={revealItem}>
-              <motion.div
+            <m.div className="about-timeline-item" key={date} variants={revealItem}>
+              <m.div
                 className="about-timeline-marker"
                 aria-hidden="true"
                 initial={{ scale: 0.7 }}
@@ -147,9 +147,9 @@ function AboutTimeline() {
                 <div className="about-timeline-date">{date}</div>
                 <div className="about-timeline-title">{title}</div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
       <p className="about-section-note">
         This timeline is short today. It&apos;s already getting longer.
@@ -171,7 +171,7 @@ function AboutTeam() {
           </p>
         </div>
       </Reveal>
-      <motion.div
+      <m.div
         className="about-team-grid"
         initial={{ opacity: 0, x: 30 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -193,7 +193,7 @@ function AboutTeam() {
             <p className="about-team-bio">{bio}</p>
           </article>
         ))}
-      </motion.div>
+      </m.div>
     </section>
   );
 }
@@ -202,7 +202,7 @@ function AboutIntro() {
   return (
     <section className="page-intro about-intro">
       <div className="site-container">
-        <motion.span
+        <m.span
           className="eyebrow"
           initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -210,15 +210,15 @@ function AboutIntro() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           ABOUT TRIDENT
-        </motion.span>
-        <motion.h1
+        </m.span>
+        <m.h1
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={revealViewport}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           Technology works best when someone owns it.
-        </motion.h1>
+        </m.h1>
         <Reveal delay={0.15}>
           <p>
             We&apos;re a managed infrastructure and operations partner for South African
@@ -237,7 +237,7 @@ function AboutCTA() {
     <Reveal>
       <aside className="about-cta-card">
         <p>Want to learn how we&apos;d approach your systems?</p>
-        <motion.div
+        <m.div
           animate={shouldReduceMotion ? { opacity: 1 } : { opacity: [1, 0.95, 1] }}
           transition={
             shouldReduceMotion ? undefined : { duration: 3, ease: "easeInOut", repeat: Infinity }
@@ -248,7 +248,7 @@ function AboutCTA() {
               Let&apos;s talk. <ArrowRight />
             </Link>
           </Button>
-        </motion.div>
+        </m.div>
       </aside>
     </Reveal>
   );
@@ -266,25 +266,25 @@ function About() {
               <h2>Your systems. Our responsibility.</h2>
             </div>
           </Reveal>
-          <motion.div
+          <m.div
             className="about-body-copy"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={revealViewport}
           >
-            <motion.p variants={revealItem}>
+            <m.p variants={revealItem}>
               Trident Cloud Services is part of Trident Development Group. We focus on the practical
               work of keeping websites, applications and business systems available, secure and
               ready to grow.
-            </motion.p>
-            <motion.p variants={revealItem}>
+            </m.p>
+            <m.p variants={revealItem}>
               Our approach is straightforward: understand what you run, agree on what matters, and
               take clear responsibility for the infrastructure behind it. From deployment and daily
               monitoring to backups and security, we&apos;re here to make the technical side less of
               a burden.
-            </motion.p>
-          </motion.div>
+            </m.p>
+          </m.div>
 
           <AboutStats />
 
@@ -292,14 +292,14 @@ function About() {
             <Reveal>
               <h2>What we stand for</h2>
             </Reveal>
-            <motion.div
+            <m.div
               className="about-value-grid"
               variants={valueContainer}
               initial="hidden"
               whileInView="visible"
               viewport={revealViewport}
             >
-              <motion.article
+              <m.article
                 className="about-value-card"
                 variants={valueCard}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
@@ -309,8 +309,8 @@ function About() {
                 </span>
                 <h3>Ownership</h3>
                 <p>One accountable partner instead of a maze of vendors.</p>
-              </motion.article>
-              <motion.article
+              </m.article>
+              <m.article
                 className="about-value-card"
                 variants={valueCard}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
@@ -320,8 +320,8 @@ function About() {
                 </span>
                 <h3>Clarity</h3>
                 <p>Direct communication about scope, risks and next steps.</p>
-              </motion.article>
-              <motion.article
+              </m.article>
+              <m.article
                 className="about-value-card"
                 variants={valueCard}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
@@ -331,8 +331,8 @@ function About() {
                 </span>
                 <h3>Steady improvement</h3>
                 <p>Operations that evolve with your business.</p>
-              </motion.article>
-            </motion.div>
+              </m.article>
+            </m.div>
           </div>
 
           <AboutTimeline />

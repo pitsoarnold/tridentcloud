@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, type Variants } from "motion/react";
+import { m, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import {
   ArrowRight,
@@ -70,14 +70,14 @@ const titleLineVariants: Variants = {
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -91,7 +91,7 @@ function EnterpriseIntro() {
         aria-hidden="true"
       />
       <div className="site-container enterprise-intro-content">
-        <motion.span
+        <m.span
           className="eyebrow"
           initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -99,21 +99,21 @@ function EnterpriseIntro() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           ENTERPRISE
-        </motion.span>
-        <motion.h1
+        </m.span>
+        <m.h1
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={titleVariants}
         >
-          <motion.span className="hero-title-line" variants={titleLineVariants}>
+          <m.span className="hero-title-line" variants={titleLineVariants}>
             Infrastructure management for organisations
-          </motion.span>
-          <motion.span className="hero-title-line" variants={titleLineVariants}>
+          </m.span>
+          <m.span className="hero-title-line" variants={titleLineVariants}>
             where downtime isn&apos;t an option.
-          </motion.span>
-        </motion.h1>
-        <motion.p
+          </m.span>
+        </m.h1>
+        <m.p
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -121,7 +121,7 @@ function EnterpriseIntro() {
         >
           Formal SLAs, dedicated account management, POPIA compliance, and 24/7 support. For South
           African enterprises with mission-critical systems.
-        </motion.p>
+        </m.p>
       </div>
     </section>
   );
@@ -253,7 +253,7 @@ function EnterprisePage() {
             </div>
           </Reveal>
 
-          <motion.div
+          <m.div
             className="enterprise-pillars"
             variants={staggerVariants}
             initial="hidden"
@@ -261,7 +261,7 @@ function EnterprisePage() {
             viewport={{ once: true, margin: "-80px" }}
           >
             {pillars.map((p) => (
-              <motion.article
+              <m.article
                 key={p.title}
                 className="enterprise-pillar"
                 variants={revealItemVariants}
@@ -272,9 +272,9 @@ function EnterprisePage() {
                 </div>
                 <h3>{p.title}</h3>
                 <p>{p.body}</p>
-              </motion.article>
+              </m.article>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -298,7 +298,7 @@ function EnterprisePage() {
             </div>
           </Reveal>
 
-          <motion.div
+          <m.div
             className="sla-table"
             initial="hidden"
             whileInView="visible"
@@ -308,13 +308,13 @@ function EnterprisePage() {
               visible: { transition: { staggerChildren: 0 } },
             }}
           >
-            <motion.div className="sla-header" variants={revealItemVariants}>
+            <m.div className="sla-header" variants={revealItemVariants}>
               <div className="sla-cell sla-cell-first">Commitment</div>
               <div className="sla-cell">Standard plans</div>
               <div className="sla-cell sla-cell-enterprise">Enterprise</div>
-            </motion.div>
+            </m.div>
             {slaRows.map((row, index) => (
-              <motion.div
+              <m.div
                 className="sla-row"
                 key={row.metric}
                 variants={{
@@ -329,7 +329,7 @@ function EnterprisePage() {
                 <div className="sla-cell sla-cell-first sla-cell-label">{row.metric}</div>
                 <div className="sla-cell sla-cell-standard">{row.standard}</div>
                 <div className="sla-cell sla-cell-enterprise">
-                  <motion.span
+                  <m.span
                     className="sla-check"
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
@@ -337,12 +337,12 @@ function EnterprisePage() {
                     transition={{ duration: 0.35, delay: index * 0.05 + 0.12 }}
                   >
                     <Check />
-                  </motion.span>
+                  </m.span>
                   {row.enterprise}
                 </div>
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -360,7 +360,7 @@ function EnterprisePage() {
             </div>
           </Reveal>
 
-          <motion.div
+          <m.div
             className="enterprise-onboarding"
             initial="hidden"
             whileInView="visible"
@@ -374,12 +374,12 @@ function EnterprisePage() {
             }}
           >
             {onboardingSteps.map((step, index) => (
-              <motion.div
+              <m.div
                 key={step.number}
                 className="enterprise-step"
                 variants={revealItemVariants}
               >
-                <motion.span
+                <m.span
                   className="enterprise-step-number"
                   initial={{ scale: 0.94 }}
                   whileInView={{ scale: [0.94, 1.08, 1] }}
@@ -387,12 +387,12 @@ function EnterprisePage() {
                   transition={{ duration: 0.45, delay: index * 0.12 + 0.1 }}
                 >
                   {step.number}
-                </motion.span>
+                </m.span>
                 <h3>{step.title}</h3>
                 <p>{step.body}</p>
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -403,7 +403,7 @@ function EnterprisePage() {
             <div className="enterprise-ideal-copy">
               <span className="eyebrow">IDEAL FOR</span>
               <h2>If any of these describe you, let's talk.</h2>
-              <motion.ul
+              <m.ul
                 className="enterprise-ideal-list"
                 variants={{
                   hidden: {},
@@ -421,7 +421,7 @@ function EnterprisePage() {
                   "Finance, healthcare, government, or regulated industries",
                   "Looking for a partner, not a vendor",
                 ].map((item) => (
-                  <motion.li
+                  <m.li
                     key={item}
                     variants={{
                       hidden: { opacity: 0, scale: 0.95 },
@@ -433,11 +433,11 @@ function EnterprisePage() {
                     }}
                   >
                     <Check /> {item}
-                  </motion.li>
+                  </m.li>
                 ))}
-              </motion.ul>
+              </m.ul>
             </div>
-            <motion.div
+            <m.div
               className="enterprise-ideal-card"
               initial={{ opacity: 0, x: 28 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -465,7 +465,7 @@ function EnterprisePage() {
                   </a>
                 </Button>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>
@@ -484,14 +484,14 @@ function EnterprisePage() {
             </div>
           </Reveal>
 
-          <motion.div
+          <m.div
             className="enterprise-services"
             variants={staggerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
           >
-            <motion.div
+            <m.div
               className="enterprise-service"
               variants={revealItemVariants}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
@@ -504,8 +504,8 @@ function EnterprisePage() {
                 Every system, every environment, monitored and maintained 24/7. High availability,
                 disaster recovery, and capacity planning included.
               </p>
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               className="enterprise-service"
               variants={revealItemVariants}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
@@ -518,8 +518,8 @@ function EnterprisePage() {
                 Security audits, intrusion detection, access controls, incident response, and
                 compliance documentation.
               </p>
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               className="enterprise-service"
               variants={revealItemVariants}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
@@ -532,8 +532,8 @@ function EnterprisePage() {
                 Quarterly strategy reviews, capacity planning, and proactive performance
                 optimisation — not just keep-the-lights-on.
               </p>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
 
           <div className="enterprise-cta-row">
             <Button asChild className="btn btn-primary">
