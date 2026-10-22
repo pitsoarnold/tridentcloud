@@ -82,20 +82,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Trident Cloud Services" },
-      { name: "description", content: "Managed infrastructure for South African businesses." },
-      { name: "author", content: "Trident Cloud Services" },
-      { property: "og:title", content: "Trident Cloud Services" },
-      { property: "og:description", content: "Your systems. Our responsibility." },
+      { title: "Trident Cloud Services | Managed Infrastructure" },
+      { name: "description", content: "Your systems. Our responsibility. We build, manage, and secure custom digital infrastructure for South African businesses." },
+      
+      // Open Graph (Facebook, LinkedIn, WhatsApp)
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://tridentcloud.185.182.9.86.nip.io/" },
+      { property: "og:title", content: "Trident Cloud Services" },
+      { property: "og:description", content: "Your systems. Our responsibility. Managed infrastructure for South African businesses." },
+      { property: "og:image", content: "https://tridentcloud.185.182.9.86.nip.io/og-image.png" },
+
+      // Twitter (X)
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Trident Cloud Services" },
+      { name: "twitter:description", content: "Your systems. Our responsibility. Managed infrastructure for South African businesses." },
+      { name: "twitter:image", content: "https://tridentcloud.185.182.9.86.nip.io/og-image.png" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "icon", href: "/favicon.ico" },
+      { rel: "canonical", href: "https://tridentcloud.185.182.9.86.nip.io/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
