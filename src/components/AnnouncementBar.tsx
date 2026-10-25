@@ -1,43 +1,33 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { X } from "lucide-react";
-import { useFoundingStatus as useStatus } from "@/lib/useFoundingStatus";
-
-const dismissalKey = "fcp-bar-dismissed-until";
-const dismissalDuration = 7 * 24 * 60 * 60 * 1000;
 
 export function AnnouncementBar() {
-  const { isActive, isFull, isLoading } = useStatus();
-  const [dismissed, setDismissed] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
 
-  useEffect(() => {
-    const dismissedUntil = Number(window.localStorage.getItem(dismissalKey));
-    setDismissed(Number.isFinite(dismissedUntil) && Date.now() < dismissedUntil);
-  }, []);
-
-  const dismiss = () => {
-    window.localStorage.setItem(dismissalKey, String(Date.now() + dismissalDuration));
-    setDismissed(true);
-  };
-
-  if (isLoading || !isActive || isFull || dismissed) return null;
+  if (!isVisible) return null;
 
   return (
-    <div className="founding-announcement">
-      <div className="site-container founding-announcement-inner">
-        <p className="founding-announcement-copy">
-          🎉 Founding Client Programme — First 10 clients get special pricing.{" "}
-          <Link to="/founding-clients">Learn more →</Link>
-        </p>
-        <button
-          className="founding-announcement-dismiss"
-          type="button"
-          onClick={dismiss}
-          aria-label="Dismiss announcement for 7 days"
+    <div className="bg-[#c9763d] text-[#0a0a0a] px-4 py-2 flex items-center justify-center relative text-xs sm:text-sm font-medium">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center pr-6 sm:pr-8">
+        <span className="flex items-center gap-2">
+          <span>🎉</span> Founding Client Programme — First 10 clients get special pricing.
+        </span>
+        <Link 
+          to="/founding-clients" 
+          className="underline underline-offset-2 hover:opacity-80 font-bold whitespace-nowrap"
         >
-          <X aria-hidden="true" />
-        </button>
+          Learn more
+        </Link>
       </div>
+      
+      <button
+        onClick={() => setIsVisible(false)}
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-1 hover:opacity-75 transition-opacity"
+        aria-label="Dismiss announcement"
+      >
+        <X size={16} />
+      </button>
     </div>
   );
 }

@@ -200,8 +200,9 @@ function AboutTeam() {
 
 function AboutIntro() {
   return (
-    <section className="page-intro about-intro">
-      <div className="site-container">
+    <section className="page-intro about-intro relative bg-[url('/about-hero.jpg')] bg-cover bg-center bg-no-repeat">
+      <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
+      <div className="site-container relative z-10">
         <m.span
           className="eyebrow"
           initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
@@ -240,7 +241,7 @@ function AboutCTA() {
         <m.div
           animate={shouldReduceMotion ? { opacity: 1 } : { opacity: [1, 0.95, 1] }}
           transition={
-            shouldReduceMotion ? undefined : { duration: 3, ease: "easeInOut", repeat: Infinity }
+            shouldReduceMotion ? { duration: 0 } : { duration: 3, ease: "easeInOut", repeat: Infinity }
           }
         >
           <Button asChild className="btn btn-primary">
@@ -260,16 +261,7 @@ function About() {
       <AboutIntro />
       <section className="section section-white about-approach">
         <div className="site-container about-content">
-        <Reveal>
-            <div className="w-full rounded-2xl overflow-hidden shadow-2xl mb-16 border border-neutral-800">
-              <img 
-                src="/og-image.png" 
-                alt="Trident Cloud Services - Your systems. Our responsibility." 
-                className="w-full h-auto object-cover"
-              />
-            </div>
-          </Reveal>
-        <Reveal>
+          <Reveal>
             <div className="about-approach-copy">
               <span className="eyebrow">OUR APPROACH</span>
               <h2>How We Work</h2>

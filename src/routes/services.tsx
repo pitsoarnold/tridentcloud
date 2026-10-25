@@ -64,14 +64,9 @@ function Reveal({
 
 function ServicesIntro() {
   return (
-    <section className="page-intro services-page-intro">
-      <img
-        className="services-intro-image"
-        src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1920&q=60"
-        alt=""
-        aria-hidden="true"
-      />
-      <div className="site-container services-intro-content">
+    <section className="page-intro services-page-intro relative bg-[url('/services-hero.jpg')] bg-cover bg-center bg-no-repeat">
+      <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
+      <div className="site-container services-intro-content relative z-10">
         <m.span
           className="eyebrow"
           initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}

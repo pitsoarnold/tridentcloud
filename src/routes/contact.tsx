@@ -37,6 +37,15 @@ function Contact() {
         title="Let's talk about what you're building."
         description="Whether you need a website, an application, an enterprise system, or someone to run your infrastructure — tell us what you have in mind."
       />
+     <div className="w-full max-w-4xl mx-auto px-4 sm:px-0">
+        <div className="w-full rounded-2xl overflow-hidden shadow-2xl my-12 border border-neutral-800">
+          <img 
+            src="/og-image.png" 
+            alt="Trident Cloud Services - Your systems. Our responsibility." 
+            className="w-full h-auto object-cover"
+          />
+        </div>
+      </div>
       <section className="section section-white">
         <div className="site-container contact-grid">
           <div>

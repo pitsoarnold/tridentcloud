@@ -83,14 +83,9 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
 
 function EnterpriseIntro() {
   return (
-    <section className="page-intro enterprise-page-intro">
-      <img
-        className="enterprise-intro-image"
-        src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=60"
-        alt=""
-        aria-hidden="true"
-      />
-      <div className="site-container enterprise-intro-content">
+    <section className="page-intro enterprise-page-intro relative bg-[url('/enterprise-hero.jpg')] bg-cover bg-center bg-no-repeat">
+      <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
+      <div className="site-container enterprise-intro-content relative z-10">
         <m.span
           className="eyebrow"
           initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}

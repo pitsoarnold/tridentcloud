@@ -31,7 +31,7 @@ export function CaseStudyPreview({ url, title }: Props) {
           Open ↗
         </a>
       </div>
-      <div className="relative w-full aspect-[4/3] md:aspect-[16/10] bg-neutral-950">
+      <div className="relative w-full aspect-[4/5] md:aspect-[16/10] bg-neutral-950">
         {!loaded && (
           <div className="absolute inset-0 flex items-center justify-center text-xs text-neutral-500">
             Loading live preview…
