@@ -202,7 +202,7 @@ function AboutIntro() {
   return (
         <section className="page-intro about-intro relative overflow-hidden">
       <img 
-        src="/about-hero.jpg" 
+        src="/founding-hero.jpg" 
         alt="" 
         className="absolute inset-0 w-full h-full object-cover"
       />

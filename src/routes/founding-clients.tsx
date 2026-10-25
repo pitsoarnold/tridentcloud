@@ -480,7 +480,7 @@ function FoundingClientsPage() {
         <main className="founding-page">
         <section className="founding-hero relative overflow-hidden">
         <img 
-          src="/founding-hero.jpg" 
+          src="/about-hero.jpg" 
           alt="" 
           className="absolute inset-0 w-full h-full object-cover"
         />
