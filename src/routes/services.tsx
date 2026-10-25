@@ -64,7 +64,10 @@ function Reveal({
 
 function ServicesIntro() {
   return (
-    <section className="page-intro services-page-intro relative bg-[url('/services-hero.jpg')] bg-cover bg-center bg-no-repeat">
+    <section 
+      className="page-intro services-page-intro relative bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/services-hero.jpg')" }}
+    >
       <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
       <div className="site-container services-intro-content relative z-10">
         <m.span

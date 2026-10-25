@@ -200,7 +200,10 @@ function AboutTeam() {
 
 function AboutIntro() {
   return (
-    <section className="page-intro about-intro relative bg-[url('/about-hero.jpg')] bg-cover bg-center bg-no-repeat">
+    <section 
+      className="page-intro about-intro relative bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/about-hero.jpg')" }}
+    >
       <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
       <div className="site-container relative z-10">
         <m.span

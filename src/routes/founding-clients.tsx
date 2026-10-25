@@ -477,8 +477,11 @@ function FoundingClientsPage() {
   const search = Route.useSearch();
 
   return (
-    <main className="founding-page">
-      <section className="founding-hero relative bg-[url('/founding-hero.jpg')] bg-cover bg-center bg-no-repeat">
+        <main className="founding-page">
+      <section 
+        className="founding-hero relative bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/founding-hero.jpg')" }}
+      >
         <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
         <div className="site-container founding-hero-inner relative z-10">
           <m.div
