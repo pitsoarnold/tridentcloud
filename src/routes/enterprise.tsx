@@ -83,11 +83,13 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
 
 function EnterpriseIntro() {
   return (
-    <section 
-      className="page-intro enterprise-page-intro relative bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/enterprise-hero.jpg')" }}
-    >
-      <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
+    <section className="page-intro enterprise-page-intro relative overflow-hidden">
+      <img 
+        src="/enterprise-hero.jpg" 
+        alt="" 
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-[#0a1128]/75"></div>
       <div className="site-container enterprise-intro-content relative z-10">
         <m.span
           className="eyebrow"

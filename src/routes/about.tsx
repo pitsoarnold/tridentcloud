@@ -200,11 +200,13 @@ function AboutTeam() {
 
 function AboutIntro() {
   return (
-    <section 
-      className="page-intro about-intro relative bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/about-hero.jpg')" }}
-    >
-      <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
+        <section className="page-intro about-intro relative overflow-hidden">
+      <img 
+        src="/about-hero.jpg" 
+        alt="" 
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-[#0a1128]/75"></div>
       <div className="site-container relative z-10">
         <m.span
           className="eyebrow"

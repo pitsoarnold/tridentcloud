@@ -478,11 +478,13 @@ function FoundingClientsPage() {
 
   return (
         <main className="founding-page">
-      <section 
-        className="founding-hero relative bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/founding-hero.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-[#0a1128]/85 -z-10"></div>
+        <section className="founding-hero relative overflow-hidden">
+        <img 
+          src="/founding-hero.jpg" 
+          alt="" 
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-[#0a1128]/75"></div>
         <div className="site-container founding-hero-inner relative z-10">
           <m.div
             className="founding-hero-copy"
