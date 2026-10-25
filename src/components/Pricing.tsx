@@ -1,33 +1,170 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Cloud, Server, ShieldCheck, Building2 } from "lucide-react";
+import { ArrowRight, Check, Cloud, Server, ShieldCheck, Building2, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FAQAccordion } from "@/components/FAQAccordion";
 
 const plans = [
-  { name: "Managed Hosting", subtitle: "One system. Fully supported.", icon: Cloud, key: "hosting", description: "For websites, small business applications and simple digital systems that need reliable, hands-off operation.", monthly: "R850", annual: "R8,500", setup: "R1,500 one-time", features: ["1 system operated by Trident", "Daily backups (14-day retention)", "SSL certificate (auto-renewed)", "Uptime monitoring (5-minute checks)", "Security patching (OS + application)", "Business-hours support (email & WhatsApp)", "Monthly health report"] },
-  { name: "Managed Infrastructure", subtitle: "Multiple systems. Greater control.", icon: Server, key: "infrastructure", description: "For growing businesses with two or three digital systems that need proactive management and one point of accountability.", monthly: "R2,200", annual: "R21,000", setup: "R2,500 one-time", features: ["Up to 3 systems operated by Trident", "Daily backups (30-day retention)", "SSL + DNS management (all domains)", "Resource monitoring (CPU, RAM, disk)", "Security hardening (firewall, intrusion detection)", "Business-hours support with escalation", "Monthly operations review with recommendations"] },
-  { name: "Managed Operations", subtitle: "Your digital operations. Our full care.", icon: ShieldCheck, key: "operations", description: "For organisations where the entire digital operation depends on us. Multiple systems, custom backups and a genuine technical partnership.", monthly: "R5,500", annual: "R49,500", setup: "Custom, scoped per engagement", features: ["Up to 5 systems (additional systems +R700 each)", "Daily backups and disaster recovery strategy", "24/7 automated monitoring (business-hours response)", "Advanced security audits and remediation", "Proactive performance optimisation", "Priority support (4-hour response target)", "Quarterly strategy review and capacity plan"] },
-  { name: "Enterprise / Custom", subtitle: "Complex needs. Dedicated team.", icon: Building2, key: "enterprise", description: "For larger organisations, multi-location operations, compliance requirements or mission-critical systems requiring tailored SLAs.", monthly: "Custom", annual: "Custom", setup: "Custom, scoped per engagement", features: ["Everything in Managed Operations, plus:", "Custom infrastructure architecture", "High availability and multi-region options", "Unlimited domains and environments", "Dedicated account manager", "Formal SLA for uptime and response", "POPIA and industry-specific compliance support", "24/7 support options available"] },
+  {
+    name: "Trident Built",
+    subtitle: "Custom build + 1st Year FREE Hosting",
+    icon: Rocket,
+    key: "growth",
+    description: "A premium, custom-built website or web app. Includes your first year of managed hosting, domain, SSL, and 2 hours of content updates per month.",
+    onceOff: "R15,000",
+    annual: "R2,990",
+    monthly: "R299",
+    setup: "None",
+    features: [
+      "Custom Website / Web App Build",
+      "1 Year FREE Managed Hosting",
+      "Domain & SSL Included",
+      "2 hours/month content updates",
+      "Daily backups & uptime monitoring",
+      "Priority WhatsApp & Email support"
+    ],
+    badge: "1st Year Hosting FREE",
+  },
+  {
+    name: "Managed Hosting",
+    subtitle: "For existing websites",
+    icon: Server,
+    key: "hosting",
+    description: "Bulletproof hosting and operations for businesses who built their site elsewhere but need reliable, managed infrastructure.",
+    onceOff: null,
+    annual: "R3,990",
+    monthly: "R399",
+    setup: "R1,500 one-time",
+    features: [
+      "20GB SSD Storage",
+      "Managed Database & Staging",
+      "Daily backups (30-day retention)",
+      "SSL certificate (auto-renewed)",
+      "Uptime monitoring (5-min checks)",
+      "Business-hours support"
+    ],
+    badge: "Price Anchor",
+  },
+  {
+    name: "Enterprise & Scale",
+    subtitle: "Mission-critical infrastructure",
+    icon: Building2,
+    key: "enterprise",
+    description: "For larger organisations, tracking servers (like OrbitVision), POPIA compliance requirements, and mission-critical systems requiring tailored SLAs.",
+    onceOff: null,
+    annual: "R29,990",
+    monthly: "R2,999",
+    setup: "Custom, scoped per engagement",
+    features: [
+      "Unlimited sites & tracking servers",
+      "Dedicated POPIA compliance alerts",
+      "24/7 automated monitoring",
+      "Priority support (4-hour response)",
+      "Quarterly strategy & capacity plans",
+      "Custom SLA agreements"
+    ],
+    badge: "High-Ticket",
+  },
 ];
 
 export function Pricing({ compact = false }: { compact?: boolean }) {
   const [annual, setAnnual] = useState(true);
-  return <section className="section pricing-section" id="pricing">
-    <div className="site-container">
-      <div className="pricing-head">
-        <div className="section-heading"><span className="eyebrow">OUR PRICING</span><h2>One technical partner. Four levels of responsibility.</h2><p>Every plan includes managed care, monitoring, backups and business-hours support. Choose the level that fits your systems.</p></div>
-        <div className="billing-switch" role="group" aria-label="Billing period"><button type="button" className={!annual ? "active" : ""} aria-pressed={!annual} onClick={() => setAnnual(false)}>Monthly</button><button type="button" className={annual ? "active" : ""} aria-pressed={annual} onClick={() => setAnnual(true)}>Annual <span>· save up to 25%</span></button></div>
+
+  return (
+    <section className="section pricing-section" id="pricing">
+      <div className="site-container">
+        <div className="pricing-head">
+          <div className="section-heading">
+            <span className="eyebrow">OUR PRICING</span>
+            <h2>One technical partner. Built for growth.</h2>
+            <p>Every plan includes managed care, monitoring, backups and business-hours support. Choose the level that fits your systems.</p>
+          </div>
+          <div className="billing-switch" role="group" aria-label="Billing period">
+            <button type="button" className={!annual ? "active" : ""} aria-pressed={!annual} onClick={() => setAnnual(false)}>Monthly</button>
+            <button type="button" className={annual ? "active" : ""} aria-pressed={annual} onClick={() => setAnnual(true)}>Annual <span>· save up to 25%</span></button>
+          </div>
+        </div>
+
+        <div className="pricing-grid">
+          {plans.map((plan) => {
+            // The Trident Built card has a special layout for the once-off price
+            const isGrowth = plan.key === "growth";
+            
+            return (
+              <article className={`price-card ${plan.key} ${isGrowth ? "popular border-2 border-[#E65C1A]" : ""}`} key={plan.name}>
+                {isGrowth && (
+                  <span className="popular-badge bg-[#E65C1A] text-white font-bold text-xs uppercase tracking-widest">
+                    {plan.badge}
+                  </span>
+                )}
+                
+                <div className="price-band">
+                  <plan.icon aria-hidden="true" />
+                  <div>
+                    <h3>{plan.name}</h3>
+                    <small>{plan.subtitle}</small>
+                  </div>
+                </div>
+
+                <div className="price-body">
+                  <p className="price-desc">{plan.description}</p>
+                  
+                  {isGrowth ? (
+                    <div className="mb-4">
+                      <div className="price-value">{plan.onceOff} <span className="text-sm font-normal text-gray-500">once-off</span></div>
+                      <p className="text-sm font-medium text-[#E65C1A] mt-2">
+                        Then {annual ? plan.annual : plan.monthly} /{annual ? "year" : "month"} from Year 2
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="mb-4">
+                      <div className="price-value">
+                        {annual ? plan.annual : plan.monthly} 
+                        <span> /{annual ? "year" : "month"}</span>
+                      </div>
+                      <p className="price-note">Excl. VAT</p>
+                      <p className="setup">Setup fee: {plan.setup}</p>
+                    </div>
+                  )}
+
+                  <span className="feature-label">INCLUDES</span>
+                  <ul className="feature-list">
+                    {plan.features.map((feature) => (
+                      <li key={feature}>
+                        <Check aria-hidden="true" className={isGrowth ? "text-[#E65C1A]" : ""} />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Button 
+                    asChild 
+                    className={`btn ${isGrowth ? "bg-[#E65C1A] hover:bg-[#c44a12] text-white" : plan.key === "enterprise" ? "btn-violet" : "btn-blue"}`}
+                  >
+                    <Link to="/contact" search={{ plan: plan.name }}>
+                      {plan.key === "enterprise" ? "Talk to our team" : "Get started"}
+                      <ArrowRight />
+                    </Link>
+                  </Button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <p className="pricing-footnote mt-8 text-center text-sm text-gray-500">
+          Annual plans are billed upfront. Prices exclude VAT. Setup fees apply separately. Additional systems and custom requirements are scoped with your team.
+        </p>
+        {!compact && (
+          <div className="mt-8 text-center">
+            <Button asChild variant="link">
+              <Link to="/pricing">Explore all pricing details <ArrowRight /></Link>
+            </Button>
+          </div>
+        )}
       </div>
-      <div className="pricing-grid">{plans.map((plan) => <article className={`price-card ${plan.key} ${plan.key === "infrastructure" ? "popular" : ""}`} key={plan.name}>
-        {plan.key === "infrastructure" && <span className="popular-badge">MOST POPULAR</span>}
-        <div className="price-band"><plan.icon aria-hidden="true"/><div><h3>{plan.name}</h3><small>{plan.subtitle}</small></div></div>
-        <div className="price-body"><p className="price-desc">{plan.description}</p><div className="price-value">{annual ? plan.annual : plan.monthly}{plan.key !== "enterprise" && <span> /{annual ? "year" : "month"}</span>}</div><p className="price-note">{plan.key === "enterprise" ? "Tailored to your requirements" : "Excl. VAT"}</p><p className="setup">Setup fee: {plan.setup}</p><span className="feature-label">INCLUDES</span><ul className="feature-list">{plan.features.map((feature) => <li key={feature}><Check aria-hidden="true"/>{feature}</li>)}</ul><Button asChild className={`btn ${plan.key === "enterprise" ? "btn-violet" : plan.key === "operations" ? "btn-navy" : "btn-blue"}`}><Link to="/contact" search={{ plan: plan.name }}>{plan.key === "enterprise" ? "Talk to our team" : "Get started"}<ArrowRight/></Link></Button></div>
-      </article>)}</div>
-      <p className="pricing-footnote">Annual plans are billed upfront. Prices exclude VAT. Setup fees apply separately. Additional systems and custom requirements are scoped with your team.</p>
-      {!compact && <div className="mt-8 text-center"><Button asChild variant="link"><Link to="/pricing">Explore all pricing details <ArrowRight/></Link></Button></div>}
-    </div>
-  </section>;
+    </section>
+  );
 }
 
 export const pricingFaq = [

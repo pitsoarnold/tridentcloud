@@ -76,6 +76,7 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
   // Render the interactive iframe if a domain exists, otherwise fallback to the image
   const image = study.domain ? (
     <m.div
+      className="w-full max-w-full overflow-hidden"
       initial={{ opacity: 0, scale: 1.04 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={revealViewport}
@@ -142,7 +143,7 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
 
       {study.domain && (
         <a
-          className="case-study-visit-link"
+          className="case-study-visit-link mt-8 inline-flex items-center gap-2"
           href={`https://${cleanDomain}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -153,10 +154,10 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
     </div>
   );
 
-  return (
+    return (
     <Reveal>
       <article
-        className={`case-study-row${imageSide === "right" ? " reverse" : ""}`}
+        className={`case-study-row${imageSide === "right" ? " reverse" : ""} mb-20 lg:mb-32`}
         aria-labelledby={`case-study-title-${study.id}`}
       >
         {image}
@@ -179,7 +180,7 @@ function CaseStudies({
 
   return (
     <section className="case-studies-featured-section" aria-label="Client case studies">
-      <div className="site-container case-studies-list">
+      <div className="site-container case-studies-list flex flex-col gap-12 lg:gap-0">
         {hasError ? (
           <p role="status">Client case studies are temporarily unavailable.</p>
         ) : (

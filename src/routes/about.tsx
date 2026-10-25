@@ -260,10 +260,19 @@ function About() {
       <AboutIntro />
       <section className="section section-white about-approach">
         <div className="site-container about-content">
-          <Reveal>
+        <Reveal>
+            <div className="w-full rounded-2xl overflow-hidden shadow-2xl mb-16 border border-neutral-800">
+              <img 
+                src="/og-image.png" 
+                alt="Trident Cloud Services - Your systems. Our responsibility." 
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </Reveal>
+        <Reveal>
             <div className="about-approach-copy">
               <span className="eyebrow">OUR APPROACH</span>
-              <h2>Your systems. Our responsibility.</h2>
+              <h2>How We Work</h2>
             </div>
           </Reveal>
           <m.div

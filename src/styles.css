@@ -6537,3 +6537,26 @@ textarea:focus-visible {
     gap: 8px;
   }
 }
+
+
+/* Mobile Optimization */
+body { overflow-x: hidden; width: 100%; }
+@media (max-width: 768px) {
+}
+
+/* Mobile Optimization Fixes */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+}
+
+@media (max-width: 768px) {
+  section, .section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+  img, iframe, video {
+    max-width: 100% !important;
+  }
+}

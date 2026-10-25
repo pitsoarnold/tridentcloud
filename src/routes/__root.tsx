@@ -83,6 +83,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Trident Cloud Services | Managed Infrastructure" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Trident Cloud Services | Managed Infrastructure" },
       { name: "description", content: "Your systems. Our responsibility. We build, manage, and secure custom digital infrastructure for South African businesses." },
       
       // Open Graph (Facebook, LinkedIn, WhatsApp)
