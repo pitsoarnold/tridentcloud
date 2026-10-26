@@ -8,7 +8,7 @@ export function AnnouncementBar() {
   if (!isVisible) return null;
 
   return (
-    <div className="bg-[#c9763d] text-[#0a0a0a] px-4 py-2 flex items-center justify-center relative text-xs sm:text-sm font-medium">
+    <div className="bg-[#E31837] text-[#0a0a0a] px-4 py-2 flex items-center justify-center relative text-xs sm:text-sm font-medium">
       <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center pr-6 sm:pr-8">
         <span className="flex items-center gap-2">
           <span>🎉</span> Founding Client Programme — First 10 clients get special pricing.

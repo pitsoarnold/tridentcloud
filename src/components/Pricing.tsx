@@ -91,9 +91,9 @@ export function Pricing({ compact = false }: { compact?: boolean }) {
             const isGrowth = plan.key === "growth";
             
             return (
-              <article className={`price-card ${plan.key} ${isGrowth ? "popular border-2 border-[#E65C1A]" : ""}`} key={plan.name}>
+              <article className={`price-card ${plan.key} ${isGrowth ? "popular border-2 border-[#E31837]" : ""}`} key={plan.name}>
                 {isGrowth && (
-                  <span className="popular-badge bg-[#E65C1A] text-white font-bold text-xs uppercase tracking-widest">
+                  <span className="popular-badge bg-[#E31837] text-white font-bold text-xs uppercase tracking-widest">
                     {plan.badge}
                   </span>
                 )}
@@ -112,7 +112,7 @@ export function Pricing({ compact = false }: { compact?: boolean }) {
                   {isGrowth ? (
                     <div className="mb-4">
                       <div className="price-value">{plan.onceOff} <span className="text-sm font-normal text-gray-500">once-off</span></div>
-                      <p className="text-sm font-medium text-[#E65C1A] mt-2">
+                      <p className="text-sm font-medium text-[#E31837] mt-2">
                         Then {annual ? plan.annual : plan.monthly} /{annual ? "year" : "month"} from Year 2
                       </p>
                     </div>
@@ -131,7 +131,7 @@ export function Pricing({ compact = false }: { compact?: boolean }) {
                   <ul className="feature-list">
                     {plan.features.map((feature) => (
                       <li key={feature}>
-                        <Check aria-hidden="true" className={isGrowth ? "text-[#E65C1A]" : ""} />
+                        <Check aria-hidden="true" className={isGrowth ? "text-[#E31837]" : ""} />
                         {feature}
                       </li>
                     ))}
@@ -139,7 +139,7 @@ export function Pricing({ compact = false }: { compact?: boolean }) {
 
                   <Button 
                     asChild 
-                    className={`btn ${isGrowth ? "bg-[#E65C1A] hover:bg-[#c44a12] text-white" : plan.key === "enterprise" ? "btn-violet" : "btn-blue"}`}
+                    className={`btn ${isGrowth ? "bg-[#E31837] hover:bg-[#c44a12] text-white" : plan.key === "enterprise" ? "btn-violet" : "btn-blue"}`}
                   >
                     <Link to="/contact" search={{ plan: plan.name }}>
                       {plan.key === "enterprise" ? "Talk to our team" : "Get started"}
