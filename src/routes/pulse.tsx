@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Zap, Shield, Clock, Sparkles } from "lucide-react";
+import { ArrowRight, Zap, Shield, Clock, Sparkles, Check } from "lucide-react";
 import { m, type Variants } from "motion/react";
 import type { ReactNode } from "react";
-import { PageIntro, FinalCTA } from "@/components/SiteChrome";
+import { FinalCTA } from "@/components/SiteChrome";
 import { PulsePricing } from "@/components/PulsePricing";
 import { Button } from "@/components/ui/button";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
@@ -162,14 +162,51 @@ const faqs: FAQItem[] = [
   },
 ];
 
+// Custom Intro Section to handle the new Hero Image
+function PulseIntro() {
+  return (
+    <section className="page-intro relative overflow-hidden">
+      <img 
+        src="/pulse-hero.jpg" 
+        alt="" 
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-[#0a1128]/70"></div>
+      <div className="site-container relative z-10">
+        <m.span
+          className="eyebrow"
+          initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          TRIDENT PULSE
+        </m.span>
+        <m.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={revealViewport}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          Everything your business needs online. One monthly price.
+        </m.h1>
+        <m.p
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          A subscription for SMMEs who want a professional online presence — designed, deployed, and managed by Trident Cloud. From R499/month.
+        </m.p>
+      </div>
+    </section>
+  );
+}
+
 function PulsePage() {
   return (
     <main className="pulse-page">
-      <PageIntro
-        eyebrow="TRIDENT PULSE"
-        title="Everything your business needs online. One monthly price."
-        description="A subscription for SMMEs who want a professional online presence — designed, deployed, and managed by Trident Cloud. From R499/month."
-      />
+      <PulseIntro />
 
       {/* Benefits */}
       <section className="section section-white pulse-benefits-section">
@@ -360,6 +397,3 @@ function PulsePage() {
     </main>
   );
 }
-
-// Re-export Check icon used in comparison section
-import { Check } from "lucide-react";

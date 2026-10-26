@@ -12,24 +12,25 @@ const links = [
   { label: "Calculator", to: "/calculator" as const },
   { label: "Enterprise", to: "/enterprise" as const },
   { label: "About", to: "/about" as const },
+  { label: "Book a Call", to: "/book" as const }, // <-- ADDED HERE
   { label: "Contact", to: "/contact" as const },
 ];
+
 export const whatsappUrl =
   "https://wa.me/26662068252?text=Hi%20Trident%20Cloud%20Services%2C%20I%27d%20like%20to%20discuss%20my%20systems.";
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false);
         menuToggleRef.current?.focus();
       }
     };
-
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open]);
@@ -47,6 +48,8 @@ export function Header() {
           <span className="brand-rule" />
           <span className="brand-parent">A Trident Development Group Company</span>
         </Link>
+        
+        {/* Desktop Navigation */}
         <nav className="nav-links" aria-label="Main navigation">
           {links.map((link) => (
             <Link key={link.to} to={link.to}>
@@ -54,6 +57,7 @@ export function Header() {
             </Link>
           ))}
         </nav>
+
         <div className="header-actions">
           <span className="region">
             <Globe2 size={14} /> SA (ZAR)
@@ -64,6 +68,7 @@ export function Header() {
             </Link>
           </Button>
         </div>
+
         <Button
           ref={menuToggleRef}
           className="mobile-menu-trigger"
@@ -77,6 +82,8 @@ export function Header() {
           {open ? <X /> : <Menu />}
         </Button>
       </div>
+
+      {/* Mobile Navigation */}
       <nav
         id="mobile-menu"
         className={`mobile-menu ${open ? "open" : ""}`}
@@ -96,6 +103,7 @@ export function Header() {
     </header>
   );
 }
+
 export function Footer() {
   return (
     <footer className="footer">
@@ -113,62 +121,32 @@ export function Footer() {
           <div>
             <h4>Services</h4>
             <ul>
-              <li>
-                <Link to="/build">What We Build</Link>
-              </li>
-              <li>
-                <Link to="/pulse">Trident Pulse</Link>
-              </li>
-              <li>
-                <Link to="/calculator">Bundle Calculator</Link>
-              </li>
-              <li>
-                <Link to="/services">Managed Hosting</Link>
-              </li>
-              <li>
-                <Link to="/pricing">All Plans</Link>
-              </li>
-              <li>
-                <Link to="/enterprise">Enterprise</Link>
-              </li>
-              <li>
-                <Link to="/founding-clients">Founding Clients</Link>
-              </li>
+              <li><Link to="/build">What We Build</Link></li>
+              <li><Link to="/pulse">Trident Pulse</Link></li>
+              <li><Link to="/calculator">Bundle Calculator</Link></li>
+              <li><Link to="/services">Managed Hosting</Link></li>
+              <li><Link to="/pricing">All Plans</Link></li>
+              <li><Link to="/enterprise">Enterprise</Link></li>
+              <li><Link to="/founding-clients">Founding Clients</Link></li>
             </ul>
           </div>
           <div>
             <h4>Company</h4>
             <ul>
-              <li>
-                <Link to="/about">About us</Link>
-              </li>
-              <li>
-                <Link to="/why-trident">Why Trident</Link>
-              </li>
-              <li>
-                <Link to="/case-studies">Client Work</Link>
-              </li>
-              <li>
-                <Link to="/contact" search={{ plan: undefined }}>
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link to="/privacy">Privacy</Link>
-              </li>
-              <li>
-                <Link to="/terms">Terms</Link>
-              </li>
+              <li><Link to="/about">About us</Link></li>
+              <li><Link to="/why-trident">Why Trident</Link></li>
+              <li><Link to="/case-studies">Client Work</Link></li>
+              <li><Link to="/book">Book a Call</Link></li> {/* <-- ADDED HERE */}
+              <li><Link to="/contact" search={{ plan: undefined }}>Contact</Link></li>
+              <li><Link to="/privacy">Privacy</Link></li>
+              <li><Link to="/terms">Terms</Link></li>
             </ul>
           </div>
           <div>
             <h4>Let's talk</h4>
             <ul>
-              <li>
-                <Link to="/contact" search={{ plan: undefined }}>
-                  Send an enquiry
-                </Link>
-              </li>
+              <li><Link to="/book">Schedule a consultation</Link></li>
+              <li><Link to="/contact" search={{ plan: undefined }}>Send an enquiry</Link></li>
               <li>
                 <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                   WhatsApp our team
@@ -194,6 +172,7 @@ export function Footer() {
     </footer>
   );
 }
+
 export function WhatsApp() {
   return (
     <a
@@ -208,6 +187,7 @@ export function WhatsApp() {
     </a>
   );
 }
+
 export function FinalCTA() {
   return (
     <section className="final-cta">
@@ -219,8 +199,8 @@ export function FinalCTA() {
         </p>
         <div className="final-cta-actions">
           <Button asChild className="btn btn-primary">
-            <Link to="/contact" search={{ plan: undefined }}>
-              Book a discovery conversation <ArrowRight />
+            <Link to="/book">
+              Book a discovery call <ArrowRight />
             </Link>
           </Button>
           <Button asChild className="btn btn-outline-light">
@@ -233,6 +213,7 @@ export function FinalCTA() {
     </section>
   );
 }
+
 export function PageIntro({
   eyebrow,
   title,

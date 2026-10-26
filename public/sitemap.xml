@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://tridentcloud.185.182.9.86.nip.io/</loc></url>
-  <url><loc>https://tridentcloud.185.182.9.86.nip.io/case-studies</loc></url>
   <url><loc>https://tridentcloud.185.182.9.86.nip.io/about</loc></url>
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/build</loc></url>
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/calculator</loc></url>
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/case-studies</loc></url>
   <url><loc>https://tridentcloud.185.182.9.86.nip.io/contact</loc></url>
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/enterprise</loc></url>
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/founding-clients</loc></url>
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/pricing</loc></url>
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/pulse</loc></url>
   <url><loc>https://tridentcloud.185.182.9.86.nip.io/services</loc></url>
-  <!-- Add other routes here -->
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/why-trident</loc></url>
+  <url><loc>https://tridentcloud.185.182.9.86.nip.io/book</loc></url>
 </urlset>
